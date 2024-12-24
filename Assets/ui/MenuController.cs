@@ -20,6 +20,9 @@ public class MenuController : MonoBehaviour
     public Button exitPlayPanelButton;
     public TextField codeField;
 
+    public VisualElement settingsPanel;
+    public Button exitSettingsButton;
+
     private string[] codesTests = new[] { "1234", "1111" }; // liste temporaire à remplacer avec une liste des codes actifs pour rejoindre les parties en cours
     
 
@@ -37,7 +40,6 @@ public class MenuController : MonoBehaviour
         settingsButton = ui.Q<Button>("Settings");
         exitButton = ui.Q<Button>("Exit");
         
-        
         playButton.text = "Play";
         settingsButton.text = "Settings";
         exitButton.text = "Exit";
@@ -46,7 +48,17 @@ public class MenuController : MonoBehaviour
         
         playButton.clicked += OnPlaybutton;
         exitButton.clicked += OnExitClicked;
+        settingsButton.clicked += OnSettingsClicked;
         
+        
+        /* Settings */
+        settingsPanel = ui.Q<VisualElement>("SettingsPanel");
+        settingsPanel.style.display = DisplayStyle.None;
+        exitSettingsButton = ui.Q<Button>("ExitSettingsPanel");
+        
+        exitSettingsButton.text = "Back";
+        
+        exitSettingsButton.clicked += OnSettingsClosed;
         
         /* Play Panel*/
         playPanel = ui.Q<VisualElement>("PlayPanel");
@@ -80,13 +92,15 @@ public class MenuController : MonoBehaviour
                 {
                     codeField.maxLength = 50;
                     codeField.isReadOnly = true;
-                    codeField.value = "this code does not exit";
+                    codeField.value = "this code does not exist";
                     codeField.style.color = new StyleColor(new Color32(230, 57, 70, 255));
-                    Debug.Log("code invalid");
+                    Debug.Log("code invalide");
                     StartCoroutine(RevertTextAfterDelay(3f, ""));
                 }
             }
         });
+        
+        
     }
 
 
@@ -119,5 +133,16 @@ public class MenuController : MonoBehaviour
     private void OnExitClicked()
     {
         Application.Quit();
+    }
+
+    private void OnSettingsClicked()
+    {
+        settingsPanel.style.display = DisplayStyle.Flex;
+        Buttons.style.display = DisplayStyle.None;
+    }
+    private void OnSettingsClosed()
+    {
+        settingsPanel.style.display = DisplayStyle.None;
+        Buttons.style.display = DisplayStyle.Flex;
     }
 }
