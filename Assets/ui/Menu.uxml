@@ -1,0 +1,16 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ui/Menu.uss?fileID=7433441132597879392&amp;guid=7968622725530fc4387929fc1f102aaa&amp;type=3#Menu" />
+    <engine:VisualElement name="Container" tabindex="1" style="flex-grow: 1; background-color: rgba(34, 51, 59, 0.89); justify-content: center; align-items: center; align-self: auto; align-content: auto; margin-top: 0; flex-direction: column; -unity-text-align: upper-center;">
+        <engine:Label text="BLACKOUT" name="Title" style="-unity-font-style: bold; color: rgb(198, 172, 143); font-size: 100px; margin-right: 20px; margin-left: 20px; margin-top: 5%;" />
+        <engine:VisualElement name="Buttons" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: none; visibility: visible;">
+            <engine:Button text="Button" name="Play" class="button" />
+            <engine:Button text="Button" name="Settings" class="button" />
+            <engine:Button text="Button" name="Exit" class="button" />
+        </engine:VisualElement>
+        <engine:VisualElement name="PlayPanel" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: flex; visibility: visible;">
+            <engine:Button text="Button" name="Host" class="button" />
+            <engine:TextField label="Join with a code" placeholder-text="XXXX" name="Code" max-length="4" hide-placeholder-on-focus="false" enabled="true" class="code" style="flex-direction: column; width: 100%; height: 15%; -unity-font-style: bold; font-size: 30px; -unity-text-align: upper-center; color: rgb(198, 172, 143); background-color: rgb(34, 51, 59); border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; min-height: 15%; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; align-items: stretch; justify-content: center; align-self: center; align-content: flex-start;" />
+            <engine:Button text="Button" name="ExitPlayPanel" class="button" style="background-color: rgb(94, 80, 63);" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
