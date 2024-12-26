@@ -7,10 +7,11 @@ public class LobbyManager : MonoBehaviour
     
 
 
+    
 
     [SerializeField] private Button hostButton;
     [SerializeField] private Button joinButton;
-    [SerializeField] private TMPro.TMP_InputField ipInputField;
+    [SerializeField] private TMPro.TMP_InputField codeInputField;
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button readyButton;
 
@@ -24,20 +25,17 @@ public class LobbyManager : MonoBehaviour
         readyButton.onClick.AddListener(Ready);
     }
 
-    public void HostGame()
+    public async void HostGame()
     {
-        NetworkManager.Singleton.StartHost();   
-
+        await TestRelay.Instance.CreateRelay();
         isReady = true;
         DisplayPlayers.Instance.SetPlayerReadyServerRpc(NetworkManager.Singleton.LocalClientId, isReady);
     }
     public void JoinGame()
     {
-        var transport = NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>();
-        transport.ConnectionData.Address = ipInputField.text;
-        transport.ConnectionData.Port = 7777;
+        string myCode = codeInputField.text;
 
-        NetworkManager.Singleton.StartClient();
+        TestRelay.Instance.JoinRelay(myCode);
 
     }
     public void StartGame(){
