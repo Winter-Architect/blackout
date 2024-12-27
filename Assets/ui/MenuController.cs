@@ -1,13 +1,14 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Unity.Netcode;
+using UnityEngine.Audio;
 
 public class MenuController : MonoBehaviour
 {
+    [SerializeField] private AudioMixer masterMixer;
+    
     public UIDocument UIDocument;
     
     public VisualElement ui;
@@ -19,6 +20,7 @@ public class MenuController : MonoBehaviour
     public Button hostButton;
     public Button exitPlayPanelButton;
     public TextField codeField;
+    public SliderInt volumeSlider;
 
     public VisualElement settingsPanel;
     public Button exitSettingsButton;
@@ -31,6 +33,7 @@ public class MenuController : MonoBehaviour
         UIDocument = gameObject.GetComponent<UIDocument>();
         UIDocument.enabled = true;
         ui = UIDocument.rootVisualElement;
+        masterMixer.SetFloat("MasterVolume", PlayerPrefs.GetFloat("SavedMasterVolume"));
     }
     
     private void OnEnable()
@@ -55,10 +58,21 @@ public class MenuController : MonoBehaviour
         settingsPanel = ui.Q<VisualElement>("SettingsPanel");
         settingsPanel.style.display = DisplayStyle.None;
         exitSettingsButton = ui.Q<Button>("ExitSettingsPanel");
+        volumeSlider = ui.Q<SliderInt>("VolumeSlider");
         
         exitSettingsButton.text = "Back";
         
         exitSettingsButton.clicked += OnSettingsClosed;
+        
+        volumeSlider.value = (int)(PlayerPrefs.GetFloat("SavedMasterVolume") * 100);
+
+
+        volumeSlider.RegisterValueChangedCallback(evt =>
+        {
+            SetVolume(evt.newValue);
+        });
+        
+        
         
         /* Play Panel*/
         playPanel = ui.Q<VisualElement>("PlayPanel");
@@ -86,6 +100,12 @@ public class MenuController : MonoBehaviour
                     codeField.isReadOnly = true;
                     codeField.value = "loading ...";
                     codeField.style.color = new StyleColor(new Color32(144, 190, 109, 255));
+                    
+                    var transport = NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>();
+                    transport.ConnectionData.Address = text;
+                    transport.ConnectionData.Port = 7777;
+
+                    NetworkManager.Singleton.StartClient();
                     Debug.Log("code valide");
                 }
                 else
@@ -99,7 +119,6 @@ public class MenuController : MonoBehaviour
                 }
             }
         });
-        
         
     }
 
@@ -116,7 +135,6 @@ public class MenuController : MonoBehaviour
     {
         playPanel.style.display = DisplayStyle.Flex;
         Buttons.style.display = DisplayStyle.None;
-       // gameObject.SetActive(false);
     }
 
     private void ExitPlayPanel()
@@ -127,7 +145,12 @@ public class MenuController : MonoBehaviour
 
     private void HostGameClicked()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(false);/*
+        NetworkManager.Singleton.StartHost();   
+
+        isReady = true;
+        DisplayPlayers.Instance.SetPlayerReadyServerRpc(NetworkManager.Singleton.LocalClientId, isReady);
+        Debug.Log("Host");*/
     }
 
     private void OnExitClicked()
@@ -144,5 +167,12 @@ public class MenuController : MonoBehaviour
     {
         settingsPanel.style.display = DisplayStyle.None;
         Buttons.style.display = DisplayStyle.Flex;
+    }
+
+    public void SetVolume(float value)
+    {
+        if (value < 1) value = .0001f;
+        PlayerPrefs.SetFloat("SavedMasterVolume", value);
+        masterMixer.SetFloat("MasterVolume", Mathf.Log10(value / 100) * 20f);
     }
 }

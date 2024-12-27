@@ -54,3 +54,32 @@
 .unity-base-field:focus .unity-label {
     color: rgb(234, 224, 213);
 }
+
+.text {
+    font-size: 50px;
+    color: rgb(198, 172, 143);
+    -unity-font-style: bold;
+}
+
+.qualityButtons {
+    background-color: rgb(34, 51, 59);
+    color: rgb(198, 172, 143);
+    font-size: 30px;
+    -unity-font-style: bold;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    text-overflow: clip;
+    height: 100%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-left-color: rgba(34, 51, 59, 0);
+    border-right-color: rgba(34, 51, 59, 0);
+    border-top-color: rgba(34, 51, 59, 0);
+    border-bottom-color: rgba(34, 51, 59, 0);
+}
