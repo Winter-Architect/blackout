@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +22,9 @@ public class MenuController : MonoBehaviour
     public Button exitPlayPanelButton;
     public TextField codeField;
     public SliderInt volumeSlider;
+    public Button LowQButton;
+    public Button MedQButton;
+    public Button HighQButton;
 
     public VisualElement settingsPanel;
     public Button exitSettingsButton;
@@ -28,6 +32,10 @@ public class MenuController : MonoBehaviour
     private string[] codesTests = new[] { "1234", "1111" }; // liste temporaire à remplacer avec une liste des codes actifs pour rejoindre les parties en cours
     
 
+    private Dictionary<string, Button> qualityButtons;
+    private const string SELECTED_CLASS = "qualityButtonsSelected";
+    private const string DEFAULT_CLASS = "qualityButtons";
+    
     public void Awake()
     {
         UIDocument = gameObject.GetComponent<UIDocument>();
@@ -71,6 +79,24 @@ public class MenuController : MonoBehaviour
         {
             SetVolume(evt.newValue);
         });
+
+        LowQButton = ui.Q<Button>("LowQuality");
+        MedQButton = ui.Q<Button>("MediumQuality");
+        HighQButton = ui.Q<Button>("HighQuality");
+
+        qualityButtons = new Dictionary<string, Button>
+        {
+            { "Low", ui.Q<Button>("LowQuality") },
+            { "Medium", ui.Q<Button>("MediumQuality") },
+            { "High", ui.Q<Button>("HighQuality") }
+        };
+        
+        foreach (var kvp in qualityButtons)
+        {
+            int qualityLevel = kvp.Key == "Low" ? 0 : kvp.Key == "Medium" ? 1 : 2;
+            kvp.Value.clicked += () => SetQuality(kvp.Key, qualityLevel);
+        }
+        
         
         
         
@@ -120,6 +146,31 @@ public class MenuController : MonoBehaviour
             }
         });
         
+    }
+
+    private void SetQuality(string selectedQuality, int qualityLevel)
+    {
+        // Appliquer les paramètres de qualité
+        QualitySettings.SetQualityLevel(qualityLevel, true);
+
+        // Mettre à jour les classes CSS
+        foreach (var kvp in qualityButtons)
+        {
+            var button = kvp.Value;
+            bool isSelected = kvp.Key == selectedQuality;
+
+            // Gérer la classe selected
+            if (isSelected)
+            {
+                button.RemoveFromClassList(DEFAULT_CLASS);
+                button.AddToClassList(SELECTED_CLASS);
+            }
+            else
+            {
+                button.RemoveFromClassList(SELECTED_CLASS);
+                button.AddToClassList(DEFAULT_CLASS);
+            }
+        }
     }
 
 
