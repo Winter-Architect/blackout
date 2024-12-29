@@ -32,7 +32,7 @@ public class PlayerSpawner : NetworkBehaviour
             Vector3 spawnPoint = new Vector3(0, 2f, 0);
             GameObject playerInstance = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
             NetworkObject networkObject = playerInstance.GetComponent<NetworkObject>();
-            networkObject.SpawnAsPlayerObject(clientId);
+            networkObject.SpawnWithOwnership(clientId);
 
             index++;
 
