@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class DisplayPlayers : NetworkBehaviour
 {
-
-
     public NetworkList<bool> PlayersReady = new NetworkList<bool>();
 
     public static DisplayPlayers Instance;
@@ -49,7 +47,6 @@ public class DisplayPlayers : NetworkBehaviour
     {
         PlayerIDs.Add(clientId);
         PlayersReady.Add(false);
-    
     }
 
     private void OnClientDisconnected(ulong clientId)
@@ -57,7 +54,6 @@ public class DisplayPlayers : NetworkBehaviour
         int index = PlayerIDs.IndexOf(clientId);
         PlayerIDs.Remove(clientId);
         PlayersReady.RemoveAt(index);
-
     }
 
     public override void OnDestroy()

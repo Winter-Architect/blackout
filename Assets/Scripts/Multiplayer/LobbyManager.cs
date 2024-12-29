@@ -4,10 +4,6 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
-    
-
-
-
     [SerializeField] private Button hostButton;
     [SerializeField] private Button joinButton;
     [SerializeField] private TMPro.TMP_InputField ipInputField;
