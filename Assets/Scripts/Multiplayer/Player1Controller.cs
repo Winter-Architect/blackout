@@ -11,6 +11,8 @@ public class Player1Controller : NetworkBehaviour
         if(!IsOwner){
             myCamera.gameObject.SetActive(false);
         }
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     void Update()
