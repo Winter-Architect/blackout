@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Unity.Netcode;
 using UnityEngine.Audio;
+using System;
 
 public class MenuController : MonoBehaviour
 {
@@ -118,23 +119,18 @@ public class MenuController : MonoBehaviour
         codeField.RegisterValueChangedCallback(evt =>
         {
             string text = evt.newValue;
-            if (text.Length == 4)
+            if (text.Length == 6)
             {
-                if (codesTests.Contains(text))
+                try
                 {
                     codeField.maxLength = 20;
                     codeField.isReadOnly = true;
                     codeField.value = "loading ...";
                     codeField.style.color = new StyleColor(new Color32(144, 190, 109, 255));
-                    
-                    var transport = NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>();
-                    transport.ConnectionData.Address = text;
-                    transport.ConnectionData.Port = 7777;
-
-                    NetworkManager.Singleton.StartClient();
+                    JoinGame(text);
                     Debug.Log("code valide");
                 }
-                else
+                catch(Exception e)
                 {
                     codeField.maxLength = 50;
                     codeField.isReadOnly = true;
@@ -142,7 +138,33 @@ public class MenuController : MonoBehaviour
                     codeField.style.color = new StyleColor(new Color32(230, 57, 70, 255));
                     Debug.Log("code invalide");
                     StartCoroutine(RevertTextAfterDelay(3f, ""));
+                    Debug.Log(e.Data);
                 }
+                // if (codesTests.Contains(text))
+                // {
+                //     codeField.maxLength = 20;
+                //     codeField.isReadOnly = true;
+                //     codeField.value = "loading ...";
+                //     codeField.style.color = new StyleColor(new Color32(144, 190, 109, 255));
+                    
+                //     // var transport = NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>();
+                //     // transport.ConnectionData.Address = text;
+                //     // transport.ConnectionData.Port = 7777;
+
+                //     // NetworkManager.Singleton.StartClient();
+                    
+                //     JoinGame(text);
+                //     Debug.Log("code valide");
+                // }
+                // else
+                // {
+                //     codeField.maxLength = 50;
+                //     codeField.isReadOnly = true;
+                //     codeField.value = "this code does not exist";
+                //     codeField.style.color = new StyleColor(new Color32(230, 57, 70, 255));
+                //     Debug.Log("code invalide");
+                //     StartCoroutine(RevertTextAfterDelay(3f, ""));
+                // }
             }
         });
         
@@ -178,7 +200,7 @@ public class MenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay); 
         codeField.value = text; 
-        codeField.maxLength = 4;
+        codeField.maxLength = 6;
         codeField.isReadOnly = false;
     }
 
@@ -194,14 +216,24 @@ public class MenuController : MonoBehaviour
         Buttons.style.display = DisplayStyle.Flex;
     }
 
+
+        public void JoinGame(string myCode)
+    {
+
+        TestRelay.Instance.JoinRelay(myCode);
+    }
+
+    public async void HostGame()
+    {
+        await TestRelay.Instance.CreateRelay();
+    }
+
     private void HostGameClicked()
     {
-        gameObject.SetActive(false);/*
-        NetworkManager.Singleton.StartHost();   
 
-        isReady = true;
-        DisplayPlayers.Instance.SetPlayerReadyServerRpc(NetworkManager.Singleton.LocalClientId, isReady);
-        Debug.Log("Host");*/
+        HostGame();
+        gameObject.SetActive(false);
+
     }
 
     private void OnExitClicked()
