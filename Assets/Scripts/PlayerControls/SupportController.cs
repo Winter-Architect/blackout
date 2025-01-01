@@ -75,7 +75,6 @@ public class SupportController : NetworkBehaviour
         if(!IsOwner){
             return;
         }
-        Debug.Log(GameObject.FindGameObjectWithTag("Controllables"));
         ControlCurrentObject();
     }
 

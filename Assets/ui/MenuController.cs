@@ -10,10 +10,13 @@ using System;
 public class MenuController : MonoBehaviour
 {
     [SerializeField] private AudioMixer masterMixer;
+    [SerializeField] private UIDocument LobbyUI;
     
     public UIDocument UIDocument;
     
     public VisualElement ui;
+
+
     public VisualElement Buttons;
     public VisualElement playPanel;
     public Button playButton;
@@ -219,8 +222,9 @@ public class MenuController : MonoBehaviour
 
         public void JoinGame(string myCode)
     {
-
+        LobbyUI.rootVisualElement.visible = true;
         TestRelay.Instance.JoinRelay(myCode);
+        gameObject.SetActive(false);
     }
 
     public async void HostGame()
@@ -232,7 +236,9 @@ public class MenuController : MonoBehaviour
     {
 
         HostGame();
+        LobbyUI.rootVisualElement.visible = true;
         gameObject.SetActive(false);
+        
 
     }
 
