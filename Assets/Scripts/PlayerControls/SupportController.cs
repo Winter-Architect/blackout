@@ -61,7 +61,6 @@ public class SupportController : NetworkBehaviour
     {
         //Figure out how to avoid using this
         yield return new WaitForSeconds(0.5f);
-        Debug.Log(GameObject.FindGameObjectWithTag("Controllables"));
             currentlyControlled = GameObject.FindGameObjectWithTag("Controllables");
 
             currentlyControlled.GetComponentInChildren<ControllableObject>().childCamera.gameObject.SetActive(true);
@@ -76,7 +75,6 @@ public class SupportController : NetworkBehaviour
         if(!IsOwner){
             return;
         }
-        Debug.Log(GameObject.FindGameObjectWithTag("Controllables"));
         ControlCurrentObject();
     }
 
