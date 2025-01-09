@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Agent : NetworkBehaviour
 {
@@ -11,12 +12,15 @@ public class Agent : NetworkBehaviour
     [SerializeField] private Transform playerBody;
     [SerializeField] private float xMouseSensitivity = 2f;
     [SerializeField] private float yMouseSensitivity = 2f;
+    
+    [SerializeField] private Animator animator;
     private Rigidbody playerRigidbody;
     private float xInput;
     private float yInput;
     private float xMouseInput;
     private float yMouseInput;
 
+    private bool isMoving;
 
     private float xRotation = 0f;
     private float yRotation = 0f;
@@ -75,7 +79,15 @@ public class Agent : NetworkBehaviour
         Vector3 myVelocity = new Vector3(myMovement.x, playerRigidbody.linearVelocity.y, myMovement.z);
         playerBody.LookAt(transform.position + myMovement);
         playerRigidbody.linearVelocity = myVelocity;
+        
+        isMoving = xInput != 0 || yInput != 0;
+        Animate();
 
+    }
+
+    void Animate()
+    {
+        animator.SetBool("isMoving", isMoving);
     }
 
 
