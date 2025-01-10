@@ -1,8 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/ui/KeyPad.uss?fileID=7433441132597879392&amp;guid=089f9905397ba9345bda4b8a51775731&amp;type=3#KeyPad" />
-    <engine:VisualElement name="Container" style="flex-grow: 1; flex-basis: auto; background-color: rgb(43, 50, 58); position: relative; top: 0;">
+    <engine:VisualElement name="Container" style="flex-grow: 1; flex-basis: auto; background-color: rgb(43, 50, 58); position: relative; top: 0; align-items: stretch; align-self: center; align-content: center; height: 50%; max-height: 50%; justify-content: flex-start; margin-top: 10%; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
         <engine:VisualElement name="Input" style="flex-grow: 0; flex-basis: 20%; background-color: rgb(0, 0, 0); margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
-            <engine:Label text="1234" name="CodeInput" style="flex-grow: 1; color: rgba(255, 255, 255, 0.75); font-size: 50px; -unity-text-align: middle-center;" />
+            <engine:Label name="CodeInput" style="flex-grow: 1; color: rgba(255, 255, 255, 0.75); font-size: 50px; -unity-text-align: middle-center;" />
         </engine:VisualElement>
         <engine:VisualElement name="Numbers" style="flex-grow: 1; flex-wrap: wrap; align-items: stretch; align-content: stretch; flex-direction: row; justify-content: space-around; align-self: auto;">
             <engine:Button text="1" name="1" class="number" />
@@ -14,9 +14,10 @@
             <engine:Button text="7" name="7" class="number" />
             <engine:Button text="8" name="8" class="number" />
             <engine:Button text="9" name="9" class="number" />
-            <engine:Button text="X" name="delete" class="number" />
+            <engine:Button text="X" name="delete" class="number" style="background-color: rgb(207, 67, 67);" />
             <engine:Button text="0" name="0" class="number" />
-            <engine:Button text="V&#10;" name="validate" class="number" />
+            <engine:Button text="V&#10;" name="validate" class="number" style="background-color: rgb(102, 186, 100);" />
         </engine:VisualElement>
+        <engine:Label text="Press &lt;esc&gt; to close!&#10;" name="indication" style="color: rgb(255, 255, 255); -unity-text-align: upper-center;" />
     </engine:VisualElement>
 </engine:UXML>
