@@ -1,10 +1,11 @@
 using System.Buffers.Text;
+using System.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Agent : NetworkBehaviour
+public class Agent : NetworkBehaviour, IInteractor
 {
     [SerializeField] private float speed;
 
@@ -47,7 +48,15 @@ public class Agent : NetworkBehaviour
         }       
         playerRigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        StartCoroutine("DelayedStart");
+        
     
+    }
+
+    IEnumerator DelayedStart()
+    {
+        yield return new WaitForSeconds(0.5f);
+        TutorialManager.Instance.StartTutorial("player1");
     }
 
     void Update()
@@ -64,6 +73,15 @@ public class Agent : NetworkBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)){
             Jump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.E)){
+            RaycastHit hit;
+
+            if(Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, 3f) && hit.collider.gameObject.TryGetComponent<IInteractable>(out var myInteractable))
+            {
+                InteractWith(myInteractable);
+            }
         }
         CheckAirborne();
 
@@ -94,7 +112,7 @@ public class Agent : NetworkBehaviour
     void CheckAirborne()
     {
         RaycastHit hit;
-        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.07f)){
+        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.07f * transform.localScale.y)){
             isAirborne = false;
         }
         else{
@@ -164,6 +182,15 @@ public class Agent : NetworkBehaviour
         
     }
 
+    public bool canInteract(IInteractable interactable)
+    {
+        return true;
+    }
 
-
+    public void InteractWith(IInteractable interactable)
+    {
+        if(canInteract(interactable)){
+            interactable.acceptInteraction(this);
+        }
+    }
 }

@@ -52,6 +52,8 @@ public class SupportController : NetworkBehaviour
             return;
         }
         Cursor.lockState = CursorLockMode.Locked;
+        
+
 
         StartCoroutine(DelayedStart());
 
@@ -61,6 +63,7 @@ public class SupportController : NetworkBehaviour
     {
         //Figure out how to avoid using this
         yield return new WaitForSeconds(0.5f);
+            TutorialManager.Instance.StartTutorial("player2");
             currentlyControlled = GameObject.FindGameObjectWithTag("Controllables");
 
             currentlyControlled.GetComponentInChildren<ControllableObject>().childCamera.gameObject.SetActive(true);
