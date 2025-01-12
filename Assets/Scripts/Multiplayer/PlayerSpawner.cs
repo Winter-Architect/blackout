@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class PlayerSpawner : NetworkBehaviour
         
     }
 
-    void SpawnPlayers()
+    async void SpawnPlayers()
     {
         var clients = NetworkManager.Singleton.ConnectedClientsIds;
         int index = 0;
@@ -35,6 +36,8 @@ public class PlayerSpawner : NetworkBehaviour
             networkObject.SpawnWithOwnership(clientId);
 
             index++;
+
+            await Task.Yield();
 
         }
     }
