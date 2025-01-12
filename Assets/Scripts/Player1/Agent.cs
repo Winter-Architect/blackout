@@ -85,9 +85,6 @@ public class Agent : NetworkBehaviour, IInteractor
         }
         CheckAirborne();
 
-
-
-
     }
 
     void FixedUpdate()
@@ -156,12 +153,6 @@ public class Agent : NetworkBehaviour, IInteractor
         playerBody.LookAt(transform.position + myMovement);
         playerRigidbody.linearVelocity = myVelocity;
         
-        
-
-
-
-        
-
     }
 
     void Animate()
@@ -177,7 +168,6 @@ public class Agent : NetworkBehaviour, IInteractor
             playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetTrigger("Jump");
             isAirborne = true;
-
         }
         
     }
