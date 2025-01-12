@@ -1,3 +1,4 @@
+using System.Buffers.Text;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,6 +7,16 @@ using UnityEngine.InputSystem;
 public class Agent : NetworkBehaviour
 {
     [SerializeField] private float speed;
+
+    [SerializeField] private float jumpForce = 20f;
+
+    [SerializeField] private float currentSpeed = 0.5f;
+    [SerializeField] private Transform groundCheck;
+
+    private const float BASE_SPEED = 1f;
+    private const float ACCELERATION = 2f;
+
+    [SerializeField] private bool isAirborne = true;
     [SerializeField] private Transform playerCameraPivotTransform;
     [SerializeField] private Transform playerCamera;
 
@@ -20,6 +31,8 @@ public class Agent : NetworkBehaviour
     private float xMouseInput;
     private float yMouseInput;
 
+    private bool shiftPressed;
+
     private bool isMoving;
 
     private float xRotation = 0f;
@@ -29,6 +42,7 @@ public class Agent : NetworkBehaviour
     {
         if(!IsOwner)
         {
+            playerCamera.gameObject.SetActive(false);
             return;
         }       
         playerRigidbody = GetComponent<Rigidbody>();
@@ -42,10 +56,20 @@ public class Agent : NetworkBehaviour
             return;
         }
         //Get Input
+        shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
         xMouseInput = Input.GetAxis("Mouse X");
         yMouseInput = -Input.GetAxis("Mouse Y");
+
+        if(Input.GetKeyDown(KeyCode.Space)){
+            Jump();
+        }
+        CheckAirborne();
+
+
+
+
     }
 
     void FixedUpdate()
@@ -53,8 +77,29 @@ public class Agent : NetworkBehaviour
         if(!IsOwner){
             return;
         }
+        isMoving = xInput != 0 || yInput != 0;
+        Animate();
         ControlCamera();
-        Move();
+        if(xInput != 0 || yInput != 0)
+        {
+            Move();
+        }
+        else
+        {
+            currentSpeed = 0.5f;
+        }
+        
+    }
+
+    void CheckAirborne()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.07f)){
+            isAirborne = false;
+        }
+        else{
+            isAirborne = true;
+        }
     }
 
     void ControlCamera()
@@ -68,26 +113,55 @@ public class Agent : NetworkBehaviour
         Quaternion verticalRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
         playerCameraPivotTransform.localRotation = verticalRotation;
+
+    
     }
+
 
     void Move()
     {
         Vector3 myForward = new Vector3(playerCamera.forward.x, 0, playerCamera.forward.z).normalized;
         Vector3 myRight  = new Vector3(playerCamera.right.x, 0, playerCamera.right.z).normalized;
 
-        Vector3 myMovement = (myForward * yInput + myRight * xInput).normalized * speed;
+        if(shiftPressed){
+            speed = BASE_SPEED * 1.5f;
+        }
+        else{
+            speed = BASE_SPEED;
+        }
+
+        currentSpeed = Mathf.MoveTowards(currentSpeed, speed, ACCELERATION * Time.deltaTime);
+       
+
+        Vector3 myMovement = (myForward * yInput + myRight * xInput).normalized * currentSpeed;
         Vector3 myVelocity = new Vector3(myMovement.x, playerRigidbody.linearVelocity.y, myMovement.z);
         playerBody.LookAt(transform.position + myMovement);
         playerRigidbody.linearVelocity = myVelocity;
         
-        isMoving = xInput != 0 || yInput != 0;
-        Animate();
+        
+
+
+
+        
 
     }
 
     void Animate()
     {
         animator.SetBool("isMoving", isMoving);
+        animator.SetBool("isRunning", shiftPressed);
+    }
+
+    void Jump()
+    {
+        if(!isAirborne)
+        {
+            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetTrigger("Jump");
+            isAirborne = true;
+
+        }
+        
     }
 
 

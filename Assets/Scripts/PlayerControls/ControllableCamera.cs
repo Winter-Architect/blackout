@@ -1,7 +1,5 @@
 using System;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Embree;
 using UnityEngine;
 
 public class ControllableCamera : NetworkBehaviour

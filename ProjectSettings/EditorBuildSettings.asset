@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 09804d70621ff3848a404350eb0f7418
+  - enabled: 1
     path: Assets/Scenes/Tests/Test-MultiplayerScene.unity
     guid: 2f5801b3dfe59aa46a8600de5bac066b
   - enabled: 1
@@ -15,13 +18,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Multiplayer/GameScene.unity
     guid: fb0b51be54de3444491a7728ed4dc451
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 09804d70621ff3848a404350eb0f7418
-  - enabled: 1
     path: Assets/Scenes/Tests/ReferenceTest.unity
     guid: 37074ca82b9e4ed479aec42ac0527591
   - enabled: 1
     path: Assets/Scenes/Tests/AninmationTest.unity
     guid: 4605c31dccc295a40a1533680f4a4159
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer/DemoScene.unity
+    guid: 48871f3069735054193029e90cf24b58
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
