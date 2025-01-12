@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.Services.Authentication;
-using Unity.Services.Multiplay.Authoring.Core.MultiplayApi;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -105,7 +102,7 @@ public class LobbyController : NetworkBehaviour
 
         if(CanStart())
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("GameScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("DemoScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
         else
         {
