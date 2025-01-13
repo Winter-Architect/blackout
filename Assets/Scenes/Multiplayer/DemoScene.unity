@@ -1246,7 +1246,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: SlerpPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: TickSyncChildren
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseUnreliableDeltas
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseHalfFloatPrecision
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829634381945737671, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
@@ -1256,6 +1268,10 @@ PrefabInstance:
     - target: {fileID: 7078815346239715473, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: m_Name
       value: ControllableCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 7078815346239715473, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: m_TagString
+      value: FIRSTCAM
       objectReference: {fileID: 0}
     - target: {fileID: 8670918813529005088, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: Ownership
@@ -1576,12 +1592,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: SlerpPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: TickSyncChildren
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: UseUnreliableDeltas
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseHalfFloatPrecision
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829634381945737671, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: m_IsActive
@@ -1976,7 +2000,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: SlerpPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: TickSyncChildren
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseUnreliableDeltas
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseHalfFloatPrecision
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829634381945737671, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
@@ -2968,6 +3004,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   firstPlayerPrefab: {fileID: 1405543384454761265, guid: a8e2f294ab030b54fb74e1299aa138eb, type: 3}
   secondPlayerPrefab: {fileID: 2422225695896783020, guid: cfd5c7480befc25409b68d4f7502f217, type: 3}
+  thirdPlayerPrefab: {fileID: 647888552743767821, guid: bd3f4d8c9b15c4c40865c54914572e57, type: 3}
 --- !u!4 &1141712835
 Transform:
   m_ObjectHideFlags: 0
@@ -4754,7 +4791,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: SlerpPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: TickSyncChildren
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseUnreliableDeltas
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536258188596925529, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
+      propertyPath: UseHalfFloatPrecision
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829634381945737671, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
@@ -5388,6 +5437,7 @@ SceneRoots:
   - {fileID: 666003476}
   - {fileID: 1376063096}
   - {fileID: 1781199576}
+  - {fileID: 910216929}
   - {fileID: 556567917}
   - {fileID: 859404077}
   - {fileID: 1913938986}
@@ -5398,7 +5448,6 @@ SceneRoots:
   - {fileID: 579321343999335774}
   - {fileID: 1398286852}
   - {fileID: 1990325178}
-  - {fileID: 910216929}
   - {fileID: 84599653}
   - {fileID: 1588115154}
   - {fileID: 450795639}

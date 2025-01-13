@@ -7,6 +7,8 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private GameObject firstPlayerPrefab;
     [SerializeField] private GameObject secondPlayerPrefab;
 
+    [SerializeField] private GameObject thirdPlayerPrefab;
+
     public override void OnNetworkSpawn()
     {
         if(IsServer)
@@ -27,8 +29,11 @@ public class PlayerSpawner : NetworkBehaviour
             if(index == 0){
                 playerPrefab = firstPlayerPrefab;
             }
-            else{
+            else if (index == 1){
                 playerPrefab = secondPlayerPrefab;
+            }
+            else{
+                playerPrefab = thirdPlayerPrefab;
             }
             Vector3 spawnPoint = new Vector3(0, 2f, 0);
             GameObject playerInstance = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
