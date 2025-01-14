@@ -3,6 +3,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEditor.Embree;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ControllableCamera : NetworkBehaviour
 {
@@ -36,7 +37,7 @@ public class ControllableCamera : NetworkBehaviour
         MoveCamera();
         Look();
         GetControlledObjectOutline();
-
+        
     }
 
     private void MoveCamera()

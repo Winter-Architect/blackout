@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player2Controller : NetworkBehaviour
 {
@@ -9,6 +10,8 @@ public class Player2Controller : NetworkBehaviour
         if(!IsOwner){
             myCamera.gameObject.SetActive(false);
         }
+
+        
     }
 
     void Update()
