@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;
@@ -9,6 +10,8 @@ using UnityEngine;
 
 public class TestRelay : MonoBehaviour
 {
+
+    [SerializeField] private TextMeshProUGUI codeText;
 
     public static TestRelay Instance;
 
@@ -39,6 +42,7 @@ public class TestRelay : MonoBehaviour
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
+            codeText.text = joinCode;
             Debug.Log(joinCode);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(

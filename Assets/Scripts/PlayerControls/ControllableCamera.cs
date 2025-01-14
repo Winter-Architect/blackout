@@ -1,7 +1,5 @@
 using System;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Embree;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,7 +16,7 @@ public class ControllableCamera : NetworkBehaviour
 
     public GameObject toControl {get; set;}
     [SerializeField] private Transform pivotPoint;
-    [SerializeField] private Transform myCameraTransform;
+    [SerializeField] public Transform myCameraTransform;
 
     private Outline AddOutlineToObjectOrGetOutline(GameObject objectToOutline)
     {
