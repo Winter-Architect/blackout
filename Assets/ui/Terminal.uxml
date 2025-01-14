@@ -1,0 +1,21 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ui/Terminal.uss?fileID=7433441132597879392&amp;guid=97a7d7150b116c749860dbfac2879c54&amp;type=3#Terminal" />
+    <engine:VisualElement name="Container" style="display: flex; flex-grow: 1; background-color: rgba(10, 9, 8, 0.96); align-self: auto; align-content: flex-start; align-items: center; justify-content: center;">
+        <engine:VisualElement style="background-color: rgb(198, 172, 143); height: 80%; width: 80%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <engine:VisualElement name="TextZoneContainer" style="background-color: rgb(10, 9, 8); height: 40%; width: 90%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <engine:Label text="Label" />
+                <engine:TextField label="Text Field" placeholder-text="filler text" />
+            </engine:VisualElement>
+            <engine:VisualElement name="ButtonsZoneContainer" style="background-color: rgb(34, 51, 59); height: 40%; width: 90%; display: flex; flex-direction: row; align-items: center; justify-content: space-around; margin-top: 10px;">
+                <engine:Button text="Button" class="button" />
+                <engine:Button text="Button" class="button" />
+                <engine:VisualElement name="Arrows" class="arrowBtnContainer" style="position: relative; height: 93px; width: 96px;">
+                    <engine:Button name="ButtonUp" class="arrowBtn" style="translate: 0 -75px;" />
+                    <engine:Button name="ButtonRight" class="arrowBtn" style="rotate: 90deg; translate: 75px 0;" />
+                    <engine:Button name="ButtonLeft" class="arrowBtn" style="rotate: -90deg; translate: -75px 0;" />
+                    <engine:Button name="ButtonDown" class="arrowBtn" style="rotate: 180deg; translate: 0 75px;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

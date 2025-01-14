@@ -1,0 +1,22 @@
+.button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    color: white;
+}
+
+.arrowBtn {
+    background-image: url("project://database/Assets/Sprites/icons/Arrow%20Up%20Outline%20256.png?fileID=2800000&guid=6b99b74aaaa91ab4a8193cf1d25534f1&type=3#Arrow Up Outline 256");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(188, 188, 188, 0);
+    width: 100px;
+    height: 100px;
+    border-width: 0;
+    position: absolute;
+}
+
+.arrowBtn:focus {
+    scale: 0.9 0.9;
+    transition-duration: 0.2s;
+}
