@@ -8,6 +8,7 @@ public class SupportController : NetworkBehaviour
 {
     [SerializeField] private GameObject currentlyControlled;
     [SerializeField] private UIDocument uiDocument;
+    public GameObject CURRENTCAMERA
     private bool IsControllableCamera(ControllableObject myObject)
     {
         return myObject.Id == "Camera";
@@ -45,6 +46,10 @@ public class SupportController : NetworkBehaviour
         }
         currentlyControlled = objectToControl;
 
+        GiveCurrentCameraToSpectatorServerRpc(currentlyControlled.GetComponent<NetworkObject>(), 2);
+        
+        
+
 
     }
 
@@ -68,13 +73,18 @@ public class SupportController : NetworkBehaviour
     {
         //Figure out how to avoid using this
         yield return new WaitForSeconds(0.5f);
-            currentlyControlled = GameObject.FindGameObjectWithTag("Controllables");
+            TutorialManager.Instance.StartTutorial("player2");
+            currentlyControlled = GameObject.FindGameObjectWithTag("FIRSTCAM");
+
+            
 
             currentlyControlled.GetComponentInChildren<ControllableObject>().childCamera.gameObject.SetActive(true);
             var outline = AddOutlineToObjectOrGetOutline(currentlyControlled);
             outline.OutlineMode = Outline.Mode.OutlineAll;
             outline.OutlineColor = Color.yellow;
             outline.OutlineWidth = 5f;
+
+            GiveCurrentCameraToSpectatorServerRpc(currentlyControlled.GetComponent<NetworkObject>(), 2);
     }
 
     void Update()
@@ -83,6 +93,7 @@ public class SupportController : NetworkBehaviour
             return;
         }
         ControlCurrentObject();
+        
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -98,6 +109,37 @@ public class SupportController : NetworkBehaviour
 
     }
 
+    [ServerRpc (RequireOwnership = false)]
+
+    void GiveCurrentCameraToSpectatorServerRpc(NetworkObjectReference myCamera, ulong spectatorClientId)
+    {
+
+        Debug.Log("SERVERRPCSSSSSS");
+
+        GetCurrentCameraToSpectatorClientRpc(myCamera, new ClientRpcParams
+    {
+        Send = new ClientRpcSendParams
+        {
+            TargetClientIds = new[] { spectatorClientId }
+        }
+    });
+        
+    }
+
+    [ClientRpc]
+    void GetCurrentCameraToSpectatorClientRpc(NetworkObjectReference myCamera, ClientRpcParams clientRpcParams = default){
+        Debug.Log("CLIENTRPC");
+        Debug.Log(OwnerClientId);
+        Debug.Log(OwnerClientId);
+        myCamera.TryGet(out NetworkObject networkObject);
+        if(Spectator.Instance is not null){
+            Spectator.Instance.SwitchCurrentCamera(networkObject.gameObject.transform.GetChild(1).gameObject.GetComponentInChildren<Camera>(true));
+            
+        }
+        
+        
+    }
+
 
     private void ControlCurrentObject()
     {
@@ -109,10 +151,12 @@ public class SupportController : NetworkBehaviour
             case "Camera" :
                 ControllableCamera controllableCamera = currentlyControlled.GetComponent<ControllableCamera>();
                 controllableCamera.Control();
+                CURRENTCAMERA = controllableCamera.myCameraTransform.gameObject;
                 if(controllableCamera.toControl)
                 {
                     SwitchCurrentlyControlled(controllableCamera.toControl);
                     controllableCamera.toControl = null;
+                    
 
                 }
                 break;
