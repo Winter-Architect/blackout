@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Camera : MonoBehaviour
+public class CameraHUD : MonoBehaviour
 {
     private UIDocument uIDocument;
     private VisualElement ui;

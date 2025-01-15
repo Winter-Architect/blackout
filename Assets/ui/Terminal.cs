@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,7 +9,7 @@ public class Terminal : MonoBehaviour
     private UIDocument uIDocument;
     private VisualElement ui;
     private VisualElement BoutonsContainer;
-    private VisualElement TextContainer;
+    private ScrollView TextContainer;
 
     private Button ButtonUp;
     private Button ButtonDown;
@@ -58,7 +59,18 @@ public class Terminal : MonoBehaviour
     }
 
     void ButtonArrowClicked(Button button) {
-        Debug.Log(button.name);
+        var scrollPos = TextContainer.scrollOffset;
+        switch (button.name) {
+            case "ButtonUp":
+                if (scrollPos.y > 50) scrollPos.y -= 50;
+                else scrollPos.y = 0;
+                break;
+            case "ButtonDown":
+                if (scrollPos.y < TextContainer.contentRect.height + 50) scrollPos.y += 50;
+                else scrollPos.y = TextContainer.contentRect.height;
+                break;
+        } 
+        TextContainer.scrollOffset = scrollPos;
     }
 
     void ClearTerminal() {
