@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class StateMachine
 {
-        private StateNode current;
+        StateNode current;
         Dictionary<Type, StateNode> nodes = new();
         HashSet<ITransition> anyTransitions = new();
         
@@ -16,7 +17,7 @@ public class StateMachine
         }
         
         public void FixedUpdate() {
-            current.State?.FixedUpdate();
+                current.State?.FixedUpdate();
         }
 
         public void SetState(IState state) {
