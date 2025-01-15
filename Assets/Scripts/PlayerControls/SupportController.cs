@@ -8,7 +8,7 @@ public class SupportController : NetworkBehaviour
 {
     [SerializeField] private GameObject currentlyControlled;
     [SerializeField] private UIDocument uiDocument;
-    public GameObject CURRENTCAMERA
+    public GameObject CURRENTCAMERA;
     private bool IsControllableCamera(ControllableObject myObject)
     {
         return myObject.Id == "Camera";

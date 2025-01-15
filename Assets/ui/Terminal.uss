@@ -1,7 +1,23 @@
 .button {
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    color: white;
+    background-color: rgb(0, 0, 0);
+    padding: 15px;
+    margin: 15px;
+    -unity-font-style: bold;
+    border-width: 0;
+    color: rgb(189, 189, 189);
+    font-size: 20px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-left-color: rgb(97, 97, 97);
+    border-right-color: rgb(97, 97, 97);
+    border-top-color: rgb(97, 97, 97);
+    border-bottom-color: rgb(97, 97, 97);
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
 }
 
 .arrowBtn {
@@ -9,14 +25,26 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: rgba(188, 188, 188, 0);
-    width: 100px;
-    height: 100px;
+    background-color: rgba(156, 109, 109, 0);
+    width: 75px;
+    height: 75px;
     border-width: 0;
     position: absolute;
+    -unity-background-image-tint-color: rgb(189, 189, 189);
 }
 
 .arrowBtn:focus {
     scale: 0.9 0.9;
     transition-duration: 0.2s;
+}
+
+.unity-scroller--vertical {
+    width: 60px;
+    border-left-width: 2px;
+}
+
+.button:focus {
+    border-top-width: 3px;
+    border-right-width: 3px;
+    transition-duration: 0.15s;
 }
