@@ -12,7 +12,6 @@ public class AIMovement : NetworkBehaviour
     private NavMeshAgent _entity;
 
     [SerializeField] private Transform[] _nodes;
-
     private Transform _currentNode; 
     private int _currentNodeIndex;
     
