@@ -17,6 +17,7 @@ public class Terminal : MonoBehaviour
     private Button ButtonRight;
     private Button ClearTerminalButton;
     private Button ExitTerminalButton;
+    private Button OpenMapButton;
 
 
     void Awake()
@@ -46,6 +47,7 @@ public class Terminal : MonoBehaviour
 
         ClearTerminalButton = BoutonsContainer.Q<Button>("ClearTerminal");      
         ExitTerminalButton = BoutonsContainer.Q<Button>("ExitTerminal");  
+        OpenMapButton = BoutonsContainer.Q<Button>("OpenMap");
 
         ButtonUp.clicked += () => ButtonArrowClicked(ButtonUp);
         ButtonDown.clicked += () => ButtonArrowClicked(ButtonDown);
@@ -54,6 +56,8 @@ public class Terminal : MonoBehaviour
         
         ClearTerminalButton.clicked += ClearTerminal;
         ExitTerminalButton.clicked += ExitTerminal;
+        OpenMapButton.clicked += () => AddMessageToTerminal("BITE");
+
 
         //uIDocument.enabled = false;
     }
@@ -63,11 +67,11 @@ public class Terminal : MonoBehaviour
         switch (button.name) {
             case "ButtonUp":
                 if (scrollPos.y > 50) scrollPos.y -= 50;
-                else scrollPos.y = 0;
+                //else scrollPos.y = 0;
                 break;
             case "ButtonDown":
                 if (scrollPos.y < TextContainer.contentRect.height + 50) scrollPos.y += 50;
-                else scrollPos.y = TextContainer.contentRect.height;
+                //else scrollPos.y = TextContainer.contentRect.height;
                 break;
         } 
         TextContainer.scrollOffset = scrollPos;
@@ -79,5 +83,15 @@ public class Terminal : MonoBehaviour
 
     void ExitTerminal() {
         uIDocument.gameObject.SetActive(false);
+    }
+
+    public void AddMessageToTerminal(string message) {
+        var scrollPos = TextContainer.scrollOffset;
+        var textElement = new TextElement();
+        textElement.text = message;
+        textElement.AddToClassList("text");
+        TextContainer.Add(textElement);
+        scrollPos.y += 50;
+        TextContainer.scrollOffset = scrollPos;
     }
 }
