@@ -18,7 +18,6 @@ public class Terminal : MonoBehaviour
     private TextField commandInput;
     private Button ExecuteCommandButton;
 
-    private bool canWrite = false;
     private bool isFirstStart = true;
     private bool isMapOpen = false;
     // Nouvelle liste pour sauvegarder les messages
@@ -68,7 +67,6 @@ public class Terminal : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return)) ExecuteCommand();
-        commandInput.isReadOnly = !canWrite;
     }
 
     void ExecuteCommand() {
@@ -160,7 +158,6 @@ public class Terminal : MonoBehaviour
             AddMessageToTerminal("Loading packages...");
             yield return new WaitForSeconds(2);
             AddMessageToTerminal("Loaded successfully!");
-            canWrite = true;
         }
     }
 }

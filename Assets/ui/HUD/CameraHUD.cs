@@ -6,6 +6,7 @@ public class CameraHUD : MonoBehaviour
     private UIDocument uIDocument;
     private VisualElement ui;
     private Button OpenTerminalButton;
+    private bool isTermOpen = false;
 
     [SerializeField] private GameObject terminal;
 
@@ -21,10 +22,14 @@ public class CameraHUD : MonoBehaviour
         OpenTerminalButton.clicked += OpenTerminal;
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T)) OpenTerminal();
+    }
+
     void OpenTerminal()
     {
-        Debug.Log("Open Terminal");
-        terminal.gameObject.SetActive(true);
-        // terminal.rootVisualElement.Focus();
+        terminal.gameObject.SetActive(!isTermOpen);
+        isTermOpen = !isTermOpen;
     }
 }

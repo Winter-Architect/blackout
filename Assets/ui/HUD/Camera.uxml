@@ -2,6 +2,9 @@
     <Style src="project://database/Assets/ui/HUD/camera.uss?fileID=7433441132597879392&amp;guid=d76717b54a1b15e49a6312b0370637a5&amp;type=3#camera" />
     <Style src="project://database/Assets/ui/Terminal.uss?fileID=7433441132597879392&amp;guid=97a7d7150b116c749860dbfac2879c54&amp;type=3#Terminal" />
     <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/ui/HUD/HUD_camera.png?fileID=2800000&amp;guid=fbbe7498788c71d42a981075eea1c586&amp;type=3#HUD_camera&quot;); justify-content: flex-end; align-items: center;">
-        <ui:Button text="Open terminal" name="OpenTerminal" style="width: auto; bottom: 5%; font-size: 25px" class="button" />
+        <ui:Button text="&#10;" name="OpenTerminal" class="button" style="width: auto; bottom: 5%; font-size: 25px; flex-direction: row; align-self: center; align-items: center; align-content: center;">
+            <ui:Label text="T" emoji-fallback-support="false" name="buttontopress" class="button" style="background-color: rgb(49, 49, 49); margin-top: 0; margin-right: 5px; margin-bottom: 0; margin-left: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+            <ui:Label text="Open terminal&#10;" />
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>
