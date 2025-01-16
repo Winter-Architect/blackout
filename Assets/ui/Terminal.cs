@@ -1,6 +1,3 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,15 +6,13 @@ public class Terminal : MonoBehaviour
     private UIDocument uIDocument;
     private VisualElement ui;
     private VisualElement BoutonsContainer;
-    private ScrollView TextContainer;
-
-    private Button ButtonUp;
-    private Button ButtonDown;
-    private Button ButtonLeft;
-    private Button ButtonRight;
+    private VisualElement TextContainer;   
+    private ScrollView ScrollContainer;
     private Button ClearTerminalButton;
     private Button ExitTerminalButton;
     private Button OpenMapButton;
+    private TextField commandInput;
+    private Button ExecuteCommandButton;
 
 
     void Awake()
@@ -36,49 +31,31 @@ public class Terminal : MonoBehaviour
     void OnEnable()
     {
         ui = uIDocument.rootVisualElement;
-        Debug.Log(ui);
+        
         BoutonsContainer = ui.Q<VisualElement>("ButtonsZoneContainer");
-        TextContainer = ui.Q<VisualElement>("TextZoneContainer").Q<ScrollView>();
+        TextContainer = ui.Q<VisualElement>("TextZoneContainer");
+        ScrollContainer = TextContainer.Q<ScrollView>();
 
-        ButtonUp = BoutonsContainer.Q<Button>("ButtonUp");
-        ButtonDown = BoutonsContainer.Q<Button>("ButtonDown");
-        ButtonLeft = BoutonsContainer.Q<Button>("ButtonLeft");
-        ButtonRight = BoutonsContainer.Q<Button>("ButtonRight");
+        commandInput = TextContainer.Q<TextField>("ExecuteCommand");
+        ExecuteCommandButton = commandInput.Q<Button>("ExcuteCommand");
 
         ClearTerminalButton = BoutonsContainer.Q<Button>("ClearTerminal");      
         ExitTerminalButton = BoutonsContainer.Q<Button>("ExitTerminal");  
         OpenMapButton = BoutonsContainer.Q<Button>("OpenMap");
 
-        ButtonUp.clicked += () => ButtonArrowClicked(ButtonUp);
-        ButtonDown.clicked += () => ButtonArrowClicked(ButtonDown);
-        ButtonLeft.clicked += () => ButtonArrowClicked(ButtonLeft);
-        ButtonRight.clicked += () => ButtonArrowClicked(ButtonRight);
-        
         ClearTerminalButton.clicked += ClearTerminal;
         ExitTerminalButton.clicked += ExitTerminal;
         OpenMapButton.clicked += () => AddMessageToTerminal("BITE");
-
-
-        //uIDocument.enabled = false;
+        ExecuteCommandButton.clicked += ExecuteCommand;
     }
 
-    void ButtonArrowClicked(Button button) {
-        var scrollPos = TextContainer.scrollOffset;
-        switch (button.name) {
-            case "ButtonUp":
-                if (scrollPos.y > 50) scrollPos.y -= 50;
-                //else scrollPos.y = 0;
-                break;
-            case "ButtonDown":
-                if (scrollPos.y < TextContainer.contentRect.height + 50) scrollPos.y += 50;
-                //else scrollPos.y = TextContainer.contentRect.height;
-                break;
-        } 
-        TextContainer.scrollOffset = scrollPos;
+    void ExecuteCommand() {
+        AddMessageToTerminal(commandInput.text);
+        commandInput.value = "";
     }
 
     void ClearTerminal() {
-        TextContainer.Clear();
+        ScrollContainer.Clear();
     }
 
     void ExitTerminal() {
@@ -86,12 +63,12 @@ public class Terminal : MonoBehaviour
     }
 
     public void AddMessageToTerminal(string message) {
-        var scrollPos = TextContainer.scrollOffset;
-        var textElement = new TextElement();
+        var scrollPos = ScrollContainer.scrollOffset;
+        var textElement = new Label();
         textElement.text = message;
         textElement.AddToClassList("text");
-        TextContainer.Add(textElement);
-        scrollPos.y += 50;
-        TextContainer.scrollOffset = scrollPos;
+        ScrollContainer.Add(textElement);
+        scrollPos.y += 250;
+        ScrollContainer.scrollOffset = scrollPos;
     }
 }
