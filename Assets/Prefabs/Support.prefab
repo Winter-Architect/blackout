@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1842997589864964454}
   - component: {fileID: 6003638262966485727}
   - component: {fileID: 917829054366244361}
+  - component: {fileID: 1117630618152150764}
   m_Layer: 0
   m_Name: Support
   m_TagString: Untagged
@@ -72,3 +73,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   currentlyControlled: {fileID: 0}
+  uiDocument: {fileID: 1117630618152150764}
+--- !u!114 &1117630618152150764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2422225695896783020}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7fae2a8be9c5c6b40a7f6bd8b9b0b3fb, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080

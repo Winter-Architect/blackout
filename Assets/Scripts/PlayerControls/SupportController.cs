@@ -1,10 +1,13 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class SupportController : NetworkBehaviour
 {
     [SerializeField] private GameObject currentlyControlled;
+    [SerializeField] private UIDocument uiDocument;
     public GameObject CURRENTCAMERA;
     private bool IsControllableCamera(ControllableObject myObject)
     {
@@ -51,15 +54,17 @@ public class SupportController : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn()
-    {
+    {    
+
+       
+    
+
         base.OnNetworkSpawn();
         if(!IsOwner){
             return;
         }
         Cursor.lockState = CursorLockMode.Locked;
-        
-
-
+        uiDocument.enabled = true;
         StartCoroutine(DelayedStart());
 
     }
