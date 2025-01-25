@@ -20,6 +20,10 @@ public class Enemy : NetworkBehaviour
     private FieldOfView fieldOfView;
     //////////////////////////////////
     
+    Random random;
+    
+
+    
     private StateMachine stateMachine;
     
     
@@ -29,6 +33,8 @@ public class Enemy : NetworkBehaviour
         _currentNodeIndex = 0;
         lastPlayerPositionArray = new []{transform.position};
         lastPlayerPositionVisited = true;
+
+        random = new Random(5);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,9 +44,12 @@ public class Enemy : NetworkBehaviour
         
         _currentNode = _nodes[_currentNodeIndex]; // Patrol
 
-        EnemyPatrolState patrolState = new EnemyPatrolState(this, animator, agent); 
+        var patrolState = new EnemyPatrolState(this, animator, agent); 
+        var huntDownState = new EnemyHuntDownState(this, animator, agent);
         
         Any(patrolState, new FuncPredicate(()=>true));
+        At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
+        At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
         stateMachine.SetState(patrolState);
     }
 
@@ -68,6 +77,18 @@ public class Enemy : NetworkBehaviour
 
     public void Patrol() // Lately to define in the child class (getting back previous patrol attributes)
     {
+        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+        {
+            _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
+            _currentNode = _nodes[_currentNodeIndex];
+        }
+        agent.destination = _currentNode.transform.position;
+
+    }
+
+    public void HuntDown()
+    {
+
         if (FieldOfView.Spotted)
         {
             if (lastPlayerPositionVisited)
@@ -77,9 +98,7 @@ public class Enemy : NetworkBehaviour
             lastPlayerPositionArray[0] = FieldOfView.Target.transform.position;
             agent.destination = lastPlayerPositionArray[0];
         }
-        else
-        {
-            if (!lastPlayerPositionVisited)
+        else if (!lastPlayerPositionVisited)
             {
                 agent.destination = lastPlayerPositionArray[0];
                 if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
@@ -87,16 +106,21 @@ public class Enemy : NetworkBehaviour
                     lastPlayerPositionVisited = true;
                 }
             }
-            else
-            {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                {
-                    _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
-                    _currentNode = _nodes[_currentNodeIndex];
-                }
-                agent.destination = _currentNode.transform.position;
-            }
-            
+    }
+
+    public void Investigate()
+    {
+        
+        Vector3 dir = transform.forward();
+        dir = Quaternion.AngleAxis(90, Vector3.up) * dir;
+        List<Vector3> lst = new List<Vector3>();
+    
+        for (int i = 0; i < 5; i++)
+        {
+            lst.Add(transform.position + dir)
+            dir = Quaternion.AngleAxis(-30, Vector3.up) * dir;
         }
+
+
     }
 }
