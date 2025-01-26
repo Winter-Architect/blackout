@@ -24,13 +24,15 @@ public class Enemy : NetworkBehaviour
     //////////////////////////////////
     
     Random random;
-    private bool isInvestigating = false;
 
     private float rotationSpeed;
     private float lookAroundTime;
     private float timeElapsed;
+
+    private bool isInvestigating = false;
     
     private StateMachine stateMachine;
+    
     
     
     void Awake() // Patrol
@@ -46,8 +48,8 @@ public class Enemy : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rotationSpeed = 25f; 
-        lookAroundTime = 5f;
+        rotationSpeed = 50f; 
+        lookAroundTime = 5.5f;
         timeElapsed = 0f;
         
         stateMachine = new StateMachine();
@@ -56,9 +58,12 @@ public class Enemy : NetworkBehaviour
 
         var patrolState = new EnemyPatrolState(this, animator, agent); 
         var huntDownState = new EnemyHuntDownState(this, animator, agent);
+        var investigateState = new EnemyInvestigateState(this, animator, agent);
         
         At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
         At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
+        At(huntDownState, investigateState, new FuncPredicate(()=>!FieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
+        At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
         stateMachine.SetState(patrolState);
     }
 
@@ -116,7 +121,7 @@ public class Enemy : NetworkBehaviour
             agent.destination = lastPlayerPositionArray[0];
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
-                Investigate();
+                lastPlayerPositionVisited = true;
             }
         }
     }
@@ -124,24 +129,34 @@ public class Enemy : NetworkBehaviour
 
     public void Investigate()
     {
+        isInvestigating = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         agent.updateRotation = false;
 
         if (agent.isStopped)
         {
-            float rotationAmount = rotationSpeed * Time.deltaTime;
-            transform.Rotate(Vector3.up, rotationAmount);
-            timeElapsed += Time.deltaTime;
+            if (timeElapsed<=1.9f)
+            {
+                float rotationAmount = rotationSpeed * Time.deltaTime;
+                transform.Rotate(Vector3.up, -rotationAmount);
+                timeElapsed += Time.deltaTime;
+            }
+            else
+            {
+                float rotationAmount = rotationSpeed * Time.deltaTime;
+                transform.Rotate(Vector3.up, rotationAmount);
+                timeElapsed += Time.deltaTime;
+            }
             
             if (timeElapsed >= lookAroundTime || FieldOfView.Spotted)
             {
-                Debug.Log("t a chier");
                 agent.updateRotation = true;
                 agent.isStopped = false;
                 lastPlayerPositionVisited = true;
                 agent.updateRotation = true;
                 timeElapsed = 0f;
+                isInvestigating = false;
             }
         }
     }
