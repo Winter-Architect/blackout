@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = Unity.Mathematics.Random;
+using SystemInfo = UnityEngine.Device.SystemInfo;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : NetworkBehaviour
@@ -21,8 +24,11 @@ public class Enemy : NetworkBehaviour
     //////////////////////////////////
     
     Random random;
-    
+    private bool isInvestigating = false;
 
+    private float rotationSpeed;
+    private float lookAroundTime;
+    private float timeElapsed;
     
     private StateMachine stateMachine;
     
@@ -40,6 +46,10 @@ public class Enemy : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rotationSpeed = 25f; 
+        lookAroundTime = 5f;
+        timeElapsed = 0f;
+        
         stateMachine = new StateMachine();
         
         _currentNode = _nodes[_currentNodeIndex]; // Patrol
@@ -47,7 +57,6 @@ public class Enemy : NetworkBehaviour
         var patrolState = new EnemyPatrolState(this, animator, agent); 
         var huntDownState = new EnemyHuntDownState(this, animator, agent);
         
-        Any(patrolState, new FuncPredicate(()=>true));
         At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
         At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
         stateMachine.SetState(patrolState);
@@ -77,6 +86,10 @@ public class Enemy : NetworkBehaviour
 
     public void Patrol() // Lately to define in the child class (getting back previous patrol attributes)
     {
+        if (agent.updateRotation == false)
+        {
+            agent.updateRotation = true;
+        }
         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
         {
             _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
@@ -99,28 +112,39 @@ public class Enemy : NetworkBehaviour
             agent.destination = lastPlayerPositionArray[0];
         }
         else if (!lastPlayerPositionVisited)
+        {
+            agent.destination = lastPlayerPositionArray[0];
+            if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
-                agent.destination = lastPlayerPositionArray[0];
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                {
-                    lastPlayerPositionVisited = true;
-                }
+                Investigate();
             }
+        }
     }
+
 
     public void Investigate()
     {
-        
-        Vector3 dir = transform.forward();
-        dir = Quaternion.AngleAxis(90, Vector3.up) * dir;
-        List<Vector3> lst = new List<Vector3>();
-    
-        for (int i = 0; i < 5; i++)
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        agent.updateRotation = false;
+
+        if (agent.isStopped)
         {
-            lst.Add(transform.position + dir)
-            dir = Quaternion.AngleAxis(-30, Vector3.up) * dir;
+            float rotationAmount = rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up, rotationAmount);
+            timeElapsed += Time.deltaTime;
+            
+            if (timeElapsed >= lookAroundTime || FieldOfView.Spotted)
+            {
+                Debug.Log("t a chier");
+                agent.updateRotation = true;
+                agent.isStopped = false;
+                lastPlayerPositionVisited = true;
+                agent.updateRotation = true;
+                timeElapsed = 0f;
+            }
         }
-
-
     }
+
+
 }
