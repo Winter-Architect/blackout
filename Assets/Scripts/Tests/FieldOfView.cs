@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class FieldOfView : NetworkBehaviour
 {
-    public static FieldOfView Instance { get; private set; }
     
     [SerializeField] public float radius;
     [SerializeField] [Range(0, 360)] public float angle;
@@ -20,12 +19,7 @@ public class FieldOfView : NetworkBehaviour
     private static GameObject _target;
     private static bool spotted = false;
     
-    
 
-    private void Awake()
-    {
-
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

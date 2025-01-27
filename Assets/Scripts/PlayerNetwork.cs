@@ -1,11 +1,18 @@
+using System;
 using Unity.VisualScripting;
 using Unity.Netcode;
 using UnityEngine;
 
 
-public class PlayerNetwork : NetworkBehaviour
+public class PlayerNetwork : NetworkBehaviour, IDamagable
 {
+    private int hp;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
+    {
+        this.hp = 200;
+    }
 
     // Update is called once per frame
     private void Update()
@@ -21,5 +28,10 @@ public class PlayerNetwork : NetworkBehaviour
 
         float moveSpeed = 8f;
         transform.position += moveDir * moveSpeed * Time.deltaTime;
+    }
+
+    public void TakeDamage(int dmg, int knokback)
+    {
+        this.hp -= dmg;
     }
 }

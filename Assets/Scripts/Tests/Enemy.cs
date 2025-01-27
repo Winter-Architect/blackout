@@ -8,7 +8,7 @@ using Random = Unity.Mathematics.Random;
 using SystemInfo = UnityEngine.Device.SystemInfo;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Enemy : NetworkBehaviour
+public class Enemy : NetworkBehaviour, IDamagable
 {
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator animator;
@@ -30,10 +30,15 @@ public class Enemy : NetworkBehaviour
     private float timeElapsed;
 
     private bool isInvestigating = false;
+    private float hp;
     
     private StateMachine stateMachine;
-    
-    
+
+    public Enemy(float hp, float rotationSpeed)
+    {
+        this.hp = hp;
+        this.rotationSpeed = rotationSpeed;
+    }
     
     void Awake() // Patrol
     {
@@ -48,6 +53,8 @@ public class Enemy : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        hp = 200;
+        
         rotationSpeed = 50f; 
         lookAroundTime = 5.5f;
         timeElapsed = 0f;
@@ -162,4 +169,8 @@ public class Enemy : NetworkBehaviour
     }
 
 
+    public void TakeDamage(int dmg, int knockback)
+    {
+        this.hp -= dmg;
+    }
 }
