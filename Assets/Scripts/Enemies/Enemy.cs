@@ -13,7 +13,8 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Animator animator;
     
-    protected bool lastPlayerPositionVisited;
+    private FieldOfView fieldOfView;
+    
     protected bool isInvestigating = false;
     
     protected float hp;
@@ -35,6 +36,25 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
     {
     }
     
+    void Update()
+    {
+        stateMachine.Update();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        stateMachine.FixedUpdate(); 
+    }
+    
+    protected void At(IState from, IState to, IPredicate predicate)
+    {
+        stateMachine.AddTransition(from, to, predicate);
+    }
+    
+    protected void Any(IState to, IPredicate predicate)
+    {
+        stateMachine.AddAnyTransition(to, predicate);
+    }
     
     // Update is called once per frame
 
@@ -49,6 +69,11 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
     
     public virtual void Investigate()
     {
+    }
+
+    public virtual void Attack()
+    {
+        
     }
     
     public void TakeDamage(int dmg, int knockback)

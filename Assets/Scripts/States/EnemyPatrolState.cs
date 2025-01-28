@@ -5,9 +5,8 @@ public class EnemyPatrolState : EnemyBaseState
 {
     private NavMeshAgent agent;
     
-    public EnemyPatrolState(Enemy enemy, Animator animator, NavMeshAgent agent) : base(enemy, animator)
+    public EnemyPatrolState(Enemy enemy, Animator animator) : base(enemy, animator)
     {
-        this.agent = agent;
     }
 
     public override void OnEnter()

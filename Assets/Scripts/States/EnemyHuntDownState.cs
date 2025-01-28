@@ -6,16 +6,17 @@ public class EnemyHuntDownState : EnemyBaseState
 {
     private NavMeshAgent agent;
 
-    public EnemyHuntDownState(Enemy enemy, Animator animator, NavMeshAgent agent) : base(enemy, animator)
+    public EnemyHuntDownState(Enemy enemy, Animator animator) : base(enemy, animator)
     {
-        this.agent = agent;
     }
 
-    public override void OnEnter(){
+    public override void OnEnter()
+    {
         Debug.Log("Hunt Down state");
     }
 
-    public override void Update(){
+    public override void Update()
+    {
         this.enemy.HuntDown();
     }
 }

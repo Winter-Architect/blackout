@@ -8,9 +8,8 @@ public class TestEnemy : Enemy
     [SerializeField] private Transform[] _nodes;
     private Transform _currentNode; 
     private int _currentNodeIndex;
-    
+    protected bool lastPlayerPositionVisited;
     private Vector3[] lastPlayerPositionArray;
-    private FieldOfView fieldOfView;
     //////////////////////////////////
     
     private float rotationSpeed;
@@ -21,16 +20,7 @@ public class TestEnemy : Enemy
     public TestEnemy(float hp) : base(hp)
     {
     }
-
-    protected void At(IState from, IState to, IPredicate predicate)
-    {
-        stateMachine.AddTransition(from, to, predicate);
-    }
     
-    protected void Any(IState to, IPredicate predicate)
-    {
-        stateMachine.AddAnyTransition(to, predicate);
-    }
     
     void Awake()
     {
@@ -50,25 +40,15 @@ public class TestEnemy : Enemy
     {
         _currentNode = _nodes[_currentNodeIndex];
 
-        var patrolState = new EnemyPatrolState(this, animator, agent); 
-        var huntDownState = new EnemyHuntDownState(this, animator, agent);
-        var investigateState = new EnemyInvestigateState(this, animator, agent);
+        var patrolState = new EnemyPatrolState(this, animator); 
+        var huntDownState = new EnemyHuntDownState(this, animator);
+        var investigateState = new EnemyInvestigateState(this, animator);
         
         At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
         At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
         At(huntDownState, investigateState, new FuncPredicate(()=>!FieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
         stateMachine.SetState(patrolState);
-    }
-    
-    void Update()
-    {
-        stateMachine.Update();
-    }
-
-    protected virtual void FixedUpdate()
-    {
-        stateMachine.FixedUpdate(); 
     }
     
     public override void Patrol()
@@ -119,21 +99,18 @@ public class TestEnemy : Enemy
         {
             if (timeElapsed<=2.6f)
             {
-                Debug.Log("Here");
                 float rotationAmount = rotationSpeed * Time.deltaTime;
                 this.transform.Rotate(Vector3.up, -rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
             else if (timeElapsed<=3.6f)
             {
-                Debug.Log("Here");
                 float rotationAmount = (rotationSpeed+35) * Time.deltaTime;
                 this.transform.Rotate(Vector3.up, rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
             else
             {
-                Debug.Log("There");
                 float rotationAmount = rotationSpeed * Time.deltaTime;
                 this.transform.Rotate(Vector3.up, rotationAmount);
                 timeElapsed += Time.deltaTime;
