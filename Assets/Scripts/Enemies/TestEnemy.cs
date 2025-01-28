@@ -17,10 +17,21 @@ public class TestEnemy : Enemy
     private float lookAroundTime;
     private float timeElapsed;
     
+    
     public TestEnemy(float hp) : base(hp)
     {
     }
 
+    protected void At(IState from, IState to, IPredicate predicate)
+    {
+        stateMachine.AddTransition(from, to, predicate);
+    }
+    
+    protected void Any(IState to, IPredicate predicate)
+    {
+        stateMachine.AddAnyTransition(to, predicate);
+    }
+    
     void Awake()
     {
         _currentNodeIndex = 0;
@@ -28,16 +39,39 @@ public class TestEnemy : Enemy
         lastPlayerPositionVisited = true;
         
         
-        lookAroundTime = 5.5f;
+        lookAroundTime = 6.12f;
         timeElapsed = 0f;
+        rotationSpeed = 30f;
+        
+        stateMachine = new StateMachine();
     }
 
     void Start()
     {
         _currentNode = _nodes[_currentNodeIndex];
+
+        var patrolState = new EnemyPatrolState(this, animator, agent); 
+        var huntDownState = new EnemyHuntDownState(this, animator, agent);
+        var investigateState = new EnemyInvestigateState(this, animator, agent);
+        
+        At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
+        At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
+        At(huntDownState, investigateState, new FuncPredicate(()=>!FieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
+        At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
+        stateMachine.SetState(patrolState);
     }
     
-    public void Patrol()
+    void Update()
+    {
+        stateMachine.Update();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        stateMachine.FixedUpdate(); 
+    }
+    
+    public override void Patrol()
     {
         if (agent.updateRotation == false)
         {
@@ -49,10 +83,9 @@ public class TestEnemy : Enemy
             _currentNode = _nodes[_currentNodeIndex];
         }
         agent.destination = _currentNode.transform.position;
-
     }
     
-    public void HuntDown()
+    public override void HuntDown()
     {
 
         if (FieldOfView.Spotted)
@@ -73,9 +106,9 @@ public class TestEnemy : Enemy
             }
         }
     }
-    
-    
-    public void Investigate()
+
+
+    public override void Investigate()
     {
         isInvestigating = true;
         agent.isStopped = true;
@@ -84,25 +117,33 @@ public class TestEnemy : Enemy
 
         if (agent.isStopped)
         {
-            if (timeElapsed<=1.9f)
+            if (timeElapsed<=2.6f)
             {
+                Debug.Log("Here");
                 float rotationAmount = rotationSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, -rotationAmount);
+                this.transform.Rotate(Vector3.up, -rotationAmount);
+                timeElapsed += Time.deltaTime;
+            }
+            else if (timeElapsed<=3.6f)
+            {
+                Debug.Log("Here");
+                float rotationAmount = (rotationSpeed+35) * Time.deltaTime;
+                this.transform.Rotate(Vector3.up, rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
             else
             {
+                Debug.Log("There");
                 float rotationAmount = rotationSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, rotationAmount);
+                this.transform.Rotate(Vector3.up, rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
-            
+
             if (timeElapsed >= lookAroundTime || FieldOfView.Spotted)
             {
                 agent.updateRotation = true;
                 agent.isStopped = false;
                 lastPlayerPositionVisited = true;
-                agent.updateRotation = true;
                 timeElapsed = 0f;
                 isInvestigating = false;
             }
