@@ -39,12 +39,11 @@ public class TurretEnemy : Enemy
         At(patrolState, attackState, new FuncPredicate(()=>fieldOfView.Spotted));
         At(attackState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted));
         At(investigateState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && !isInvestigating));
+        At(investigateState, attackState, new FuncPredicate(()=>fieldOfView.Spotted));
 
         
         stateMachine.SetState(patrolState);
     }
-
-    // ERROR: One FieldOfView for all items
     
     public override void Patrol()
     {
@@ -67,6 +66,10 @@ public class TurretEnemy : Enemy
 
     public override void Attack()
     {
-        base.Attack();
+        if (isInvestigating)
+        {
+            isInvestigating = false;
+        }
+        this.transform.LookAt(fieldOfView.Target.transform);
     }
 }

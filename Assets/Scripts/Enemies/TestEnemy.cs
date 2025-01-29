@@ -26,6 +26,10 @@ public class TestEnemy : Enemy
     {
         fieldOfView = gameObject.GetComponent<FieldOfView>();
         StartCoroutine(fieldOfView.FOVCoroutine());
+
+        sensorDetector = gameObject.GetComponent<SensorDetector>();
+        StartCoroutine(sensorDetector.SensorDetectorCoroutine());
+
         
         _currentNodeIndex = 0;
         lastPlayerPositionArray = new []{transform.position};

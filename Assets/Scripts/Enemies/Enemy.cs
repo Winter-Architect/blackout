@@ -14,6 +14,7 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
     [SerializeField] protected Animator animator;
     
     protected FieldOfView fieldOfView;
+    protected SensorDetector sensorDetector;
     
     protected bool isInvestigating = false;
     
