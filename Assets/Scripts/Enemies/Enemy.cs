@@ -13,7 +13,7 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Animator animator;
     
-    private FieldOfView fieldOfView;
+    protected FieldOfView fieldOfView;
     
     protected bool isInvestigating = false;
     

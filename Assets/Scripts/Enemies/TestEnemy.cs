@@ -24,6 +24,9 @@ public class TestEnemy : Enemy
     
     void Awake()
     {
+        fieldOfView = gameObject.GetComponent<FieldOfView>();
+        StartCoroutine(fieldOfView.FOVCoroutine());
+        
         _currentNodeIndex = 0;
         lastPlayerPositionArray = new []{transform.position};
         lastPlayerPositionVisited = true;
@@ -39,14 +42,14 @@ public class TestEnemy : Enemy
     void Start()
     {
         _currentNode = _nodes[_currentNodeIndex];
-
+        
         var patrolState = new EnemyPatrolState(this, animator); 
         var huntDownState = new EnemyHuntDownState(this, animator);
         var investigateState = new EnemyInvestigateState(this, animator);
         
-        At(patrolState, huntDownState, new FuncPredicate(()=>FieldOfView.Spotted));
-        At(huntDownState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && lastPlayerPositionVisited));
-        At(huntDownState, investigateState, new FuncPredicate(()=>!FieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
+        At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted));
+        At(huntDownState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && lastPlayerPositionVisited));
+        At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
         stateMachine.SetState(patrolState);
     }
@@ -68,13 +71,13 @@ public class TestEnemy : Enemy
     public override void HuntDown()
     {
 
-        if (FieldOfView.Spotted)
+        if (fieldOfView.Spotted)
         {
             if (lastPlayerPositionVisited)
             {
                 lastPlayerPositionVisited = false;
             }
-            lastPlayerPositionArray[0] = FieldOfView.Target.transform.position;
+            lastPlayerPositionArray[0] = fieldOfView.Target.transform.position;
             agent.destination = lastPlayerPositionArray[0];
         }
         else if (!lastPlayerPositionVisited)
@@ -116,7 +119,7 @@ public class TestEnemy : Enemy
                 timeElapsed += Time.deltaTime;
             }
 
-            if (timeElapsed >= lookAroundTime || FieldOfView.Spotted)
+            if (timeElapsed >= lookAroundTime || fieldOfView.Spotted)
             {
                 agent.updateRotation = true;
                 agent.isStopped = false;

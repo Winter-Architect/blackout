@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class FieldOfView : NetworkBehaviour
 {
     
+    private static Dictionary<GameObject, FieldOfView> instances = new Dictionary<GameObject, FieldOfView>();
+
     [SerializeField] public float radius;
     [SerializeField] [Range(0, 360)] public float angle;
 
@@ -13,29 +16,51 @@ public class FieldOfView : NetworkBehaviour
     [SerializeField] private LayerMask obstacleMask;
 
     private GameObject _player;
-    public static GameObject Target => _target;
-    public static bool Spotted => spotted;
+    
+    private GameObject _target;
+    private bool spotted = false;
 
-    private static GameObject _target;
-    private static bool spotted = false;
+    public bool Spotted => spotted;
+    public GameObject Target => _target;
+
+    private void Awake()
+    {
+        instances[gameObject] = this;
+    }
+    
+    /*
+    private void OnDestroy()
+    {
+        instances.Remove(gameObject);
+    }
+    */
+    
+    public static FieldOfView GetInstance(GameObject obj)
+    {
+        return instances.ContainsKey(obj) ? instances[obj] : null;
+    }
     
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (!IsClient) return;  
+        Debug.Log($"[{gameObject.name}] FieldOfView Start() called.");
         _player = null;
         _target = null;
         StartCoroutine(FOVCoroutine());
     }
     
-    private IEnumerator FOVCoroutine()
+    public IEnumerator FOVCoroutine()
     {
+        Debug.Log($"[{gameObject.name}] Starting FOVCoroutine...");
         WaitForSeconds searchDelay = new WaitForSeconds(0.33f);
         
         while (true)
         {
             yield return searchDelay;
+            Debug.Log($"[{gameObject.name}] Calling FOVSearch...");
             FOVSearch();
             
         }
@@ -43,6 +68,7 @@ public class FieldOfView : NetworkBehaviour
 
     private void FOVSearch()
     {
+        Debug.Log(gameObject + ", " + spotted);
         Collider[] objWithinRange = Physics.OverlapSphere(transform.position, radius, playerMask);
         if (objWithinRange.Length>0)
         {

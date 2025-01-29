@@ -14,6 +14,9 @@ public class TurretEnemy : Enemy
 
     void Awake()
     {
+        fieldOfView = gameObject.GetComponent<FieldOfView>();
+        StartCoroutine(fieldOfView.FOVCoroutine());
+        
         stateMachine = new StateMachine();
 
         agent.isStopped = true;
@@ -28,13 +31,14 @@ public class TurretEnemy : Enemy
     
     void Start()
     {
+
         var patrolState = new EnemyPatrolState(this, animator);
         var attackState = new EnemyAttackState(this, animator);
         var investigateState = new EnemyInvestigateState(this, animator);
         
-        At(patrolState, attackState, new FuncPredicate(()=>FieldOfView.Spotted));
-        At(attackState, investigateState, new FuncPredicate(()=>!FieldOfView.Spotted));
-        At(investigateState, patrolState, new FuncPredicate(()=>!FieldOfView.Spotted && !isInvestigating));
+        At(patrolState, attackState, new FuncPredicate(()=>fieldOfView.Spotted));
+        At(attackState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted));
+        At(investigateState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && !isInvestigating));
 
         
         stateMachine.SetState(patrolState);
