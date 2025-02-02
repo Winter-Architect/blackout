@@ -17,6 +17,7 @@ public class FieldOfView : NetworkBehaviour
 
     
     private GameObject _target;
+    // public Rigidbody rbTarget;
     private bool spotted = false;
 
     public bool Spotted => spotted;

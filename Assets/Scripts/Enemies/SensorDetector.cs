@@ -11,10 +11,18 @@ public class SensorDetector : NetworkBehaviour
     private GameObject _target;
     private bool detected = false;
 
-    public bool Detected => detected;
+    public bool Detected
+    {
+        get => detected;
+        set => detected = value;
+    }
     public GameObject Target => _target;
 
     [SerializeField] public float range;
+
+    public bool IsRunning => isRunning; // player.isRunning
+    public bool IsWalking => isWalking; // player.isWalking
+    public bool IsSneaking => isSneaking; // player.isSneaking
 
     private bool isRunning; // player.isRunning
     private bool isWalking; // player.isWalking
@@ -23,6 +31,7 @@ public class SensorDetector : NetworkBehaviour
     private void Awake()
     {
         instances[gameObject] = this;
+        isWalking = true;
     }
 
 
@@ -64,10 +73,8 @@ public class SensorDetector : NetworkBehaviour
         }
         else
         {
-            Debug.Log("Grttttttttrr;: " + isWalking);
             if (isWalking)
             {
-                Debug.Log("Grrr");
                 if (Vector3.Distance(transform.position, _target.transform.position) < range)
                 {
                     detected = true;

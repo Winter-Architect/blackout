@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +16,9 @@ public class TestEnemy : Enemy
     private float rotationSpeed;
     private float lookAroundTime;
     private float timeElapsed;
-    
+    [SerializeField] private float timeElapsedHearing;
+
+    private bool isHeard;
     
     public TestEnemy(float hp) : base(hp)
     {
@@ -26,7 +29,7 @@ public class TestEnemy : Enemy
     {
         fieldOfView = gameObject.GetComponent<FieldOfView>();
         StartCoroutine(fieldOfView.FOVCoroutine());
-
+        
         sensorDetector = gameObject.GetComponent<SensorDetector>();
         StartCoroutine(sensorDetector.SensorDetectorCoroutine());
 
@@ -38,25 +41,31 @@ public class TestEnemy : Enemy
         
         lookAroundTime = 6.12f;
         timeElapsed = 0f;
+        timeElapsedHearing = 0f;
         rotationSpeed = 30f;
+
+        isHeard = false;
         
         stateMachine = new StateMachine();
+        
     }
 
     void Start()
     {
         _currentNode = _nodes[_currentNodeIndex];
-        
         var patrolState = new EnemyPatrolState(this, animator); 
         var huntDownState = new EnemyHuntDownState(this, animator);
         var investigateState = new EnemyInvestigateState(this, animator);
         
-        At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted));
+        At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted || isHeard));
         At(huntDownState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && lastPlayerPositionVisited));
         At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
+        At(investigateState, huntDownState, new FuncPredicate(()=>!isInvestigating || isHeard));
+        
         stateMachine.SetState(patrolState);
     }
+    
     
     public override void Patrol()
     {
@@ -70,11 +79,15 @@ public class TestEnemy : Enemy
             _currentNode = _nodes[_currentNodeIndex];
         }
         agent.destination = _currentNode.transform.position;
+        Listen();
     }
     
     public override void HuntDown()
     {
-
+        if (isHeard)
+        {
+            isHeard = false;
+        }
         if (fieldOfView.Spotted)
         {
             if (lastPlayerPositionVisited)
@@ -91,6 +104,7 @@ public class TestEnemy : Enemy
             {
                 lastPlayerPositionVisited = true;
             }
+            Listen();
         }
     }
 
@@ -101,7 +115,7 @@ public class TestEnemy : Enemy
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         agent.updateRotation = false;
-
+        
         if (agent.isStopped)
         {
             if (timeElapsed<=2.6f)
@@ -130,6 +144,52 @@ public class TestEnemy : Enemy
                 lastPlayerPositionVisited = true;
                 timeElapsed = 0f;
                 isInvestigating = false;
+                isHeard = false;
+            }
+        }
+        Listen();
+    }
+
+    public void Listen()
+    {
+        if (sensorDetector.Detected)
+        {
+            if (PlayerNetwork.LocalPlayer.rb.linearVelocity.sqrMagnitude == 0f)
+            {
+                if (timeElapsedHearing>0)
+                {
+                    timeElapsedHearing -= Time.deltaTime/3;
+                }
+                else
+                {
+                    timeElapsedHearing = 0;
+                }
+            }
+            else
+            {
+                timeElapsedHearing += Time.deltaTime;
+            }
+            if (timeElapsedHearing>=1.5f)
+            {
+                agent.updateRotation = true;
+                agent.isStopped = false;
+                timeElapsed = 0f;
+                isInvestigating = false;
+                lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
+                timeElapsedHearing = 0;
+                lastPlayerPositionVisited = false;
+                isHeard = true;
+            }
+        }
+        else
+        {
+            if (timeElapsedHearing>0)
+            {
+                timeElapsedHearing -= Time.deltaTime/2.35f; 
+            }
+            else
+            {
+                timeElapsedHearing = 0;
             }
         }
     }

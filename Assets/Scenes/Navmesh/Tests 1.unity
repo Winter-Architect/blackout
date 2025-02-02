@@ -1138,6 +1138,7 @@ GameObject:
   - component: {fileID: 908943820}
   - component: {fileID: 908943823}
   - component: {fileID: 908943824}
+  - component: {fileID: 908943825}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -1376,8 +1377,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  radius: 20
-  angle: 77
+  radius: 13
+  angle: 60
   playerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1407,6 +1408,20 @@ MonoBehaviour:
   - {fileID: 273217191}
   - {fileID: 1662647568}
   - {fileID: 1512465897}
+--- !u!114 &908943825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908943810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14767a7dcc54236a9fad3ce54e91962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  range: 10
 --- !u!1 &964673804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,7 +1595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   radius: 25
-  angle: 27
+  angle: 46
   playerMask:
     serializedVersion: 2
     m_Bits: 128

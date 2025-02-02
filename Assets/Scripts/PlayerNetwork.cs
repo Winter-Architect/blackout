@@ -7,13 +7,20 @@ using UnityEngine;
 public class PlayerNetwork : NetworkBehaviour, IDamagable
 {
     private int hp;
+    public Rigidbody rb; // Assign in Inspector or get via script
+    public static PlayerNetwork LocalPlayer;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        if (IsOwner) // Check if this is the local player
+        {
+            LocalPlayer = this;
+        }
+        rb = GetComponent<Rigidbody>();
         this.hp = 200;
     }
-
+    
     // Update is called once per frame
     private void Update()
     {
