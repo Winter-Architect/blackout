@@ -32,7 +32,7 @@ public class TestEnemy : Enemy
         
         sensorDetector = gameObject.GetComponent<SensorDetector>();
         StartCoroutine(sensorDetector.SensorDetectorCoroutine());
-
+        
         
         _currentNodeIndex = 0;
         lastPlayerPositionArray = new []{transform.position};
@@ -59,9 +59,9 @@ public class TestEnemy : Enemy
         
         At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted || isHeard));
         At(huntDownState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && lastPlayerPositionVisited));
-        At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
+        At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && !isHeard && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
-        At(investigateState, huntDownState, new FuncPredicate(()=>!isInvestigating || isHeard));
+        At(investigateState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted || isHeard));
         
         stateMachine.SetState(patrolState);
     }
@@ -69,6 +69,11 @@ public class TestEnemy : Enemy
     
     public override void Patrol()
     {
+        if (isInvestigating)
+        {
+            SetEndInvestigateDatas();
+        }
+        
         if (agent.updateRotation == false)
         {
             agent.updateRotation = true;
@@ -84,17 +89,25 @@ public class TestEnemy : Enemy
     
     public override void HuntDown()
     {
+        if (isInvestigating)
+        {
+            SetEndInvestigateDatas();
+        }
+
         if (isHeard)
         {
-            isHeard = false;
+            lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
+            lastPlayerPositionVisited = false;
+            timeElapsedHearing = 0;
         }
-        if (fieldOfView.Spotted)
+        
+        if (fieldOfView.Spotted || isHeard)
         {
             if (lastPlayerPositionVisited)
             {
                 lastPlayerPositionVisited = false;
             }
-            lastPlayerPositionArray[0] = fieldOfView.Target.transform.position;
+            lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
             agent.destination = lastPlayerPositionArray[0];
         }
         else if (!lastPlayerPositionVisited)
@@ -104,8 +117,8 @@ public class TestEnemy : Enemy
             {
                 lastPlayerPositionVisited = true;
             }
-            Listen();
         }
+        Listen();
     }
 
 
@@ -137,14 +150,9 @@ public class TestEnemy : Enemy
                 timeElapsed += Time.deltaTime;
             }
 
-            if (timeElapsed >= lookAroundTime || fieldOfView.Spotted)
+            if (timeElapsed >= lookAroundTime)
             {
-                agent.updateRotation = true;
-                agent.isStopped = false;
-                lastPlayerPositionVisited = true;
-                timeElapsed = 0f;
-                isInvestigating = false;
-                isHeard = false;
+                SetEndInvestigateDatas();
             }
         }
         Listen();
@@ -167,22 +175,23 @@ public class TestEnemy : Enemy
             }
             else
             {
-                timeElapsedHearing += Time.deltaTime;
+                if (timeElapsedHearing<1.5f)
+                {
+                    timeElapsedHearing += Time.deltaTime;
+                }
             }
             if (timeElapsedHearing>=1.5f)
             {
-                agent.updateRotation = true;
-                agent.isStopped = false;
-                timeElapsed = 0f;
-                isInvestigating = false;
-                lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
-                timeElapsedHearing = 0;
-                lastPlayerPositionVisited = false;
                 isHeard = true;
             }
+
         }
         else
         {
+            if (isHeard)
+            {
+                isHeard = false;
+            }
             if (timeElapsedHearing>0)
             {
                 timeElapsedHearing -= Time.deltaTime/2.35f; 
@@ -192,5 +201,14 @@ public class TestEnemy : Enemy
                 timeElapsedHearing = 0;
             }
         }
+    }
+
+    public void SetEndInvestigateDatas()
+    {
+        agent.updateRotation = true;
+        agent.isStopped = false;
+        lastPlayerPositionVisited = true;
+        timeElapsed = 0f;
+        isInvestigating = false;
     }
 }

@@ -23,19 +23,17 @@ public class SensorDetectorEditor : Editor
 
         if (sensorDetector.Detected)
         {
+            Handles.color = new Color(0.9764705882f, 0.058823529f, 0.37058824f, 0.25f);
             if (sensorDetector.IsWalking)
             {
-                Handles.color = new Color(0.9764705882f, 0.5058823529f, 0.1647058824f, 0.25f);
                 Handles.DrawSolidDisc(sensorDetector.transform.position, Vector3.up, sensorDetector.range);
             }
             else if (sensorDetector.IsRunning)
             {
-                Handles.color = new Color(0.9764705882f, 0.058823529f, 0.37058824f, 0.25f);
                 Handles.DrawSolidDisc(sensorDetector.transform.position, Vector3.up, sensorDetector.range * 1.5f);
             }
             else if (sensorDetector.IsSneaking)
             {
-                Handles.color = new Color(0.9764705882f, 0.5058823529f, 0.37058824f, 0.25f);;
                 Handles.DrawSolidDisc(sensorDetector.transform.position, Vector3.up, sensorDetector.range / 2);
             }
         }
