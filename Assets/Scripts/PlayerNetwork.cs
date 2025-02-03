@@ -4,9 +4,9 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-public class PlayerNetwork : NetworkBehaviour, IDamagable
+public class PlayerNetwork : NetworkBehaviour, IDamageable
 {
-    private int hp;
+    private float hp;
     public Rigidbody rb; // Assign in Inspector or get via script
     public static PlayerNetwork LocalPlayer;
     
@@ -37,7 +37,7 @@ public class PlayerNetwork : NetworkBehaviour, IDamagable
         transform.position += moveDir * moveSpeed * Time.deltaTime;
     }
 
-    public void TakeDamage(int dmg, int knokback)
+    public void TakeDamage(float dmg, float knokback)
     {
         this.hp -= dmg;
     }

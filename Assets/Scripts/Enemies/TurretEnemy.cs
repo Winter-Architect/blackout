@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class TurretEnemy : Enemy
@@ -8,6 +10,14 @@ public class TurretEnemy : Enemy
     private float lookStraightTime;
     private float timeElapsed;
 
+    private float timeElapseBetweenFire;
+    private float delayFire;
+    
+
+    private Laser laser;
+    
+    [SerializeField] private Transform laserPrefab;
+    
     public TurretEnemy(float hp) : base(hp)
     {
     }
@@ -47,6 +57,9 @@ public class TurretEnemy : Enemy
     
     public override void Patrol()
     {
+        timeElapsed = 0;
+        timeElapseBetweenFire = 0;
+        
         float rotationAmount = (rotationSpeed) * Time.deltaTime;
         this.transform.Rotate(Vector3.up, rotationAmount);
     }
@@ -60,6 +73,7 @@ public class TurretEnemy : Enemy
         timeElapsed += Time.deltaTime;
         if (timeElapsed>=lookStraightTime)
         {
+            timeElapsed = 0;
             isInvestigating = false;
         }
     }
@@ -68,8 +82,28 @@ public class TurretEnemy : Enemy
     {
         if (isInvestigating)
         {
+            timeElapsed = 0;
             isInvestigating = false;
         }
         this.transform.LookAt(fieldOfView.Target.transform);
+
+        timeElapseBetweenFire += Time.deltaTime;
+        if (timeElapseBetweenFire >= delayFire)
+        {
+            timeElapseBetweenFire = 0;
+            FireLaser();
+        }
     }
+    
+    private void FireLaser()
+    {
+        Transform laserInstance = Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
+        
+        Laser laserScript = laserInstance.GetComponent<Laser>();
+        if (laserScript)
+        {
+            laserScript.Initialize(10, 0, 10f, 4f); // Set laser properties
+        }
+    }
+    
 }

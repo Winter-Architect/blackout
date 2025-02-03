@@ -18,9 +18,9 @@ public class HarmfulObject : NetworkBehaviour, IDamaging
         hurtbox = this.GetComponent<Collider>();
     }
     
-    public void DealDamage(int dmg, int knockback, IDamagable damagable)
+    public void DealDamage(int dmg, int knockback, IDamageable damageable)
     {
-        damagable.TakeDamage(this.dmg, this.knockback);
+        damageable.TakeDamage(this.dmg, this.knockback);
     }
 
     public void OnTriggerEnter(Collider collider)
@@ -29,7 +29,7 @@ public class HarmfulObject : NetworkBehaviour, IDamaging
         if (collider.gameObject.CompareTag("Player"))
         {
             Debug.Log("Has detected the player");
-            DealDamage(dmg, knockback, (IDamagable)collider);
+            DealDamage(dmg, knockback, (IDamageable)collider);
         }
         
     }

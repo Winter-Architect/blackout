@@ -8,7 +8,7 @@ using Random = Unity.Mathematics.Random;
 using SystemInfo = UnityEngine.Device.SystemInfo;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Enemy : NetworkBehaviour, IDamagable
+public abstract class Enemy : NetworkBehaviour, IDamageable
 {
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Animator animator;
@@ -77,7 +77,7 @@ public abstract class Enemy : NetworkBehaviour, IDamagable
         
     }
     
-    public void TakeDamage(int dmg, int knockback)
+    public void TakeDamage(float dmg, float knockback)
     {
         this.hp -= dmg;
     }

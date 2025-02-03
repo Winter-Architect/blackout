@@ -1618,6 +1618,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 0
   agent: {fileID: 964673806}
   animator: {fileID: 0}
+  laserPrefab: {fileID: 1672185380241176281, guid: 3cf9b61f4ada2794a912b68a212caa84, type: 3}
 --- !u!1 &1030337647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,7 +1852,7 @@ MonoBehaviour:
     EnableTimeResync: 0
     TimeResyncInterval: 30
     EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
+    EnableSceneManagement: 0
     ForceSamePrefabs: 0
     RecycleNetworkIds: 1
     NetworkIdRecycleDelay: 120
