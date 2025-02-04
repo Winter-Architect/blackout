@@ -86,6 +86,7 @@ public class Lobby : NetworkBehaviour
     private void OnReadyClicked()
     {
         TogglePlayerReadyServerRpc();
+
     }
 
 
