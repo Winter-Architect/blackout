@@ -15,6 +15,7 @@
                 <engine:VisualElement name="Check" class="readyDisplay" style="flex-grow: 0.5; background-image: url(&quot;project://database/Assets/Sprites/Check.png?fileID=21300000&amp;guid=9c91ad5e849c21a4eb756e41f2232f89&amp;type=3#Check&quot;); width: 50%; height: 0; -unity-background-scale-mode: scale-to-fit; -unity-background-image-tint-color: rgb(0, 0, 0);" />
             </engine:VisualElement>
         </engine:VisualElement>
+
         <engine:VisualElement name="Buttons" style="flex-grow: 1; width: 371px; height: 0; align-items: center; justify-content: center; align-self: center; align-content: auto;">
             <engine:Button text="Ready&#10;" name="Ready" class="button" />
             <engine:Button text="Play" name="Launch" class="button" />

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
@@ -7,11 +8,13 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TestRelay : MonoBehaviour
 {
 
-    [SerializeField] private TextMeshProUGUI codeText;
+    [SerializeField] private UIDocument LobbyUI;
+    [SerializeField] private UIDocument menuUI;
 
     public static TestRelay Instance;
 
@@ -42,7 +45,7 @@ public class TestRelay : MonoBehaviour
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            codeText.text = joinCode;
+            LobbyUI.rootVisualElement.Q<Label>().text = joinCode;
             Debug.Log(joinCode);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
@@ -80,7 +83,16 @@ public class TestRelay : MonoBehaviour
         catch(RelayServiceException e)
         {
             Debug.Log(e);
+            StartCoroutine(GoBackMenuUIAfterDelay(2f));
         }
+    }
+
+    private IEnumerator GoBackMenuUIAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); 
+        Debug.Log("SALUT");
+        LobbyUI.rootVisualElement.visible = false;
+        menuUI.rootVisualElement.visible = true;
     }
 
 }
