@@ -1,5 +1,8 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,10 +16,8 @@ public class TurretEnemy : Enemy
     private float timeElapseBetweenFire;
     private float delayFire;
     
-    [SerializeField] private LineRenderer laserLine;
-    [SerializeField] private LayerMask hitLayers;
-    [SerializeField] private LayerMask obstacleMask;
-    
+    private LineRenderer laserLine;
+
     private Laser laser;
     
     [SerializeField] private Transform laserPrefab;
@@ -41,6 +42,8 @@ public class TurretEnemy : Enemy
         delayFire = 1.5f;
         rotationSpeed = 60;
 
+        laserLine = GetComponent<LineRenderer>();
+
     }
     
     void Start()
@@ -54,6 +57,7 @@ public class TurretEnemy : Enemy
         At(attackState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted));
         At(investigateState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && !isInvestigating));
         At(investigateState, attackState, new FuncPredicate(()=>fieldOfView.Spotted));
+        Any(patrolState, new FuncPredicate(()=>PlayerNetwork.LocalPlayer is null));
 
         
         stateMachine.SetState(patrolState);
@@ -88,6 +92,7 @@ public class TurretEnemy : Enemy
 
     public override void Attack()
     {
+        
         if (isInvestigating)
         {
             timeElapsed = 0;
@@ -98,10 +103,18 @@ public class TurretEnemy : Enemy
         timeElapseBetweenFire += Time.deltaTime;
         if (timeElapseBetweenFire >= delayFire)
         {
-            FireLaserRaycastServerRpc();
+            FireLaser();
             timeElapseBetweenFire = 0;
             
         }
+
+        /*
+        if (PlayerNetwork.LocalPlayer is not null)
+        {
+            FireLaserRaycast();
+        }
+        */
+        
     }
     
     private void FireLaser()
@@ -117,7 +130,7 @@ public class TurretEnemy : Enemy
         Laser laserScript = laserInstance.GetComponent<Laser>();
         if (laserScript is not null)
         {
-            laserScript.Initialize(10, 0, 25f, 2f);
+            laserScript.Initialize(40, 0, 25f, 4f);
         }
     }
 
@@ -129,26 +142,32 @@ public class TurretEnemy : Enemy
 
     private void FireLaserRaycast()
     {
+        laserLine.enabled = true;
         RaycastHit hit;
+
+        laserLine.SetPosition(0, transform.position);
         
-        float distanceToTarget =  Vector3.Distance(transform.position, PlayerNetwork.LocalPlayer.transform.position);
-        
+        float distanceToTarget = Vector3.Distance(transform.position, PlayerNetwork.LocalPlayer.transform.position);
+    
         Transform thisTransform = gameObject.transform;
         Vector3 laserEndPoint = thisTransform.position + thisTransform.forward * distanceToTarget;
-        
-        if (Physics.Raycast(thisTransform.position, thisTransform.forward, out hit, distanceToTarget, hitLayers))
+    
+        if (Physics.Raycast(thisTransform.position, (PlayerNetwork.LocalPlayer.transform.position - transform.position).normalized, out hit))
         {
-            laserEndPoint = hit.point;
-            
+            if (hit.collider)
+            {
+                laserLine.SetPosition(1, hit.point);
+            }
+
             IDamageable damageable = hit.collider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(10, 0);
+                damageable.TakeDamage(0.15f, 0);
             }
+        }            
+        else
+        {
+            laserLine.SetPosition(1, PlayerNetwork.LocalPlayer.transform.position);
         }
-        
-        laserLine.enabled = true;
-        laserLine.SetPosition(0, thisTransform.position);
-        laserLine.SetPosition(1, laserEndPoint);
     }
 }

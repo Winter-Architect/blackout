@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour, IDamageable
 {
-    private float hp;
+    [SerializeField] private float hp;
     public Rigidbody rb; // Assign in Inspector or get via script
     public static PlayerNetwork LocalPlayer;
     
@@ -39,6 +40,16 @@ public class PlayerNetwork : NetworkBehaviour, IDamageable
 
     public void TakeDamage(float dmg, float knokback)
     {
+        if (this.hp<=0)
+        {
+            GetDestroyed();
+        }
+        Debug.Log("hit");
         this.hp -= dmg;
+    }
+
+    public void GetDestroyed()
+    {
+        Destroy(gameObject);
     }
 }

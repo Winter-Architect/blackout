@@ -81,4 +81,9 @@ public abstract class Enemy : NetworkBehaviour, IDamageable
     {
         this.hp -= dmg;
     }
+
+    public void GetDestroyed()
+    {
+        Destroy(gameObject);
+    }
 }
