@@ -17,10 +17,10 @@ public class FieldOfViewEditor : Editor
         Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle01 * fov.radius);
         Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle02 * fov.radius);
 
-        if (FieldOfView.Spotted)
+        if (fov.Spotted)
         {
             Handles.color = Color.green;
-            Handles.DrawLine(fov.transform.position, FieldOfView.Target.transform.position);
+            Handles.DrawLine(fov.transform.position, fov.Target.transform.position);
         }
     }
 

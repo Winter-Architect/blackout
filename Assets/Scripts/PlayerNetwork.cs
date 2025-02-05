@@ -1,12 +1,27 @@
+using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using Unity.Netcode;
 using UnityEngine;
 
 
-public class PlayerNetwork : NetworkBehaviour
+public class PlayerNetwork : NetworkBehaviour, IDamageable
 {
+    [SerializeField] private float hp;
+    public Rigidbody rb; // Assign in Inspector or get via script
+    public static PlayerNetwork LocalPlayer;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    private void Start()
+    {
+        if (IsOwner) // Check if this is the local player
+        {
+            LocalPlayer = this;
+        }
+        rb = GetComponent<Rigidbody>();
+        this.hp = 200;
+    }
+    
     // Update is called once per frame
     private void Update()
     {
@@ -21,5 +36,20 @@ public class PlayerNetwork : NetworkBehaviour
 
         float moveSpeed = 8f;
         transform.position += moveDir * moveSpeed * Time.deltaTime;
+    }
+
+    public void TakeDamage(float dmg, float knokback)
+    {
+        if (this.hp<=0)
+        {
+            GetDestroyed();
+        }
+        Debug.Log("hit");
+        this.hp -= dmg;
+    }
+
+    public void GetDestroyed()
+    {
+        Destroy(gameObject);
     }
 }

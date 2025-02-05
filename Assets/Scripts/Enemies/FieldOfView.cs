@@ -1,41 +1,50 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class FieldOfView : NetworkBehaviour
 {
-    public static FieldOfView Instance { get; private set; }
     
+    private static Dictionary<GameObject, FieldOfView> instances = new Dictionary<GameObject, FieldOfView>();
+
     [SerializeField] public float radius;
     [SerializeField] [Range(0, 360)] public float angle;
 
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask obstacleMask;
 
-    private GameObject _player;
-    public static GameObject Target => _target;
-    public static bool Spotted => spotted;
+    
+    private GameObject _target;
+    // public Rigidbody rbTarget;
+    private bool spotted = false;
 
-    private static GameObject _target;
-    private static bool spotted = false;
-    
-    
+    public bool Spotted => spotted;
+    public GameObject Target => _target;
 
     private void Awake()
     {
-
+        instances[gameObject] = this;
     }
+    
+    /*
+    private void OnDestroy()
+    {
+        instances.Remove(gameObject);
+    }
+    */
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _player = null;
+        if (!IsClient) return;  
         _target = null;
         StartCoroutine(FOVCoroutine());
     }
     
-    private IEnumerator FOVCoroutine()
+    public IEnumerator FOVCoroutine()
     {
         WaitForSeconds searchDelay = new WaitForSeconds(0.33f);
         
@@ -61,13 +70,9 @@ public class FieldOfView : NetworkBehaviour
                 if (!Physics.Raycast(transform.position, directionToPlayer, distanceToTarget, obstacleMask))
                 {
                     spotted = true;
-                    if (!_player)
-                    {
-                        _player = GameObject.FindGameObjectWithTag("Player");
-                    }
                     if (!_target)
                     {
-                        _target = _player;
+                        _target = GameObject.FindGameObjectWithTag("Player");
                     }
                 }
                 else
