@@ -21,11 +21,6 @@ public abstract class Enemy : NetworkBehaviour, IDamageable
     protected float hp;
     
     protected StateMachine stateMachine;
-
-    protected Enemy(float hp)
-    {
-        this.hp = hp;
-    }
     
     void Awake() 
     {
@@ -74,7 +69,10 @@ public abstract class Enemy : NetworkBehaviour, IDamageable
 
     public virtual void Attack()
     {
-        
+    }
+    
+    public virtual void Ambush()
+    {
     }
     
     public void TakeDamage(float dmg, float knockback)

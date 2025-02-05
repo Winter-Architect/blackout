@@ -22,9 +22,6 @@ public class TurretEnemy : Enemy
     
     [SerializeField] private Transform laserPrefab;
     
-    public TurretEnemy(float hp) : base(hp)
-    {
-    }
 
     void Awake()
     {
