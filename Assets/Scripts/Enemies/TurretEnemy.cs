@@ -103,10 +103,11 @@ public class TurretEnemy : Enemy
         timeElapseBetweenFire += Time.deltaTime;
         if (timeElapseBetweenFire >= delayFire)
         {
-            FireLaser();
+            // FireLaser();
             timeElapseBetweenFire = 0;
             
         }
+        FireLaserRaycast();
 
         /*
         if (PlayerNetwork.LocalPlayer is not null)
@@ -162,7 +163,7 @@ public class TurretEnemy : Enemy
             IDamageable damageable = hit.collider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(0.15f, 0);
+                damageable.TakeDamage(0.05f, 0);
             }
         }            
         else
