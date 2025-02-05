@@ -13,7 +13,10 @@ public class TurretEnemy : Enemy
     private float timeElapseBetweenFire;
     private float delayFire;
     
-
+    [SerializeField] private LineRenderer laserLine;
+    [SerializeField] private LayerMask hitLayers;
+    [SerializeField] private LayerMask obstacleMask;
+    
     private Laser laser;
     
     [SerializeField] private Transform laserPrefab;
@@ -35,6 +38,7 @@ public class TurretEnemy : Enemy
         lookStraightTime = 5.5f;
         timeElapsed = 0;
 
+        delayFire = 1.5f;
         rotationSpeed = 60;
 
     }
@@ -59,6 +63,7 @@ public class TurretEnemy : Enemy
     {
         timeElapsed = 0;
         timeElapseBetweenFire = 0;
+        laserLine.enabled = false;
         
         float rotationAmount = (rotationSpeed) * Time.deltaTime;
         this.transform.Rotate(Vector3.up, rotationAmount);
@@ -70,6 +75,9 @@ public class TurretEnemy : Enemy
         {
             isInvestigating = true;
         }
+        
+        laserLine.enabled = false;
+        
         timeElapsed += Time.deltaTime;
         if (timeElapsed>=lookStraightTime)
         {
@@ -90,20 +98,57 @@ public class TurretEnemy : Enemy
         timeElapseBetweenFire += Time.deltaTime;
         if (timeElapseBetweenFire >= delayFire)
         {
+            FireLaserRaycastServerRpc();
             timeElapseBetweenFire = 0;
-            FireLaser();
+            
         }
     }
     
     private void FireLaser()
     {
         Transform laserInstance = Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
-        
-        Laser laserScript = laserInstance.GetComponent<Laser>();
-        if (laserScript)
+
+        NetworkObject laserNetworkObject = laserInstance.GetComponent<NetworkObject>();
+        if (laserNetworkObject is not null && IsServer)
         {
-            laserScript.Initialize(10, 0, 10f, 4f); // Set laser properties
+            laserNetworkObject.Spawn();
+        }
+
+        Laser laserScript = laserInstance.GetComponent<Laser>();
+        if (laserScript is not null)
+        {
+            laserScript.Initialize(10, 0, 25f, 2f);
         }
     }
-    
+
+    [ServerRpc]
+    public void FireLaserRaycastServerRpc()
+    {
+        FireLaserRaycast();
+    }
+
+    private void FireLaserRaycast()
+    {
+        RaycastHit hit;
+        
+        float distanceToTarget =  Vector3.Distance(transform.position, PlayerNetwork.LocalPlayer.transform.position);
+        
+        Transform thisTransform = gameObject.transform;
+        Vector3 laserEndPoint = thisTransform.position + thisTransform.forward * distanceToTarget;
+        
+        if (Physics.Raycast(thisTransform.position, thisTransform.forward, out hit, distanceToTarget, hitLayers))
+        {
+            laserEndPoint = hit.point;
+            
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(10, 0);
+            }
+        }
+        
+        laserLine.enabled = true;
+        laserLine.SetPosition(0, thisTransform.position);
+        laserLine.SetPosition(1, laserEndPoint);
+    }
 }

@@ -29,14 +29,12 @@ public class Laser : NetworkBehaviour
     
     public void OnCollisionEnter(Collision other)
     {
-        if (!IsServer) return; // Ensures only the server runs this
-
         IDamageable damageable = other.gameObject.GetComponent<NetworkBehaviour>() as IDamageable;
-        if (damageable != null)
+        if (damageable is not null)
         {
             damageable.TakeDamage(dmg, knockback);
         }
-        Destroy(this);
+        Destroy(gameObject);
     }
     
 }

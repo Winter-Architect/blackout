@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8140599726569414186}
   - component: {fileID: 8525346299295096601}
   - component: {fileID: 373318793247517559}
+  - component: {fileID: 6952331023784397234}
   m_Layer: 0
   m_Name: laser
   m_TagString: Untagged
@@ -29,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 2191078088264974636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.35, y: 3.44, z: -2.58}
-  m_LocalScale: {x: -0.0466578, y: 0.05574606, z: 0.41424283}
+  m_LocalPosition: {x: -6.303, y: 3.44, z: -2.58}
+  m_LocalScale: {x: 0.17290205, y: 0.18867914, z: 2.1268861}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,8 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2284453819
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3689284564
+  InScenePlacedSourceGlobalObjectIdHash: 3689284564
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -134,3 +135,16 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &6952331023784397234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2191078088264974636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609873a05ef9d9c4aacdc6c2224e45e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
