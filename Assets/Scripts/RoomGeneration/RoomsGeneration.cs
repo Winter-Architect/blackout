@@ -49,6 +49,7 @@ public class RoomsGeneration : MonoBehaviour
 
         GameObject room = GetRandomRoom(PreviousRoom);
 
+// Trouver l’Entry et l’Exit
         Transform entryPoint = room.transform.Find("Entry");
         Transform exitPoint = room.transform.Find("Exit");
 
@@ -58,7 +59,7 @@ public class RoomsGeneration : MonoBehaviour
             return null;
         }
 
-        Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
+         Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
 
         // Si ce n'est pas la première salle, ajuster sa rotation et sa position
         if (lastRoomExit != null)
