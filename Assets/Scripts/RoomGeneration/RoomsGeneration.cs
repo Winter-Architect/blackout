@@ -30,7 +30,6 @@ public class RoomsGeneration : MonoBehaviour
 
         GameObject room = GetRandomRoom(PreviousRoom);
 
-// Trouver l’Entry et l’Exit
         Transform entryPoint = room.transform.Find("Entry");
         Transform exitPoint = room.transform.Find("Exit");
 
@@ -81,14 +80,19 @@ public class RoomsGeneration : MonoBehaviour
         string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
 
-        if (PreviousRoom.name == room.name ||
-            direction == LastRoomDirection
+//PreviousRoom.name == room.name ||
+        if (
+           direction != null && direction == LastRoomDirection
         ) {
             Destroy(room);
+            Debug.Log("DIRECTION WRONG" + direction);
             return GetRandomRoom(PreviousRoom);
         }
 
         Debug.Log("Room: " + room.name);
+        if (direction != null) {
+            LastRoomDirection = direction;
+        }
          return room;
     }
 }
