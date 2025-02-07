@@ -73,8 +73,8 @@ public class SupportController : NetworkBehaviour
     {
         //Figure out how to avoid using this
         yield return new WaitForSeconds(0.5f);
-            TutorialManager.Instance.StartTutorial("player2");
-            currentlyControlled = GameObject.FindGameObjectWithTag("FIRSTCAM");
+            //TutorialManager.Instance.StartTutorial("player2");
+            currentlyControlled = GameObject.FindGameObjectWithTag("Controllables");
 
             
 

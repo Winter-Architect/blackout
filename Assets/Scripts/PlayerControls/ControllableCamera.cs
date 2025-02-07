@@ -35,7 +35,6 @@ public class ControllableCamera : NetworkBehaviour
         MoveCamera();
         Look();
         GetControlledObjectOutline();
-        
     }
 
     private void MoveCamera()
@@ -57,8 +56,6 @@ public class ControllableCamera : NetworkBehaviour
 
     public void Look()
     {
-
-
         RaycastHit hit;
 
         if(Physics.Raycast(myCameraTransform.position, myCameraTransform.forward, out hit, MAX_DISTANCE) && hit.collider.gameObject.CompareTag("Controllables"))
@@ -66,9 +63,7 @@ public class ControllableCamera : NetworkBehaviour
             if(Input.GetMouseButtonDown(1))
             {
                 toControl = hit.collider.gameObject;
-            }
-            
-            
+            } 
         }
         
     }
