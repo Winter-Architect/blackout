@@ -1,18 +1,31 @@
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class RoomsGeneration : MonoBehaviour
 {
     
-    public GameObject[] roomPrefabs; // Tes différentes salles
+    //public GameObject[] roomPrefabs; // Tes différentes salles
+
+    public Rooms roomPrefabs;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
      private Transform lastRoomExit; 
      private string LastRoomDirection = null;
+     private bool lastRoomIsStairs = false;
+     private float totalWeight = 0;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
+        {
+            GameObject room = roomPrefabs.roomPrefabs[i];
+            Room roomScript2 = room.GetComponent<Room>();
+            totalWeight += roomScript2.Weight;
+        }
+
         GameObject currRoom = GameObject.Find("StartingRoom");
         if (!currRoom) {
             Debug.LogError("La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
@@ -20,6 +33,7 @@ public class RoomsGeneration : MonoBehaviour
         }
         for (int i = 0; i < numberOfRooms; i++)
         {
+            Debug.Log("Room " + i);
            currRoom = GenerateRoom(currRoom);
         }
     }
@@ -73,16 +87,45 @@ public class RoomsGeneration : MonoBehaviour
 
     GameObject GetRandomRoom(GameObject PreviousRoom) {
         // Choisir une salle aléatoire
-        GameObject room = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)]);
+        GameObject room = null;
+        //Instantiate(roomPrefabs.roomPrefabs[Random.Range(0, roomPrefabs.roomPrefabs.Length)]);
+        
+
+        Debug.Log("1");
+
+        float randomWeight = UnityEngine.Random.Range(1f, totalWeight);
+        float currentWeight = 0;
+       for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
+        {
+            room = Instantiate(roomPrefabs.roomPrefabs[i]);
+            Room roomScript2 = room.GetComponent<Room>();
+            currentWeight += roomScript2.Weight;
+            Destroy(room);
+            if (currentWeight >= randomWeight)
+            {
+                room = Instantiate(roomPrefabs.roomPrefabs[i]);
+                break;
+            }
+        }
+
+        Debug.Log("2");
+
+        if (room == null) {
+            Debug.LogError("Aucune salle n'a été trouvée !");
+            return GetRandomRoom(PreviousRoom);
+        }
+
+        Debug.Log("3");
         
         Room roomScript = room.GetComponent<Room>();
         
         string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
 
-//PreviousRoom.name == room.name ||
         if (
-           direction != null && direction == LastRoomDirection
+           direction != null && direction == LastRoomDirection ||
+           PreviousRoom.name == room.name ||
+              isStairs &&  lastRoomIsStairs
         ) {
             Destroy(room);
             Debug.Log("DIRECTION WRONG" + direction);
@@ -93,6 +136,7 @@ public class RoomsGeneration : MonoBehaviour
         if (direction != null) {
             LastRoomDirection = direction;
         }
+        lastRoomIsStairs = isStairs;
          return room;
     }
 }
