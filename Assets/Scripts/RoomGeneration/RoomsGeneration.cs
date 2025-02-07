@@ -93,7 +93,7 @@ public class RoomsGeneration : MonoBehaviour
 
         Debug.Log("1");
 
-        float randomWeight = UnityEngine.Random.Range(1f, totalWeight);
+        float randomWeight = UnityEngine.Random.Range(0f, totalWeight);
         float currentWeight = 0;
        for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
