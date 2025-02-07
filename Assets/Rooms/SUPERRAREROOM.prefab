@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &608678073445753379
+--- !u!1001 &4438298705807163915
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,52 +9,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 22908686173938333, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9.1669
+      propertyPath: m_LocalScale.y
+      value: 117.98
       objectReference: {fileID: 0}
-    - target: {fileID: 2426204386886222458, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.32
+    - target: {fileID: 22908686173938333, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.7301
       objectReference: {fileID: 0}
     - target: {fileID: 6096245972046209845, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_Name
-      value: MovedDoors
-      objectReference: {fileID: 0}
-    - target: {fileID: 6827439069157636916, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 6827439069157636916, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.8
+      value: SUPERRAREROOM
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4067.7683
+      value: -110.79919
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -89.00018
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4562.1016
+      value: 71.53284
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -70,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: Weight
-      value: 2
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
