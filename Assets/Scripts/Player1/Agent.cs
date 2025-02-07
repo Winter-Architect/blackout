@@ -56,7 +56,7 @@ public class Agent : NetworkBehaviour, IInteractor
     IEnumerator DelayedStart()
     {
         yield return new WaitForSeconds(0.5f);
-        TutorialManager.Instance.StartTutorial("player1");
+        //TutorialManager.Instance.StartTutorial("player1");
     }
 
     void Update()
