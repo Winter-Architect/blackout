@@ -9,7 +9,6 @@ public class RoomsGeneration : MonoBehaviour
     public Rooms roomPrefabs;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
-     private Transform lastRoomExit; 
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
@@ -118,15 +117,13 @@ public class RoomsGeneration : MonoBehaviour
         
         string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
-
-        //
-
+           
         if (
            direction != null && direction == LastRoomDirection ||
            PreviousRoom.name == selectedRoomPrefab.name ||
-              isStairs &&  lastRoomIsStairs
+           isStairs && lastRoomIsStairs
         ) 
-            return GetRandomRoom(PreviousRoom);
+                return GetRandomRoom(PreviousRoom);
 
 
         GameObject room = Instantiate(selectedRoomPrefab);

@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6827439069157636916, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.2
+      value: -4.1
       objectReference: {fileID: 0}
     - target: {fileID: 6827439069157636916, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66,19 +66,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4041.4785
+      value: 4038.3562
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -87.36018
+      value: -85.84018
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4558.8096
+      value: 4482.83
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.x
@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071068
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalRotation.z
@@ -106,12 +106,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: Weight
-
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: isRight
+      propertyPath: isLeft
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
+      propertyPath: isTurningLeft
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: isTurningRight
