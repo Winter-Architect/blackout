@@ -31,9 +31,6 @@ public class ControllableDrone : Controllable
 
         bodyPivot.Rotate(0, xInput * Time.fixedDeltaTime * rotationSpeed, 0);
         myRigidBody.linearVelocity = bodyPivot.forward*yInput*speed;
-
-
-
     }
 
     public void ControlCamera()
