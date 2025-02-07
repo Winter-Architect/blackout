@@ -9,7 +9,6 @@ public class RoomsGeneration : MonoBehaviour
     public Rooms roomPrefabs;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
-     private Transform lastRoomExit; 
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
@@ -19,6 +18,12 @@ public class RoomsGeneration : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (roomPrefabs.roomPrefabs.Length <= 1)
+        {
+            Debug.LogError("[Generation de salles] Probleme dans la liste : il n'y a pas assez de salles !!!!!");
+            return;
+        }
+
         for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
             GameObject room = roomPrefabs.roomPrefabs[i];
@@ -28,12 +33,11 @@ public class RoomsGeneration : MonoBehaviour
 
         GameObject currRoom = GameObject.Find("StartingRoom");
         if (!currRoom) {
-            Debug.LogError("La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
+            Debug.LogError("[Generation de salles] La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
             return;
         }
         for (int i = 0; i < numberOfRooms; i++)
         {
-            Debug.Log("Room " + i);
            currRoom = GenerateRoom(currRoom);
         }
     }
@@ -49,20 +53,11 @@ public class RoomsGeneration : MonoBehaviour
 
         if (entryPoint == null || exitPoint == null)
         {
-            Debug.LogError("Une salle ne contient pas d'Entry ou d'Exit !");
+            Debug.LogError($"[Generation de salles] La salle {room.name} ne contient pas d'Entry ou d'Exit !");
             return null;
         }
 
-        Room roomScript = room.GetComponent<Room>();
-        if (roomScript == null)
-        {
-            Debug.LogError("La salle ne contient pas de script Room !");
-            return null;
-        }
-
-         Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
-
-
+        Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
 
         // Si ce n'est pas la première salle, ajuster sa rotation et sa position
         if (lastRoomExit != null)
@@ -86,53 +81,53 @@ public class RoomsGeneration : MonoBehaviour
 
 
     GameObject GetRandomRoom(GameObject PreviousRoom) {
-        // Choisir une salle aléatoire
-        GameObject room = null;
+
+        Room roomScript = null;
+        GameObject selectedRoomPrefab = null;
         //Instantiate(roomPrefabs.roomPrefabs[Random.Range(0, roomPrefabs.roomPrefabs.Length)]);
         
-
-        Debug.Log("1");
 
         float randomWeight = UnityEngine.Random.Range(0f, totalWeight);
         float currentWeight = 0;
        for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
-            room = Instantiate(roomPrefabs.roomPrefabs[i]);
-            Room roomScript2 = room.GetComponent<Room>();
-            currentWeight += roomScript2.Weight;
-            Destroy(room);
-            if (currentWeight >= randomWeight)
-            {
-                room = Instantiate(roomPrefabs.roomPrefabs[i]);
+            GameObject roomPrefab = roomPrefabs.roomPrefabs[i];
+            Room tempScript = roomPrefab.GetComponent<Room>();
+
+            currentWeight += tempScript.Weight;
+             if (currentWeight >= randomWeight) {
+                selectedRoomPrefab = roomPrefab;
+                roomScript = tempScript;
                 break;
             }
         }
 
-        Debug.Log("2");
 
-        if (room == null) {
-            Debug.LogError("Aucune salle n'a été trouvée !");
+        if (selectedRoomPrefab == null) {
+            Debug.LogError("[Generation de salles] Aucune salle n'a été trouvée !");
             return GetRandomRoom(PreviousRoom);
         }
 
-        Debug.Log("3");
+         if (roomScript == null)
+        {
+            Debug.LogError($"[Generation de salles] La salle {selectedRoomPrefab.name} ne contient pas de script Room !");
+            return null;
+        }
         
-        Room roomScript = room.GetComponent<Room>();
         
         string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
-
+           
         if (
            direction != null && direction == LastRoomDirection ||
-           PreviousRoom.name == room.name ||
-              isStairs &&  lastRoomIsStairs
-        ) {
-            Destroy(room);
-            Debug.Log("DIRECTION WRONG" + direction);
-            return GetRandomRoom(PreviousRoom);
-        }
+           PreviousRoom.name == selectedRoomPrefab.name ||
+           isStairs && lastRoomIsStairs
+        ) 
+                return GetRandomRoom(PreviousRoom);
 
-        Debug.Log("Room: " + room.name);
+
+        GameObject room = Instantiate(selectedRoomPrefab);
+        
         if (direction != null) {
             LastRoomDirection = direction;
         }
