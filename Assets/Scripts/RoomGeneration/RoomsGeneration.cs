@@ -111,7 +111,7 @@ public class RoomsGeneration : MonoBehaviour
 
          if (roomScript == null)
         {
-            Debug.LogError($"[Generation de salles] La salle {selectedRoomPrefab} ne contient pas de script Room !");
+            Debug.LogError($"[Generation de salles] La salle {selectedRoomPrefab.name} ne contient pas de script Room !");
             return null;
         }
         
