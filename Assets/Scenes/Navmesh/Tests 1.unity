@@ -2017,7 +2017,7 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 7036469820876391658, guid: 57b1c17dde13b33418964403af9b8193, type: 3}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 678d989a2b57f864d8dbe06125fa0b77, type: 2}
+      - {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -2869,7 +2869,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -30.5, y: 4.25, z: -0.42}
-  m_LocalScale: {x: 0.34921455, y: 3.2050312, z: -43.554787}
+  m_LocalScale: {x: 0.34921455, y: 3.2050312, z: 43.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3918,7 +3918,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -8.6, y: 4.25, z: 20.55}
-  m_LocalScale: {x: 0.34921455, y: 3.2050312, z: -43.554787}
+  m_LocalScale: {x: 0.34921455, y: 3.2050312, z: 43.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
