@@ -75,6 +75,10 @@ public abstract class Enemy : NetworkBehaviour, IDamageable
     {
     }
     
+    public virtual void RunAway()
+    {
+    }
+    
     public void TakeDamage(float dmg, float knockback)
     {
         this.hp -= dmg;

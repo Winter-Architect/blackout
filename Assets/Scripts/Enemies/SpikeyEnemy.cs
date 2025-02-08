@@ -1,20 +1,24 @@
 ﻿
+
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class RottenSlime : Enemy
+public class SpikeyEnemy : Enemy
 {
     private Vector3 dest;
     private bool walkpointSet;
     private int range;
     private bool hasAmbushed;
+    private bool isReturningToCeiling;
     private Rigidbody rb;
     private PlayerNetwork player;
     
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private float forwardForce = 5f;
+    [SerializeField] private float speed = 20f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Vector3 ceilingPosition;
     
     void Awake()
     {
@@ -32,19 +36,20 @@ public class RottenSlime : Enemy
         hasAmbushed = false;
         range = 8;
         rb.useGravity = false;
+        isReturningToCeiling = false;
 
     }
 
     void Start()
     {
         var patrolState = new EnemyPatrolState(this, animator); 
+        var huntDownState = new EnemyHuntDownState(this, animator);
         var ambushState = new EnemyAmbushState(this, animator);
+        var runAwayState = new EnemyRunAwayState(this, animator);
         var attackState = new EnemyAttackState(this, animator);
         
-        At(ambushState, attackState, new FuncPredicate(()=>hasAmbushed));
-        At(attackState, patrolState, new FuncPredicate(()=>!sensorDetector.Detected));
-        At(patrolState, attackState, new FuncPredicate(()=>fieldOfView.Spotted && sensorDetector.Detected));
-        
+        At(ambushState, runAwayState, new FuncPredicate(()=>isReturningToCeiling));
+        At(runAwayState, ambushState, new FuncPredicate(()=>!isReturningToCeiling));
         stateMachine.SetState(ambushState);
     }
 
@@ -83,7 +88,18 @@ public class RottenSlime : Enemy
             }
         }
     }
-    
+
+    public override void RunAway()
+    {
+        transform.position = Vector3.Lerp(transform.position, ceilingPosition, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, ceilingPosition) < 0.1f)
+        {
+            isReturningToCeiling = false; // Stop moving when close enough
+        }
+    }
+
+
     private void SetNextDest()
     {
         float z = Random.Range(-range, range);
@@ -100,10 +116,12 @@ public class RottenSlime : Enemy
     private void JumpAttack()
     {
         rb.useGravity = true;
-        agent.destination = player.transform.position;
-        // rb.AddForce(Vector3.down * jumpForce + (player.transform.position - transform.position).normalized * forwardForce, ForceMode.Impulse); for spikey ?    }
+        Vector3 attackDirection = (player.transform.position - transform.position).normalized;
+    
+        // Instead of setting the NavMeshAgent destination, use velocity
+        rb.linearVelocity = Vector3.down * jumpForce + attackDirection * forwardForce; 
     }
-
+    
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -115,5 +133,15 @@ public class RottenSlime : Enemy
                 player.TakeDamage(20, 0);
             }
         }
+        else
+        {
+            // If it hits the ground instead of the player, return to the ceiling
+            Invoke(nameof(ReturnToCeiling), 2f); // Wait 2 seconds before retreating
+        }
+    }
+
+    void ReturnToCeiling()
+    {
+        isReturningToCeiling = true;
     }
 }
