@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5613030859686742594, guid: 5b0cd23f2e6bd014098b6c4e95ad4aaf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -47.080853
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 5613030859686742594, guid: 5b0cd23f2e6bd014098b6c4e95ad4aaf, type: 3}
       propertyPath: m_LocalPosition.y
@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5613030859686742594, guid: 5b0cd23f2e6bd014098b6c4e95ad4aaf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.0457687
+      value: -45.4
       objectReference: {fileID: 0}
     - target: {fileID: 5613030859686742594, guid: 5b0cd23f2e6bd014098b6c4e95ad4aaf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -281,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b2f45341e73bd4398c01880d70f6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefabs: {fileID: 11400000, guid: 5a46ce6666d51874ca526179a0e27e22, type: 2}
-  numberOfRooms: 5
+  roomPrefabs: {fileID: 11400000, guid: 9f41c9624afacc046ac88e0db552923f, type: 2}
+  numberOfRooms: 100
 --- !u!1 &1879390254
 GameObject:
   m_ObjectHideFlags: 0
