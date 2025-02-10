@@ -1,7 +1,7 @@
-﻿
-
-using System;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class SpikeyEnemy : Enemy
@@ -9,47 +9,41 @@ public class SpikeyEnemy : Enemy
     private Vector3 dest;
     private bool walkpointSet;
     private int range;
-    private bool hasAmbushed;
     private bool isReturningToCeiling;
     private Rigidbody rb;
     private PlayerNetwork player;
-    
-    [SerializeField] private float jumpForce = 15f;
-    [SerializeField] private float forwardForce = 5f;
-    [SerializeField] private float speed = 20f;
+
+    [SerializeField] private float speed;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Vector3 ceilingPosition;
-    
+    [SerializeField] private Transform ceilingPosition;
+
     void Awake()
     {
-        fieldOfView = gameObject.GetComponent<FieldOfView>();
+        fieldOfView = GetComponent<FieldOfView>();
         StartCoroutine(fieldOfView.FOVCoroutine());
-        
-        sensorDetector = gameObject.GetComponent<SensorDetector>();
-        StartCoroutine(sensorDetector.SensorDetectorCoroutine());
-        
-        stateMachine = new StateMachine();
 
+        sensorDetector = GetComponent<SensorDetector>();
+        StartCoroutine(sensorDetector.SensorDetectorCoroutine());
+
+        stateMachine = new StateMachine();
         rb = GetComponent<Rigidbody>();
-        
+
         walkpointSet = false;
-        hasAmbushed = false;
         range = 8;
         rb.useGravity = false;
         isReturningToCeiling = false;
-
     }
 
     void Start()
     {
-        var patrolState = new EnemyPatrolState(this, animator); 
+        var patrolState = new EnemyPatrolState(this, animator);
         var huntDownState = new EnemyHuntDownState(this, animator);
         var ambushState = new EnemyAmbushState(this, animator);
         var runAwayState = new EnemyRunAwayState(this, animator);
         var attackState = new EnemyAttackState(this, animator);
-        
-        At(ambushState, runAwayState, new FuncPredicate(()=>isReturningToCeiling));
-        At(runAwayState, ambushState, new FuncPredicate(()=>!isReturningToCeiling));
+
+        At(ambushState, runAwayState, new FuncPredicate(() => isReturningToCeiling && agent.isOnNavMesh));
+        At(runAwayState, ambushState, new FuncPredicate(() => !isReturningToCeiling && agent.isOnNavMesh));
         stateMachine.SetState(ambushState);
     }
 
@@ -63,12 +57,11 @@ public class SpikeyEnemy : Enemy
         {
             agent.SetDestination(dest);
         }
-        if (Vector3.Distance(transform.position, dest)<2)
+        if (Vector3.Distance(transform.position, dest) < 2)
         {
             walkpointSet = false;
         }
     }
-    
 
     public override void Attack()
     {
@@ -77,28 +70,34 @@ public class SpikeyEnemy : Enemy
 
     public override void Ambush()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity))
+        if (sensorDetector.Detected && fieldOfView.Spotted)
         {
-            if (hit.collider.CompareTag("Player"))
+            if (player is null)
             {
                 player = PlayerNetwork.LocalPlayer;
-                JumpAttack();
-                hasAmbushed = true;
+            }
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    SpikeAttack();
+                }
             }
         }
     }
 
     public override void RunAway()
     {
-        transform.position = Vector3.Lerp(transform.position, ceilingPosition, speed * Time.deltaTime);
+        if (!agent.isOnNavMesh) return;
 
-        if (Vector3.Distance(transform.position, ceilingPosition) < 0.1f)
+        agent.SetDestination(ceilingPosition.position);
+
+        if (!agent.hasPath || agent.velocity.sqrMagnitude < 0.1f)
         {
-            isReturningToCeiling = false; // Stop moving when close enough
+            isReturningToCeiling = false;
         }
     }
-
 
     private void SetNextDest()
     {
@@ -106,42 +105,88 @@ public class SpikeyEnemy : Enemy
         float x = Random.Range(-range, range);
 
         dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
-        
-        if (Physics.Raycast(dest, Vector3.down, groundLayer))
+
+        if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
             walkpointSet = true;
         }
     }
 
-    private void JumpAttack()
+    private void SpikeAttack()
     {
-        rb.useGravity = true;
-        Vector3 attackDirection = (player.transform.position - transform.position).normalized;
-    
-        // Instead of setting the NavMeshAgent destination, use velocity
-        rb.linearVelocity = Vector3.down * jumpForce + attackDirection * forwardForce; 
+        if (agent.isOnNavMesh)
+        {
+            agent.enabled = false;
+            rb.useGravity = true;
+            rb.velocity = Vector3.zero;
+
+            Vector3 attackDirection = (player.transform.position - transform.position).normalized;
+            rb.AddForce(attackDirection * 10f, ForceMode.VelocityChange);
+
+            StartCoroutine(WaitThenReturn());
+        }
     }
-    
-    void OnCollisionEnter(Collision collision)
+
+    IEnumerator WaitThenReturn()
     {
+        yield return new WaitForSeconds(0.5f); // Attendre avant de vérifier
+
+        yield return StartCoroutine(WaitUntilGrounded()); // Attendre qu'il touche le sol
+
+        // Vérifier si on est sur un NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 2f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+        }
+
+        agent.enabled = true;
+        rb.useGravity = false;
+        rb.velocity = Vector3.zero;
+
+        ReturnToCeiling();
+    }
+
+    IEnumerator WaitUntilGrounded()
+    {
+        while (!IsGrounded())
+        {
+            yield return null;
+        }
+    }
+
+    bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f, groundLayer);
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (!agent.enabled)
+        {
+            StartCoroutine(WaitThenReturn());
+        }
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Damage the player
             IDamageable player = collision.gameObject.GetComponent<IDamageable>();
             if (player != null)
             {
                 player.TakeDamage(20, 0);
             }
         }
-        else
-        {
-            // If it hits the ground instead of the player, return to the ceiling
-            Invoke(nameof(ReturnToCeiling), 2f); // Wait 2 seconds before retreating
-        }
     }
 
     void ReturnToCeiling()
     {
-        isReturningToCeiling = true;
+        if (agent.isOnNavMesh)
+        {
+            agent.SetDestination(ceilingPosition.position);
+            isReturningToCeiling = true;
+        }
+        else
+        {
+            Debug.Log("L'agent n'est pas sur le NavMesh, tentative de repositionnement...");
+            StartCoroutine(WaitThenReturn());
+        }
     }
 }

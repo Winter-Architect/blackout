@@ -10,6 +10,7 @@ public class SensorDetector : NetworkBehaviour
     
     private GameObject _target;
     private bool detected = false;
+    private float detectionRange;
 
     public bool Detected
     {
@@ -27,6 +28,9 @@ public class SensorDetector : NetworkBehaviour
     private bool isRunning; // player.isRunning
     private bool isWalking; // player.isWalking
     private bool isSneaking; // player.isSneaking
+    
+    
+    [SerializeField] private LayerMask playerMask;
 
     private void Awake()
     {
@@ -43,8 +47,6 @@ public class SensorDetector : NetworkBehaviour
         isSneaking = false;
         isWalking = true;
         
-        Debug.Log("Initial state of isWalking: " + isWalking); // Debug the initial state
-
         _target = null;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -67,6 +69,29 @@ public class SensorDetector : NetworkBehaviour
 
     public void SensorDetectorSearch()
     {
+        if (!_target)
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+            if (_target is null) return;
+        }
+        
+        detectionRange = range;
+        if (isSneaking)
+            detectionRange /= 2;
+        else if (isRunning)
+            detectionRange *= 1.5f;
+        
+        Collider[] objWithinRange = Physics.OverlapSphere(transform.position, detectionRange, playerMask);
+        if (objWithinRange.Length>0)
+        {
+            detected = true;
+        }
+        else
+        {
+            detected = false;
+        }
+        
+        /*
         if (!_target)
         {
             _target = GameObject.FindGameObjectWithTag("Player");
@@ -106,6 +131,6 @@ public class SensorDetector : NetworkBehaviour
                     detected = false;
                 }
             }
-        }
+        }*/
     }
 }

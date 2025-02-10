@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,8 +13,8 @@ public class RottenSlime : Enemy
     private Rigidbody rb;
     private PlayerNetwork player;
     
-    [SerializeField] private float jumpForce = 15f;
-    [SerializeField] private float forwardForce = 5f;
+    //[SerializeField] private float jumpForce = 15f;
+    //[SerializeField] private float forwardForce = 5f;
     [SerializeField] private LayerMask groundLayer;
     
     void Awake()
@@ -30,7 +31,7 @@ public class RottenSlime : Enemy
         
         walkpointSet = false;
         hasAmbushed = false;
-        range = 8;
+        range = 10;
         rb.useGravity = false;
 
     }
@@ -41,9 +42,9 @@ public class RottenSlime : Enemy
         var ambushState = new EnemyAmbushState(this, animator);
         var attackState = new EnemyAttackState(this, animator);
         
-        At(ambushState, attackState, new FuncPredicate(()=>hasAmbushed));
-        At(attackState, patrolState, new FuncPredicate(()=>!sensorDetector.Detected));
-        At(patrolState, attackState, new FuncPredicate(()=>fieldOfView.Spotted && sensorDetector.Detected));
+        At(ambushState, attackState, new FuncPredicate(()=>hasAmbushed && agent.enabled && !rb.useGravity));
+        At(attackState, patrolState, new FuncPredicate(()=>!sensorDetector.Detected && agent.enabled && !rb.useGravity));
+        At(patrolState, attackState, new FuncPredicate(()=>fieldOfView.Spotted && sensorDetector.Detected && agent.enabled && !rb.useGravity));
         
         stateMachine.SetState(ambushState);
     }
@@ -67,7 +68,7 @@ public class RottenSlime : Enemy
 
     public override void Attack()
     {
-        agent.destination = sensorDetector.Target.transform.position;
+        agent.destination = player.transform.position;
     }
 
     public override void Ambush()
@@ -79,7 +80,7 @@ public class RottenSlime : Enemy
             {
                 player = PlayerNetwork.LocalPlayer;
                 JumpAttack();
-                hasAmbushed = true;
+                
             }
         }
     }
@@ -99,13 +100,31 @@ public class RottenSlime : Enemy
 
     private void JumpAttack()
     {
-        rb.useGravity = true;
-        agent.destination = player.transform.position;
-        // rb.AddForce(Vector3.down * jumpForce + (player.transform.position - transform.position).normalized * forwardForce, ForceMode.Impulse); for spikey ?    }
+        if (agent.isOnNavMesh)
+        {
+            agent.enabled = false;
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(Vector3.down * 3f, ForceMode.VelocityChange);
+            hasAmbushed = true;
+        }
     }
 
-    void OnCollisionEnter(Collision collision)
+    IEnumerator ReEnableAgent()
     {
+        yield return new WaitForSeconds(0.5f);
+        agent.enabled = true;
+        rb.useGravity = false;
+        rb.linearVelocity = Vector3.zero;
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (!agent.enabled)
+        {
+            StartCoroutine(ReEnableAgent());
+        }
+
         if (collision.gameObject.CompareTag("Player"))
         {
             // Damage the player
