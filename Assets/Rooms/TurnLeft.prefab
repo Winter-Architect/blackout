@@ -38,11 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6096245972046209845, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_Name
-      value: TurnRight
-      objectReference: {fileID: 0}
-    - target: {fileID: 6827439069157636916, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.2
+      value: TurnLeft
       objectReference: {fileID: 0}
     - target: {fileID: 7596802854420837981, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -85,11 +81,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: isRight
+      propertyPath: isLeft
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9074703854634041294, guid: bac07a125af9e9e47bde1c0250fd15be, type: 3}
-      propertyPath: isTurningRight
+      propertyPath: isTurningLeft
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
