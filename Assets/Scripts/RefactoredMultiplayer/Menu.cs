@@ -328,15 +328,13 @@ public class Menu : MonoBehaviour
         LobbyUI.rootVisualElement.visible = true;
         menuUI.rootVisualElement.visible = false;
         TestRelay.Instance.JoinRelay(myCode);
-        
-        
+       
     }
 
 
     public async void HostGame()
     {
         await TestRelay.Instance.CreateRelay();
-        
     }
 
     private void HostGameClicked()
@@ -344,9 +342,6 @@ public class Menu : MonoBehaviour
         LobbyUI.rootVisualElement.visible = true;
         menuUI.rootVisualElement.visible = false;
         HostGame();
-        
-        
-
     }
 
     private void OnExitClicked()
