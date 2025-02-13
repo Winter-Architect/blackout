@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterMixer: {fileID: 24100000, guid: 0855ad0d121cf354b8759c1bcdae3222, type: 2}
   LobbyUI: {fileID: 1843652128}
-  UIDocument: {fileID: 0}
+  menuUI: {fileID: 0}
 --- !u!1 &1843652127
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  lobbyUI: {fileID: 0}
+  lobbyUI: {fileID: 1843652128}
   menuUI: {fileID: 1630159672}
 --- !u!1 &1853412178
 GameObject:
