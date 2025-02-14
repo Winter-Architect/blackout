@@ -78,6 +78,9 @@ public class RoomsGeneration : MonoBehaviour
             room.transform.position = lastRoomExit.position - offset;
         }
 
+        entryPoint.GetComponent<BoxCollider>().enabled = false;
+        exitPoint.GetComponent<BoxCollider>().enabled = false;
+
         GenerateDoor(room);
 
         return room;
