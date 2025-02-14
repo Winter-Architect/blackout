@@ -5,6 +5,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+public class PlayerInventory : MonoBehaviour
+{
+     // the current room's key
+}
+
 public class Agent : NetworkBehaviour, IInteractor
 {
     [SerializeField] private float speed;
@@ -14,8 +20,8 @@ public class Agent : NetworkBehaviour, IInteractor
     [SerializeField] private float currentSpeed = 0.5f;
     [SerializeField] private Transform groundCheck;
 
-    private const float BASE_SPEED = 1f;
-    private const float ACCELERATION = 2f;
+    private const float BASE_SPEED = 16f;
+    private const float ACCELERATION = 1.5f;
 
     [SerializeField] private bool isAirborne = true;
     [SerializeField] private Transform playerCameraPivotTransform;
@@ -38,7 +44,11 @@ public class Agent : NetworkBehaviour, IInteractor
 
     private float xRotation = 0f;
     private float yRotation = 0f;
-
+    
+    //inventory's values
+    
+    public bool hasKey = false;
+    
     public override void OnNetworkSpawn()
     {
         if(!IsOwner)
