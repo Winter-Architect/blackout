@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.WSA;
+using Unity.Netcode;
+using System.Collections.Generic;
 
 public class RoomsGeneration : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class RoomsGeneration : MonoBehaviour
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
+
+    private Dictionary<ulong, NetworkObject> spawnedDoors = new Dictionary<ulong, NetworkObject>();
 
 
 
@@ -81,7 +84,7 @@ public class RoomsGeneration : MonoBehaviour
         entryPoint.GetComponent<BoxCollider>().enabled = false;
         exitPoint.GetComponent<BoxCollider>().enabled = false;
 
-        GenerateDoor(room);
+       // GenerateDoor(room);
 
         return room;
     }
