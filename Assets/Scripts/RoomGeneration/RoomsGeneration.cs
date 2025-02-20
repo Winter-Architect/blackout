@@ -16,12 +16,10 @@ public class RoomsGeneration : MonoBehaviour
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
 
-    private Dictionary<ulong, NetworkObject> spawnedDoors = new Dictionary<ulong, NetworkObject>();
-
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         if (roomPrefabs.roomPrefabs.Length <= 1)
         {
@@ -89,11 +87,11 @@ public class RoomsGeneration : MonoBehaviour
         return room;
     }
 
-    void GenerateDoor(GameObject Room) {
-        GameObject door = Instantiate(DoorPrefab);
-        door.transform.position = Room.transform.Find("Entry").position;
-        door.transform.rotation = Room.transform.Find("Entry").rotation;
-    }
+    // void GenerateDoor(GameObject Room) {
+    //     GameObject door = Instantiate(DoorPrefab);
+    //     door.transform.position = Room.transform.Find("Entry").position;
+    //     door.transform.rotation = Room.transform.Find("Entry").rotation;
+    // }
 
 
     GameObject GetRandomRoom(GameObject PreviousRoom) {
