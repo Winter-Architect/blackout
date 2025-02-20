@@ -5,6 +5,7 @@ public class ProximityPrompt : MonoBehaviour
 {
     public GameObject promptUI; // Assign a UI element in the Inspector
     private bool canInteract = false;
+    
     private Agent playerAgent; // Reference to the player's Agent script
 
     void Start()

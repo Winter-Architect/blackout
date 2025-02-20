@@ -4,13 +4,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-
-public class PlayerInventory : MonoBehaviour
-{
-     // the current room's key
-}
-
+using UnityEngine.UI;
 public class Agent : NetworkBehaviour, IInteractor
 {
     [SerializeField] private float speed;
@@ -48,7 +42,6 @@ public class Agent : NetworkBehaviour, IInteractor
     //inventory's values
     
     public bool hasKey = false;
-    
     public override void OnNetworkSpawn()
     {
         if(!IsOwner)
@@ -94,7 +87,6 @@ public class Agent : NetworkBehaviour, IInteractor
             }
         }
         CheckAirborne();
-
     }
 
     void FixedUpdate()
