@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CodePadHolder : MonoBehaviour, IInteractable
+public class CodePadHolder : MonoBehaviour//, IInteractable
 {
 
     [SerializeField] private GameObject codeUI;
