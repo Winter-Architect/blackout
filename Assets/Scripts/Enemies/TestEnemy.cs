@@ -20,10 +20,6 @@ public class TestEnemy : Enemy
 
     private bool isHeard;
     
-    public TestEnemy(float hp) : base(hp)
-    {
-    }
-    
     
     void Awake()
     {
