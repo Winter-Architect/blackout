@@ -118,7 +118,7 @@ public class SpikeyEnemy : Enemy
         {
             agent.enabled = false;
             rb.useGravity = true;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
 
             Vector3 attackDirection = (player.transform.position - transform.position).normalized;
             rb.AddForce(attackDirection * 10f, ForceMode.VelocityChange);
@@ -142,7 +142,7 @@ public class SpikeyEnemy : Enemy
 
         agent.enabled = true;
         rb.useGravity = false;
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
 
         ReturnToCeiling();
     }
