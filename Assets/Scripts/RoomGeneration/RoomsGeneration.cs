@@ -1,12 +1,7 @@
 using UnityEngine;
-using Unity.Netcode;
-using System.Collections.Generic;
 
 public class RoomsGeneration : MonoBehaviour
 {
-    
-    //public GameObject[] roomPrefabs; // Tes différentes salles
-
     public Rooms roomPrefabs;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
@@ -19,7 +14,7 @@ public class RoomsGeneration : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    void Start()
     {
         if (roomPrefabs.roomPrefabs.Length <= 1)
         {
@@ -82,16 +77,16 @@ public class RoomsGeneration : MonoBehaviour
         entryPoint.GetComponent<BoxCollider>().enabled = false;
         exitPoint.GetComponent<BoxCollider>().enabled = false;
 
-       // GenerateDoor(room);
+        GenerateDoor(room);
 
         return room;
     }
 
-    // void GenerateDoor(GameObject Room) {
-    //     GameObject door = Instantiate(DoorPrefab);
-    //     door.transform.position = Room.transform.Find("Entry").position;
-    //     door.transform.rotation = Room.transform.Find("Entry").rotation;
-    // }
+    void GenerateDoor(GameObject Room) {
+        GameObject door = Instantiate(DoorPrefab);
+        door.transform.position = Room.transform.Find("Entry").position;
+        door.transform.rotation = Room.transform.Find("Entry").rotation;
+    }
 
 
     GameObject GetRandomRoom(GameObject PreviousRoom) {
