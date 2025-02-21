@@ -1,5 +1,7 @@
+using System;
 using System.Buffers.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,8 +15,15 @@ public class PlayerInventory : MonoBehaviour
 
 public class Agent : NetworkBehaviour, IInteractor
 {
-    [SerializeField] private float speed;
 
+    private AgentInteractionHandler handler = new AgentInteractionHandler();
+
+    private SphereCollider myCheckTrigger;
+    [SerializeField] private float interactionRange;
+
+    LinkedList<BaseInteractable> interactablesInRange = new LinkedList<BaseInteractable>();
+    LinkedListNode<BaseInteractable> currentSelectedInteractable;
+    [SerializeField] private float speed;
     [SerializeField] private float jumpForce = 20f;
 
     [SerializeField] private float currentSpeed = 0.5f;
@@ -51,28 +60,32 @@ public class Agent : NetworkBehaviour, IInteractor
     
     public override void OnNetworkSpawn()
     {
+        myCheckTrigger = gameObject.AddComponent<SphereCollider>();
+        myCheckTrigger.isTrigger = true;
+        myCheckTrigger.radius = interactionRange;
+
         if(!IsOwner)
         {
             playerCamera.gameObject.SetActive(false);
             return;
-        }       
-        playerRigidbody = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
-        StartCoroutine("DelayedStart");
+        }      
+                                                                                                                                                                                                                                                                                        playerRigidbody = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked; 
         
     
     }
 
-    IEnumerator DelayedStart()
-    {
-        yield return new WaitForSeconds(0.5f);
-        //TutorialManager.Instance.StartTutorial("player1");
-    }
-
     void Update()
     {
+
+        SwitchCurrentInteractable();
         if(!IsOwner){
             return;
+        }
+        if(currentSelectedInteractable is not null)
+        {
+            Debug.Log(currentSelectedInteractable.Value.gameObject.name);
+
         }
         //Get Input
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
@@ -85,16 +98,64 @@ public class Agent : NetworkBehaviour, IInteractor
             Jump();
         }
 
-        if(Input.GetKeyDown(KeyCode.E)){
-            RaycastHit hit;
-
-            if(Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, 3f) && hit.collider.gameObject.TryGetComponent<IInteractable>(out var myInteractable))
+        if(currentSelectedInteractable is not null)
+        {
+            if(currentSelectedInteractable.Value.gameObject.TryGetComponent<Outline>(out var outline))
             {
-                InteractWith(myInteractable);
+                outline.OutlineColor = Color.red;
+            }            
+
+            
+            if(Input.GetKey(KeyCode.E))
+            {
+                InteractWith(currentSelectedInteractable.Value);
             }
         }
+
+
         CheckAirborne();
 
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<IInteractable>(out IInteractable myInteractable))
+        {
+            if(!interactablesInRange.Contains((BaseInteractable)myInteractable))
+            {
+                interactablesInRange.AddLast((BaseInteractable)myInteractable);
+                currentSelectedInteractable = interactablesInRange.First;
+            }
+        }   
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<IInteractable>(out IInteractable myInteractable))
+        {
+            if(interactablesInRange.Contains((BaseInteractable)myInteractable))
+            {
+                interactablesInRange.Remove((BaseInteractable)myInteractable);
+            }
+            if(interactablesInRange.Count == 0)
+            {
+                currentSelectedInteractable = null;
+            }
+        }   
+    }
+
+    private void SwitchCurrentInteractable()
+
+    {
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
+            currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List.First;
+        }
+        else if(Input.GetKeyDown(KeyCode.P))
+        {
+            currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
+            currentSelectedInteractable = currentSelectedInteractable.Previous ?? currentSelectedInteractable.List.Last;
+        }
     }
 
     void FixedUpdate()
@@ -113,6 +174,7 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             currentSpeed = 0.5f;
         }
+    
         
     }
 
@@ -179,18 +241,31 @@ public class Agent : NetworkBehaviour, IInteractor
             animator.SetTrigger("Jump");
             isAirborne = true;
         }
-        
     }
 
-    public bool canInteract(IInteractable interactable)
+    public bool CanInteract(IInteractable interactable)
     {
         return true;
     }
 
     public void InteractWith(IInteractable interactable)
     {
-        if(canInteract(interactable)){
-            interactable.acceptInteraction(this);
+        if(CanInteract(interactable)){
+            interactable.AcceptInteraction(handler);
+        }
+    }
+
+    public class AgentInteractionHandler : IInteractionHandler
+    {
+        //Definir interactions de base avec differents types dInteractables, genre clic de bouton = animation
+        public void InteractWith(BaseInteractable interactable)
+        {
+            Debug.Log("Clicked");
+        }
+
+        public void InteractWith(InteractableButton button)
+        {
+            Debug.Log("Clicked 22");
         }
     }
 }
