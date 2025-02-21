@@ -11,6 +11,7 @@ namespace Blackout.Inventory
         public string itemName;
         public TextMeshProUGUI itemText;
         public Image selectedItem;
+        public Image ItemSlot;
         private bool selected = false;
         public Sprite icon;
 
@@ -27,6 +28,8 @@ namespace Blackout.Inventory
                 selectedItem.sprite = icon;
                 itemText.text = itemName;
             }
+            ItemSlot.sprite = icon;
+
         }
 
         public void Selected() {
@@ -36,7 +39,7 @@ namespace Blackout.Inventory
         
         public void Deselected() {
             selected = false; 
-            InventoryController.selectedItemId = 0;
+           // InventoryController.selectedItemId = 0;
         }
 
         public void HoverEnter() {

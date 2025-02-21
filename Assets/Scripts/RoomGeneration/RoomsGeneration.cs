@@ -1,11 +1,7 @@
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class RoomsGeneration : MonoBehaviour
 {
-    
-    //public GameObject[] roomPrefabs; // Tes différentes salles
-
     public Rooms roomPrefabs;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 

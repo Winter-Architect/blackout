@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,38 +11,46 @@ namespace Blackout.Inventory
         public Image selectedItem;
         public Sprite noImage;
         public static int selectedItemId = 0;
+        public Dictionary<int, Item> inventory = new Dictionary<int, Item>();
+        // public List<Image> inventorySlots = new List<Image>();
+        public List<InventoryButtonController> inventorySlots = new List<InventoryButtonController>();
+        public List<int> freeSlots = new List<int>(){0,1,2,3,4,5};
 
+        void Start()
+        {
+            for (int i = 0; i < inventory.Count; i++) {
+                inventorySlots[i].icon = inventory[i].Icon;
+                freeSlots.Remove(i);
+            }
+            //inventorySlots1[0].icon = null; //= inventory[0].Icon
+        }
+ 
         // Update is called once per frame
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab)) InvWheelSelected = !InvWheelSelected;
             anim.SetBool("OpenInv", InvWheelSelected);
+        }
 
-            switch (selectedItemId) {
-                case 0:
-                    selectedItem.sprite = noImage;
-                    break;  
-                case 1:
-                    Debug.Log("Selected Item 1");
+        public void AddItemToInventory(Item obj) {
+            inventory.Add(freeSlots[0], obj);
+            selectedItemId = obj.Id;
+            inventorySlots[freeSlots[0]].icon = obj.Icon;
+            inventorySlots[freeSlots[0]].itemName = obj.Name;
+            freeSlots.RemoveAt(0);
+        }
+
+        public void RemoveItemFromInv(Item obj) {
+            foreach (var objec in inventory) {
+                if (objec.Value == obj) {
+                    inventory.Remove(objec.Key);
+                    selectedItemId = 0;
+
+                    freeSlots.Add(objec.Key);
+                    inventorySlots[objec.Key].icon = noImage;
+                    inventorySlots[objec.Key].itemName = "";
                     break;
-                case 2:
-                    Debug.Log("Selected Item 2");
-                    break;
-                case 3:
-                    Debug.Log("Selected Item 3");
-                    break;
-                case 4:
-                    Debug.Log("Selected Item 4");
-                    break;
-                case 5:
-                    Debug.Log("Selected Item 5");
-                    break;
-                case 6:
-                    Debug.Log("Selected Item 6");
-                    break;
-                case 7:
-                    Debug.Log("Selected Item 7");
-                    break;
+                }
             }
         }
     }
