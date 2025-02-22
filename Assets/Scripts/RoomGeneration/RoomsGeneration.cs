@@ -3,6 +3,7 @@ using UnityEngine;
 public class RoomsGeneration : MonoBehaviour
 {
     public Rooms roomPrefabs;
+    public Room endRoom;
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
     public GameObject DoorPrefab;
@@ -38,6 +39,27 @@ public class RoomsGeneration : MonoBehaviour
         {
            currRoom = GenerateRoom(currRoom);
         }
+
+        if (endRoom != null)
+        {
+            GameObject room = Instantiate(endRoom.gameObject);
+            Transform entryPoint = room.transform.Find("Entry");
+            Transform lastRoomExit = currRoom.transform.Find("Exit");
+
+            if (entryPoint == null || lastRoomExit == null)
+            {
+                Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
+                return;
+            }
+
+            float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
+            room.transform.Rotate(Vector3.up, angleDifference);
+
+            Vector3 offset = entryPoint.position - room.transform.position;
+            room.transform.position = lastRoomExit.position - offset;
+
+            entryPoint.GetComponent<BoxCollider>().enabled = false;
+        } else Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
     }
 
 
