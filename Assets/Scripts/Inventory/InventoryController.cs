@@ -33,6 +33,10 @@ namespace Blackout.Inventory
         }
 
         public void AddItemToInventory(Item obj) {
+            if (freeSlots.Count == 0) {
+                Debug.Log("Inventory is full");
+                return;
+            }
             inventory.Add(freeSlots[0], obj);
             selectedItemId = obj.Id;
             inventorySlots[freeSlots[0]].icon = obj.Icon;
