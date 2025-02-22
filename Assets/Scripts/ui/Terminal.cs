@@ -109,13 +109,13 @@ public class Terminal : MonoBehaviour
     }
 
     void DisplayMap() {
-        AddMessageToTerminal("map", true);
         if (isMapOpen) {
             MapContainer.style.display = DisplayStyle.None;
             ScrollContainer.style.display = DisplayStyle.Flex;
             isMapOpen = false;
             OpenMapButton.text = "Close Map";
         } else {
+            AddMessageToTerminal("map", true);
             MapContainer.style.display = DisplayStyle.Flex;
             ScrollContainer.style.display = DisplayStyle.None;
             isMapOpen = true;
