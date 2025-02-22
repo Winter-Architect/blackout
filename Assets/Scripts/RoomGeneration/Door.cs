@@ -8,12 +8,9 @@ public class Door : MonoBehaviour
     public string OpenCloseAnnimBoolName;
 
     void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Door Triggered");
-        
+    {        
         if (other.CompareTag(PlayerTag))
         {
-            Debug.Log("Player Detected");
             Animator.SetBool(OpenCloseAnnimBoolName, true);
         }
     }
