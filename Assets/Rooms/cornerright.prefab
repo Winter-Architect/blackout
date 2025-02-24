@@ -485,6 +485,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5373872309869575350}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6847123837078593546}
     - targetCorrespondingSourceObject: {fileID: -4673698229946128718, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4702901737679400202}
@@ -1553,6 +1556,19 @@ MonoBehaviour:
   isTurningRight: 1
   isStairs: 0
   Weight: 3
+--- !u!114 &-6847123837078593546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946710213189345572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff6e11b52b64e5696f699f6de7dd076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surface: {fileID: 0}
 --- !u!1 &8334003377397672127 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1234365554930889930, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}

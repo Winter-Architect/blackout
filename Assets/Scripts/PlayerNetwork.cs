@@ -44,7 +44,6 @@ public class PlayerNetwork : NetworkBehaviour, IDamageable
         {
             GetDestroyed();
         }
-        Debug.Log("hit");
         this.hp -= dmg;
     }
 
