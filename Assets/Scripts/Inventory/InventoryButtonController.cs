@@ -6,7 +6,6 @@ namespace Blackout.Inventory
 {
     public class InventoryButtonController : MonoBehaviour
     {
-        public int Id;
         private Animator anim;
         public string itemName;
         public TextMeshProUGUI itemText;
@@ -34,7 +33,7 @@ namespace Blackout.Inventory
 
         public void Selected() {
             selected = true;
-            InventoryController.selectedItemId = Id;
+            // InventoryController.selectedItemId = Id;
         }
         
         public void Deselected() {

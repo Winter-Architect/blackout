@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using Blackout.Inventory;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -57,6 +58,8 @@ public class Agent : NetworkBehaviour, IInteractor
     //inventory's values
     
     public bool hasKey = false;
+
+    public Item CurrentItemSelected = InventoryController.selectedItem;
     
     public override void OnNetworkSpawn()
     {

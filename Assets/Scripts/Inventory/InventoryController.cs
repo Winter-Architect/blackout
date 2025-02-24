@@ -8,9 +8,9 @@ namespace Blackout.Inventory
     {
         public Animator anim;
         private bool InvWheelSelected = false;
-        public Image selectedItem;
+        public Image selectedItemImage;
         public Sprite noImage;
-        public static int selectedItemId = 0;
+        public static Item selectedItem = null;
         public Dictionary<int, Item> inventory = new Dictionary<int, Item>();
         // public List<Image> inventorySlots = new List<Image>();
         public List<InventoryButtonController> inventorySlots = new List<InventoryButtonController>();
@@ -38,7 +38,7 @@ namespace Blackout.Inventory
                 return;
             }
             inventory.Add(freeSlots[0], obj);
-            selectedItemId = obj.Id;
+            selectedItem = obj;
             inventorySlots[freeSlots[0]].icon = obj.Icon;
             inventorySlots[freeSlots[0]].itemName = obj.Name;
             freeSlots.RemoveAt(0);
@@ -48,7 +48,7 @@ namespace Blackout.Inventory
             foreach (var objec in inventory) {
                 if (objec.Value == obj) {
                     inventory.Remove(objec.Key);
-                    selectedItemId = 0;
+                    selectedItem = null;
 
                     freeSlots.Add(objec.Key);
                     inventorySlots[objec.Key].icon = noImage;
