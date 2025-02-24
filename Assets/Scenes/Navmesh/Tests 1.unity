@@ -338,8 +338,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   agent: {fileID: 168759296}
   animator: {fileID: 0}
-  speed: 10
-  attackForce: 45
+  speed: 6
+  attackForce: 20
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -355,7 +355,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -334000983
   m_Radius: 0.5000001
-  m_Speed: 10
+  m_Speed: 6
   m_Acceleration: 140
   avoidancePriority: 50
   m_AngularSpeed: 300
