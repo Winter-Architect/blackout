@@ -1753,8 +1753,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomPrefabs: {fileID: 11400000, guid: 5a46ce6666d51874ca526179a0e27e22, type: 2}
+  endRoom: {fileID: 0}
   numberOfRooms: 20
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+  navMeshSurface: {fileID: 0}
 --- !u!1 &1247526735
 GameObject:
   m_ObjectHideFlags: 0

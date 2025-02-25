@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -11,10 +11,9 @@ public class SpikeyEnemy : Enemy
     private int range;
     private bool isReturningToCeiling;
     private Rigidbody rb;
-    private PlayerNetwork player;
+    private GameObject player;
     private bool isAttacking = false;
 
-    [SerializeField] private float speed = 10f;
     [SerializeField] private float attackForce = 15f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform ceilingPosition;
@@ -22,6 +21,8 @@ public class SpikeyEnemy : Enemy
 
     private float timeElapsed;
     private float timeAmbushCheck;
+
+    private bool ambush = false;
     
     
 
@@ -47,20 +48,18 @@ public class SpikeyEnemy : Enemy
     {
         var ambushState = new EnemyAmbushState(this, animator);
         var runAwayState = new EnemyRunAwayState(this, animator);
+        var patrolState = new EnemyPatrolState(this, animator);
 
-        
-        // State transitions
         At(ambushState, runAwayState, new FuncPredicate(() => isReturningToCeiling && agent.isOnNavMesh));
-        At(runAwayState, ambushState, new FuncPredicate(() => !isReturningToCeiling && agent.isOnNavMesh));
-            
-        // Initialize in ambush state, suspended from ceiling
+        At(patrolState, ambushState, new FuncPredicate(() => ambush));
+        At(runAwayState, patrolState, new FuncPredicate(() => !isReturningToCeiling));
+        stateMachine.SetState(patrolState);
+        
         MoveToInitialCeilingPosition();
-        stateMachine.SetState(ambushState);
     }
-
+    
     private void MoveToInitialCeilingPosition()
     {
-        // Move to ceiling position at start
         if (ceilingPosition != null)
         {
             transform.position = ceilingPosition.position;
@@ -69,35 +68,12 @@ public class SpikeyEnemy : Enemy
                 agent.Warp(ceilingPosition.position);
             }
         }
+        
     }
-
     public override void Patrol()
     {
-        if (!walkpointSet)
-        {
-            SetNextDest();
-        }
-        if (walkpointSet)
-        {
-            agent.SetDestination(dest);
-        }
-        if (Vector3.Distance(transform.position, dest) < 2)
-        {
-            walkpointSet = false;
-        }
-    }
-
-    public override void Attack()
-    {
-        if (agent.isOnNavMesh && !isAttacking)
-        {
-            agent.destination = sensorDetector.Target.transform.position;
-        }
-    }
-
-    public override void Ambush()
-    {
         agent.speed = 3f;
+
         if (!walkpointSet)
         {
             SetNextDest();
@@ -106,7 +82,7 @@ public class SpikeyEnemy : Enemy
         {
             agent.SetDestination(dest);
         }
-        if (Vector3.Distance(transform.position, dest) < 2)
+        if (Vector3.Distance(transform.position, dest) < 1)
         {
             walkpointSet = false;
         }
@@ -116,25 +92,11 @@ public class SpikeyEnemy : Enemy
 
             if (player == null)
             {
-                player = PlayerNetwork.LocalPlayer;
+                player = fieldOfView.Target;
             }
             if (timeElapsed >= timeAmbushCheck)
             {
-                if (player != null)
-                {
-                    RaycastHit hit;
-                    Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-                
-                    if (Physics.Raycast(transform.position, directionToPlayer, out hit, Mathf.Infinity))
-                    {
-                        if (hit.collider.CompareTag("Player"))
-                        {
-                            SpikeAttack();
-                        }
-                    }
-
-                    timeElapsed = 0;
-                }
+                ambush = true;
             }
             else
             {
@@ -154,46 +116,68 @@ public class SpikeyEnemy : Enemy
         }
     }
 
+    public override void Attack()
+    {
+        if (agent.isOnNavMesh && !isAttacking)
+        {
+            agent.destination = sensorDetector.Target.transform.position;
+        }
+    }
+
+    public override void Ambush()
+    {
+        Debug.Log("Ambush: step 0");
+        
+        if (player != null)
+        {
+            Debug.Log("Ambush: step 1");
+            RaycastHit hit;
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+        
+            if (Physics.Raycast(transform.position, directionToPlayer, out hit, Mathf.Infinity))
+            {
+                Debug.Log("Ambush: step 2");
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.Log("Ambush: step 3");
+                    SpikeAttack();
+                }
+            }
+
+            timeElapsed = 0;
+            ambush = false;
+        }
+        else
+        {
+            player = fieldOfView.Target;
+        }
+        
+    }
+
     public override void RunAway()
     {
         agent.speed = 6f;
-        // Check if agent is valid
         if (!agent.isOnNavMesh || isAttacking) 
         {
             return;
         }
 
-        // Set speed to maximum for returning to ceiling
-        
-        // Ensure we're heading to the ceiling
         agent.SetDestination(ceilingPosition.position);
         
-        // Debug info to track progress
         float distanceToCeiling = Vector3.Distance(transform.position, ceilingPosition.position);
         
-        // If we're close enough to the ceiling, consider it reached
         if (distanceToCeiling < ceilingReturnDistance)
         {
-            // Snap to exact ceiling position
             transform.position = ceilingPosition.position;
             transform.rotation = ceilingPosition.rotation;
             
             isReturningToCeiling = false;
-            
-            Debug.Log("RunAway: Reached ceiling position");
         }
-        else if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        else if (!agent.pathPending && agent.remainingDistance < 0.2f)
         {
-            // If the path is complete but we're not at the ceiling, try direct teleport
-            Debug.LogWarning("RunAway: Path complete but not at ceiling, teleporting");
             transform.position = ceilingPosition.position;
             agent.Warp(ceilingPosition.position);
             isReturningToCeiling = false;
-        }
-        else
-        {
-            // Still on the way to ceiling
-            Debug.Log($"RunAway: Distance to ceiling: {distanceToCeiling:F2}, Remaining: {agent.remainingDistance:F2}");
         }
     }
 
@@ -227,25 +211,19 @@ public class SpikeyEnemy : Enemy
         {
             isAttacking = true;
             
-            // Disable NavMeshAgent and enable gravity for the jump
             agent.enabled = false;
             rb.useGravity = true;
             rb.linearVelocity = Vector3.zero;
-
-            // Calculate direction to player
+            
             if (player == null)
             {
-                player = PlayerNetwork.LocalPlayer;
+                player = fieldOfView.Target;
             }
             
-            // Calculate the attack direction
             Vector3 attackDirection = (player.transform.position - transform.position).normalized;
-
-            // Add upward arc (optional)
-            //attackDirection.y = 0.5f;
+            
             attackDirection = attackDirection.normalized;
 
-            // Apply force with fixed direction but scalable speed
             rb.linearVelocity = attackDirection * attackForce;
             
             StartCoroutine(ReturnToCeilingAfterAttack());
@@ -254,6 +232,7 @@ public class SpikeyEnemy : Enemy
 
     IEnumerator ReturnToCeilingAfterAttack()
     {
+        Debug.Log("ReturnToCeilingAfterAttack");
         yield return new WaitForSeconds(0.3f);
         
         float groundCheckTimeout = 3f;
@@ -270,8 +249,7 @@ public class SpikeyEnemy : Enemy
             rb.linearVelocity = Vector3.zero;
         }
         
-        yield return new WaitForSeconds(0.5f);
-        
+        yield return new WaitForSeconds(0.3f);
         NavMeshHit hit;
         if (NavMesh.SamplePosition(transform.position, out hit, 3f, NavMesh.AllAreas))
         {
