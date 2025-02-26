@@ -16,7 +16,6 @@ public class RottenSlime : Enemy
     [SerializeField] private float jumpForce = 30f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance = 1f;
-    [SerializeField] private float navMeshSearchRadius = 3f;
 
     void Awake()
     {
@@ -93,9 +92,19 @@ public class RottenSlime : Enemy
         float z = Random.Range(-range, range);
         float x = Random.Range(-range, range);
 
+        Vector3 randomPoint = transform.position + new Vector3(x, 0, z);
+
+        while (!CanReachDestination(randomPoint))
+        {
+            z = Random.Range(-range, range);
+            x = Random.Range(-range, range);
+
+            randomPoint = transform.position + new Vector3(x, 0, z);
+        }
+
         dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
-        
-        if (Physics.Raycast(dest, Vector3.down, groundLayer))
+
+        if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
             walkpointSet = true;
         }
@@ -172,5 +181,19 @@ public class RottenSlime : Enemy
                 damageable.TakeDamage(20, 0);
             }
         }
+    }
+    
+    bool CanReachDestination(Vector3 destination)
+    {
+        NavMeshPath path = new NavMeshPath();
+
+        bool hasPath = NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+        
+        if (hasPath && path.status == NavMeshPathStatus.PathComplete)
+        {
+            return true;
+        }
+        
+        return false;
     }
 }
