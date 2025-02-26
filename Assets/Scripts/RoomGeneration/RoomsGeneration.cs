@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class RoomsGeneration : MonoBehaviour
@@ -11,8 +12,9 @@ public class RoomsGeneration : MonoBehaviour
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
-
-
+     
+    private System.Random random = new System.Random(0);
+     public NavMeshSurface navMeshSurface;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,6 +62,8 @@ public class RoomsGeneration : MonoBehaviour
 
             entryPoint.GetComponent<BoxCollider>().enabled = false;
         } else Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
+        
+        BakeNavMesh();
     }
 
 
@@ -100,6 +104,8 @@ public class RoomsGeneration : MonoBehaviour
         exitPoint.GetComponent<BoxCollider>().enabled = false;
 
         GenerateDoor(room);
+        
+        BakeNavMesh();
 
         return room;
     }
@@ -164,5 +170,13 @@ public class RoomsGeneration : MonoBehaviour
         }
         lastRoomIsStairs = isStairs;
          return room;
+    }
+    
+    void BakeNavMesh()
+    {
+        if (navMeshSurface != null)
+        {
+            navMeshSurface.BuildNavMesh();
+        }
     }
 }
