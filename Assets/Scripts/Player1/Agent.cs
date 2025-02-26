@@ -53,7 +53,7 @@ public class Agent : NetworkBehaviour, IInteractor
 
     [SerializeField] private ItemLibrary ItemLibrary;
 
-    private Item[] inventory = new Item[6];
+    private static Item[] inventory = new Item[6];
     private bool isItemEquipped = false;
     private int activeInventorySlot = 0;
 
@@ -81,16 +81,34 @@ public class Agent : NetworkBehaviour, IInteractor
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
-        inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
+       // inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
 
+    }
+
+    public static void AddItemToAgentInventory(Item item)
+    {
+        for(int i = 0; i < inventory.Length; i++)
+        {
+            if(inventory[i] == null)
+            {
+                inventory[i] = item;
+                break;
+            }
+        }
     }
 
     private void EquipItem()
     {
         Debug.Log("EquipItem " + activeInventorySlot);
         isItemEquipped = !isItemEquipped;
+        
         if(isItemEquipped)
         {
+            if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
+        {
+            Debug.LogWarning("Item not found, update ItemManager from editor");
+            return;
+        }
             CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
         }
         else

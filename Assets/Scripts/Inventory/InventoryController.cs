@@ -45,6 +45,7 @@ namespace Blackout.Inventory
             inventorySlots[freeSlots[0]].icon = obj.Icon;
             inventorySlots[freeSlots[0]].itemName = obj.Name;
             freeSlots.RemoveAt(0);
+            Agent.AddItemToAgentInventory(obj);
         }
 
         public void RemoveItemFromInv(Item obj) {
