@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -1728793266613012373}
   - component: {fileID: -8593963484617424132}
   - component: {fileID: 456005729319299496}
+  - component: {fileID: -1130865184387034874}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Player
@@ -41,6 +42,7 @@ Transform:
   - {fileID: 1314080974770665663}
   - {fileID: 5298109457999565240}
   - {fileID: 2300341634170757851}
+  - {fileID: 965230340098481352}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6134776210105272803
@@ -260,6 +262,26 @@ MonoBehaviour:
   grapplingCd: 1
   grappleKey: 323
   overshootYAxis: 0
+--- !u!114 &-1130865184387034874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405543384454761265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ed8f510f51392468add04e192e7762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 6594598655190588432}
+  attackPoint: {fileID: 965230340098481352}
+  objectToThrow: {fileID: 4805795883710166628, guid: a779535a60ffdd146b89589784cc3025, type: 3}
+  totalThrows: 1000
+  throwCooldown: 30
+  throwKey: 97
+  throwForce: 20
+  throwUpwardForce: 0
 --- !u!1 &1705037762319420277
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,6 +400,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8347437623765638896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4389257214258189323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 965230340098481352}
+  m_Layer: 0
+  m_Name: LaunchPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &965230340098481352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389257214258189323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.008, y: 0.255, z: 0.118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
