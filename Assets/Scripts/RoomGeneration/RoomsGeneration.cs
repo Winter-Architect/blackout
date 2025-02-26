@@ -13,6 +13,7 @@ public class RoomsGeneration : MonoBehaviour
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
      
+    private System.Random random = new System.Random(0);
      public NavMeshSurface navMeshSurface;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
