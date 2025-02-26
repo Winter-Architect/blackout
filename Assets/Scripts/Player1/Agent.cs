@@ -58,7 +58,6 @@ public class Agent : NetworkBehaviour, IInteractor
     private int activeInventorySlot = 0;
 
     private GameObject currentlyEquippedItem;
-    private GameObject prefabItem;
 
     public bool freeze = false;
     private bool enableMovementOnNextTouch;
@@ -80,7 +79,7 @@ public class Agent : NetworkBehaviour, IInteractor
 
         playerRigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked; 
-        inventory[activeInventorySlot] = ItemLibrary.GrapplingHook;
+        inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
 
     }
 
