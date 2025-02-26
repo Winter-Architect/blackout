@@ -1,22 +1,18 @@
+
 using System;
-using System.Buffers.Text;
-using System.Collections;
 using System.Collections.Generic;
+using Blackout.Inventory;
 using Unity.Netcode;
-using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-
-public class PlayerInventory : MonoBehaviour
-{
-     // the current room's key
-}
 
 public class Agent : NetworkBehaviour, IInteractor
 {
 
     private AgentInteractionHandler handler = new AgentInteractionHandler();
+
+    public bool canGrapple;
 
     private SphereCollider myCheckTrigger;
     [SerializeField] private float interactionRange;
@@ -24,17 +20,18 @@ public class Agent : NetworkBehaviour, IInteractor
     LinkedList<BaseInteractable> interactablesInRange = new LinkedList<BaseInteractable>();
     LinkedListNode<BaseInteractable> currentSelectedInteractable;
     [SerializeField] private float speed;
-    [SerializeField] private float jumpForce = 20f;
 
-    [SerializeField] private float currentSpeed = 0.5f;
+    [SerializeField] private float jumpForce = 10f;
+
+    [SerializeField] private float currentSpeed = 0;
     [SerializeField] private Transform groundCheck;
 
-    private const float BASE_SPEED = 16f;
+    private const float BASE_SPEED = 3f;
+    private const float MAX_SPEED = BASE_SPEED * 1.5f;
     private const float ACCELERATION = 1.5f;
-
     [SerializeField] private bool isAirborne = true;
     [SerializeField] private Transform playerCameraPivotTransform;
-    [SerializeField] private Transform playerCamera;
+    [SerializeField] public Transform playerCamera;
 
     [SerializeField] private Transform playerBody;
     [SerializeField] private float xMouseSensitivity = 2f;
@@ -48,18 +45,29 @@ public class Agent : NetworkBehaviour, IInteractor
     private float yMouseInput;
 
     private bool shiftPressed;
-
     private bool isMoving;
-
     private float xRotation = 0f;
     private float yRotation = 0f;
-    
-    //inventory's values
-    
+    [SerializeField] private GameObject playerRightHandSlot;    
     public bool hasKey = false;
+
+    [SerializeField] private ItemLibrary ItemLibrary;
+
+    private Item[] inventory = new Item[6];
+    private bool isItemEquipped = false;
+    private int activeInventorySlot = 0;
+
+    private GameObject currentlyEquippedItem;
+    private GameObject prefabItem;
+
+    public bool freeze = false;
+    private bool enableMovementOnNextTouch;
+
+    public bool activeGrapple;
     
     public override void OnNetworkSpawn()
     {
+
         myCheckTrigger = gameObject.AddComponent<SphereCollider>();
         myCheckTrigger.isTrigger = true;
         myCheckTrigger.radius = interactionRange;
@@ -69,32 +77,78 @@ public class Agent : NetworkBehaviour, IInteractor
             playerCamera.gameObject.SetActive(false);
             return;
         }      
-                                                                                                                                                                                                                                                                                        playerRigidbody = GetComponent<Rigidbody>();
+
+        playerRigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked; 
-        
-    
+        inventory[activeInventorySlot] = ItemLibrary.GrapplingHook;
+
+    }
+
+    private void EquipItem()
+    {
+        isItemEquipped = !isItemEquipped;
+        if(isItemEquipped)
+        {
+            CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
+        }
+        else
+        {
+            CallUnequipItemServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    private void CallEquipItemServerRpc(int prefabId)
+    {
+        EquipItemLocalClientRpc(prefabId);
+    }
+    [ClientRpc]
+    private void EquipItemLocalClientRpc(int prefabId)
+    {
+        GameObject prefab = ItemManager.Instance.GetPrefabById(prefabId);
+        if (prefab == null)
+        {
+            Debug.LogError("Item not found, update ItemManager from editor");
+            return;
+        }
+        GameObject item = Instantiate(prefab, playerRightHandSlot.transform);
+        currentlyEquippedItem = item;
+    }
+
+    [ServerRpc]
+    private void CallUnequipItemServerRpc()
+    {
+        UnEquipItemLocalClientRpc();
+    }
+    [ClientRpc]
+    private void UnEquipItemLocalClientRpc()
+    {
+        Destroy(currentlyEquippedItem);
+        currentlyEquippedItem = null;
+
     }
 
     void Update()
     {
-
         SwitchCurrentInteractable();
+        CheckAirborne();
         if(!IsOwner){
             return;
         }
+        CheckIfCanGrapple();
         if(currentSelectedInteractable is not null)
         {
             Debug.Log(currentSelectedInteractable.Value.gameObject.name);
 
         }
-        //Get Input
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
         xMouseInput = Input.GetAxis("Mouse X");
         yMouseInput = -Input.GetAxis("Mouse Y");
 
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(Input.GetKeyDown(KeyCode.Space) && !isAirborne && !freeze){
+            animator.SetBool("IsJumping", true);
             Jump();
         }
 
@@ -112,9 +166,29 @@ public class Agent : NetworkBehaviour, IInteractor
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            EquipItem();
+        }
+    }
 
-        CheckAirborne();
+    void CheckIfCanGrapple()
+    {
+        canGrapple = currentlyEquippedItem is not null && currentlyEquippedItem.TryGetComponent<GrapplingHook>(out var hook); //CODE AFFREUX
 
+    }
+
+    public void ResetResctrictions(){
+        activeGrapple = false;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(enableMovementOnNextTouch){
+            enableMovementOnNextTouch = false;
+            ResetResctrictions();
+
+            GetComponent<Grappling>().StopGrapple();
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -128,6 +202,8 @@ public class Agent : NetworkBehaviour, IInteractor
             }
         }   
     }
+
+    
     void OnTriggerExit(Collider other)
     {
         if(other.gameObject.TryGetComponent<IInteractable>(out IInteractable myInteractable))
@@ -142,7 +218,6 @@ public class Agent : NetworkBehaviour, IInteractor
             }
         }   
     }
-
     private void SwitchCurrentInteractable()
 
     {
@@ -158,30 +233,47 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
+
     void FixedUpdate()
     {
         if(!IsOwner){
             return;
         }
-        isMoving = xInput != 0 || yInput != 0;
-        Animate();
+        if(activeGrapple){
+            playerRigidbody.linearDamping = 0;
+        }
+        else{
+            playerRigidbody.linearDamping = 1;
+        }
         ControlCamera();
-        if(xInput != 0 || yInput != 0)
+
+        if(!freeze)
         {
-            Move();
+            isMoving = xInput != 0 || yInput != 0;
+            Animate();
+            
+            if(xInput != 0 || yInput != 0)
+            {
+                Move();
+            }
+            else
+            {
+                currentSpeed = 0f;
+            }
         }
         else
         {
-            currentSpeed = 0.5f;
+            currentSpeed = 0;
+            playerRigidbody.linearVelocity = Vector3.zero;
+            
         }
-    
         
     }
 
     void CheckAirborne()
     {
         RaycastHit hit;
-        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.07f * transform.localScale.y)){
+        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.01f * transform.localScale.y)){
             isAirborne = false;
         }
         else{
@@ -207,6 +299,7 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Move()
     {
+        if(activeGrapple) return;
         Vector3 myForward = new Vector3(playerCamera.forward.x, 0, playerCamera.forward.z).normalized;
         Vector3 myRight  = new Vector3(playerCamera.right.x, 0, playerCamera.right.z).normalized;
 
@@ -217,20 +310,55 @@ public class Agent : NetworkBehaviour, IInteractor
             speed = BASE_SPEED;
         }
 
-        currentSpeed = Mathf.MoveTowards(currentSpeed, speed, ACCELERATION * Time.deltaTime);
+        currentSpeed = speed;
        
 
         Vector3 myMovement = (myForward * yInput + myRight * xInput).normalized * currentSpeed;
         Vector3 myVelocity = new Vector3(myMovement.x, playerRigidbody.linearVelocity.y, myMovement.z);
-        playerBody.LookAt(transform.position + myMovement);
+        if (myMovement != Vector3.zero) 
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(myMovement, Vector3.up);
+            playerBody.rotation = Quaternion.RotateTowards(playerBody.rotation, targetRotation, 1000f * Time.deltaTime);
+        }
         playerRigidbody.linearVelocity = myVelocity;
         
     }
 
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight){
+
+        activeGrapple = true;
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+    }
+
+    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity) 
+            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+
+        return velocityXZ + velocityY;
+    }
+
     void Animate()
     {
-        animator.SetBool("isMoving", isMoving);
-        animator.SetBool("isRunning", shiftPressed);
+        animator.SetBool("IsMoving", isMoving);
+        animator.SetBool("IsGrounded", !isAirborne);
+        animator.SetFloat("Magnitude", currentSpeed / MAX_SPEED);
+        if(playerRigidbody.linearVelocity.y < -0.5f) // i am falling
+        {
+            animator.SetBool("IsFalling", true);
+            animator.SetBool("IsJumping", false);
+
+        }
+        else
+        {
+            animator.SetBool("IsFalling", false);
+        }
     }
 
     void Jump()
@@ -238,7 +366,6 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!isAirborne)
         {
             playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            animator.SetTrigger("Jump");
             isAirborne = true;
         }
     }
@@ -255,7 +382,16 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
+    private Vector3 velocityToSet;
+
+    private void SetVelocity(){
+        enableMovementOnNextTouch = true;
+        playerRigidbody.linearVelocity = velocityToSet;
+    }
+
     public class AgentInteractionHandler : IInteractionHandler
+
+    
     {
         //Definir interactions de base avec differents types dInteractables, genre clic de bouton = animation
         public void InteractWith(BaseInteractable interactable)

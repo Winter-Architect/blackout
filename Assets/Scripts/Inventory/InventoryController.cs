@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ namespace Blackout.Inventory
 {
     public class InventoryController : MonoBehaviour
     {
+
         public Animator anim;
         private bool InvWheelSelected = false;
         public Image selectedItem;

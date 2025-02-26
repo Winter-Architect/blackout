@@ -1,9 +1,15 @@
 using UnityEngine;
 
-public class Item : MonoBehaviour
+
+
+[CreateAssetMenu(fileName = "Item", menuName = "Item", order = 1)]
+public class Item : ScriptableObject
 {
     public string Name;
     public string Description;
     public Sprite Icon;
-    public int Id;  
+    public GameObject Prefab;
+    public int Id;
+
+
 }
