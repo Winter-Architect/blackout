@@ -124,7 +124,7 @@ public class RoomsGeneration : MonoBehaviour
         //Instantiate(roomPrefabs.roomPrefabs[Random.Range(0, roomPrefabs.roomPrefabs.Length)]);
         
 
-        float randomWeight = UnityEngine.Random.Range(0f, totalWeight);
+        float randomWeight = (float)(random.NextDouble() * totalWeight);
         float currentWeight = 0;
        for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
