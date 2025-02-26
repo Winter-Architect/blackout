@@ -17,6 +17,7 @@ namespace Blackout.Inventory
         // public List<Image> inventorySlots = new List<Image>();
         public List<InventoryButtonController> inventorySlots = new List<InventoryButtonController>();
         public List<int> freeSlots = new List<int>(){0,1,2,3,4,5};
+        public static int activeInventorySlotId = 0;
 
         void Start()
         {

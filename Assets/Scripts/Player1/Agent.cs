@@ -63,6 +63,8 @@ public class Agent : NetworkBehaviour, IInteractor
     private bool enableMovementOnNextTouch;
 
     public bool activeGrapple;
+
+    private CursorLockMode cursorState;
     
     public override void OnNetworkSpawn()
     {
@@ -78,13 +80,14 @@ public class Agent : NetworkBehaviour, IInteractor
         }      
 
         playerRigidbody = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked; 
+        cursorState = CursorLockMode.Locked;
         inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
 
     }
 
     private void EquipItem()
     {
+        Debug.Log("EquipItem " + activeInventorySlot);
         isItemEquipped = !isItemEquipped;
         if(isItemEquipped)
         {
@@ -129,6 +132,8 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
+        Cursor.lockState = cursorState; 
+        activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();
         if(!IsOwner){
@@ -168,6 +173,11 @@ public class Agent : NetworkBehaviour, IInteractor
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             EquipItem();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.Locked) {
+            cursorState = CursorLockMode.None;
+        } else if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.None) {
+            cursorState = CursorLockMode.Locked;
         }
     }
 
