@@ -53,17 +53,18 @@ public class Agent : NetworkBehaviour, IInteractor
 
     [SerializeField] private ItemLibrary ItemLibrary;
 
-    private Item[] inventory = new Item[6];
+    private static Item[] inventory = new Item[6];
     private bool isItemEquipped = false;
     private int activeInventorySlot = 0;
 
     private GameObject currentlyEquippedItem;
-    private GameObject prefabItem;
 
     public bool freeze = false;
     private bool enableMovementOnNextTouch;
 
     public bool activeGrapple;
+
+    private CursorLockMode cursorState;
     
     public override void OnNetworkSpawn()
     {
@@ -79,16 +80,35 @@ public class Agent : NetworkBehaviour, IInteractor
         }      
 
         playerRigidbody = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked; 
-        inventory[activeInventorySlot] = ItemLibrary.GrapplingHook;
+        cursorState = CursorLockMode.Locked;
+       // inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
 
+    }
+
+    public static void AddItemToAgentInventory(Item item)
+    {
+        for(int i = 0; i < inventory.Length; i++)
+        {
+            if(inventory[i] == null)
+            {
+                inventory[i] = item;
+                break;
+            }
+        }
     }
 
     private void EquipItem()
     {
+        Debug.Log("EquipItem " + activeInventorySlot);
         isItemEquipped = !isItemEquipped;
+        
         if(isItemEquipped)
         {
+            if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
+        {
+            Debug.LogWarning("Item not found, update ItemManager from editor");
+            return;
+        }
             CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
         }
         else
@@ -130,6 +150,8 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
+        Cursor.lockState = cursorState; 
+        activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();
         if(!IsOwner){
@@ -169,6 +191,11 @@ public class Agent : NetworkBehaviour, IInteractor
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             EquipItem();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.Locked) {
+            cursorState = CursorLockMode.None;
+        } else if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.None) {
+            cursorState = CursorLockMode.Locked;
         }
     }
 
