@@ -16,6 +16,7 @@ public class TestEnemy : Enemy
     private float rotationSpeed;
     private float lookAroundTime;
     private float timeElapsed;
+    private GameObject target;
     [SerializeField] private float timeElapsedHearing;
 
     private bool isHeard;
@@ -48,6 +49,8 @@ public class TestEnemy : Enemy
 
     void Start()
     {
+        target = null;
+        
         _currentNode = _nodes[_currentNodeIndex];
         var patrolState = new EnemyPatrolState(this, animator); 
         var huntDownState = new EnemyHuntDownState(this, animator);
@@ -65,6 +68,14 @@ public class TestEnemy : Enemy
     
     public override void Patrol()
     {
+        if (!target)
+        {
+            if (fieldOfView.Target)
+            {
+                target = fieldOfView.Target;
+            }
+        }
+        
         if (isInvestigating)
         {
             SetEndInvestigateDatas();
@@ -92,7 +103,7 @@ public class TestEnemy : Enemy
 
         if (isHeard)
         {
-            lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
+            lastPlayerPositionArray[0] = target.transform.position;
             lastPlayerPositionVisited = false;
             timeElapsedHearing = 0;
         }
@@ -103,7 +114,7 @@ public class TestEnemy : Enemy
             {
                 lastPlayerPositionVisited = false;
             }
-            lastPlayerPositionArray[0] = PlayerNetwork.LocalPlayer.transform.position;
+            lastPlayerPositionArray[0] = target.transform.position;
             agent.destination = lastPlayerPositionArray[0];
         }
         else if (!lastPlayerPositionVisited)
@@ -158,25 +169,15 @@ public class TestEnemy : Enemy
     {
         if (sensorDetector.Detected)
         {
-            if (PlayerNetwork.LocalPlayer.rb.linearVelocity.sqrMagnitude == 0f)
+            if (!target)
             {
-                if (timeElapsedHearing>0)
-                {
-                    timeElapsedHearing -= Time.deltaTime/3;
-                }
-                else
-                {
-                    timeElapsedHearing = 0;
-                }
+                target = sensorDetector.Target;
+            }
+            if (timeElapsedHearing<1.5f)
+            {
+                timeElapsedHearing += Time.deltaTime;
             }
             else
-            {
-                if (timeElapsedHearing<1.5f)
-                {
-                    timeElapsedHearing += Time.deltaTime;
-                }
-            }
-            if (timeElapsedHearing>=1.5f)
             {
                 isHeard = true;
             }

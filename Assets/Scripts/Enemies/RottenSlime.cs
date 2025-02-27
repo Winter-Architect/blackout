@@ -38,6 +38,7 @@ public class RottenSlime : Enemy
 
     void Start()
     {
+        
         var patrolState = new EnemyPatrolState(this, animator);
         var ambushState = new EnemyAmbushState(this, animator);
         var attackState = new EnemyAttackState(this, animator);
@@ -51,17 +52,24 @@ public class RottenSlime : Enemy
 
     public override void Patrol()
     {
-        if (!walkpointSet)
+        if (!agent.isOnNavMesh)
         {
-            SetNextDest();
+            StartCoroutine(ReturnToNavMesh());
         }
-        if (walkpointSet)
+        else
         {
-            agent.SetDestination(dest);
-        }
-        if (Vector3.Distance(transform.position, dest) < 2)
-        {
-            walkpointSet = false;
+            if (!walkpointSet)
+            {
+                SetNextDest();
+            }
+            if (walkpointSet)
+            {
+                agent.SetDestination(dest);
+            }
+            if (Vector3.Distance(transform.position, dest) < 2)
+            {
+                walkpointSet = false;
+            }
         }
     }
 
@@ -75,14 +83,37 @@ public class RottenSlime : Enemy
 
     public override void Ambush()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity))
+        if (PlayerNetwork.LocalPlayer != null)
         {
-            if (hit.collider.CompareTag("Player"))
+            player = PlayerNetwork.LocalPlayer;
+        
+            RaycastHit playerGroundHit;
+            float playerGroundCheckDistance = 1.0f;
+        
+            if (Physics.Raycast(player.transform.position, Vector3.down, out playerGroundHit, playerGroundCheckDistance, groundLayer))
             {
-                player = PlayerNetwork.LocalPlayer;
-                JumpAttack();
-                
+                RaycastHit hit;
+                float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+                Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+            
+                if (Physics.Raycast(transform.position, directionToPlayer, out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        if (distanceToPlayer<11f)
+                        {
+                            JumpAttack();
+                        }
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            if (fieldOfView.Spotted && fieldOfView.Target != null)
+            {
+                player = fieldOfView.Target.GetComponent<PlayerNetwork>();
             }
         }
     }
@@ -118,10 +149,12 @@ public class RottenSlime : Enemy
             agent.enabled = false;
             rb.useGravity = true;
             rb.linearVelocity = Vector3.zero;
-            Vector3 attackDirection = (player.transform.position - transform.position).normalized;
+            Vector3 attackDirection = Vector3.down;
             attackDirection.y = 0.5f;
             rb.AddForce(attackDirection * jumpForce, ForceMode.Impulse);
             hasAmbushed = true;
+            agent.agentTypeID = SwitchAgentToClimbableID();
+
             StartCoroutine(ReturnToNavMesh());
         }
     }
@@ -164,24 +197,14 @@ public class RottenSlime : Enemy
             agent.Warp(dest);
             isAttacking = true;
         }
+        
     }
 
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
     }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && isAttacking)
-        {
-            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(20, 0);
-            }
-        }
-    }
+    
     
     bool CanReachDestination(Vector3 destination)
     {
@@ -195,5 +218,35 @@ public class RottenSlime : Enemy
         }
         
         return false;
+    }
+    
+    int SwitchAgentToClimbableID()
+    {
+        int count = NavMesh.GetSettingsCount();
+        
+        for (int i = 0; i < count; i++)
+        {
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(i);
+            string currentName = NavMesh.GetSettingsNameFromID(settings.agentTypeID);
+
+            if (currentName == "Climbable")
+            {
+                return settings.agentTypeID;
+            }
+        }
+
+        return -1;
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && isAttacking)
+        {
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(20, 0);
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ public class SpikeyEnemy : Enemy
     private GameObject player;
     private bool isAttacking = false;
 
-    [SerializeField] private float attackForce = 15f;
+    [SerializeField] private float attackForce = 10f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform ceilingPosition;
     [SerializeField] private float ceilingReturnDistance = 1f;
@@ -82,7 +82,7 @@ public class SpikeyEnemy : Enemy
         {
             agent.SetDestination(dest);
         }
-        if (Vector3.Distance(transform.position, dest) < 1)
+        if (Vector3.Distance(transform.position, dest) < 2)
         {
             walkpointSet = false;
         }
@@ -126,20 +126,15 @@ public class SpikeyEnemy : Enemy
 
     public override void Ambush()
     {
-        Debug.Log("Ambush: step 0");
-        
         if (player != null)
         {
-            Debug.Log("Ambush: step 1");
             RaycastHit hit;
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
         
             if (Physics.Raycast(transform.position, directionToPlayer, out hit, Mathf.Infinity))
             {
-                Debug.Log("Ambush: step 2");
-                if (hit.collider.CompareTag("Player"))
+                if (hit.collider.CompareTag("Player") || hit.collider.name == "Plane")
                 {
-                    Debug.Log("Ambush: step 3");
                     SpikeAttack();
                 }
             }
@@ -156,8 +151,9 @@ public class SpikeyEnemy : Enemy
 
     public override void RunAway()
     {
-        agent.speed = 6f;
-        if (!agent.isOnNavMesh || isAttacking) 
+        agent.speed = 4f;
+
+        if (isAttacking)
         {
             return;
         }
@@ -207,32 +203,30 @@ public class SpikeyEnemy : Enemy
     private void SpikeAttack()
     {
         
-        if (!isAttacking && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        isAttacking = true;
+        agent.enabled = false;
+        rb.useGravity = true;
+        rb.linearVelocity = Vector3.zero;
+        
+        if (player == null)
         {
-            isAttacking = true;
-            
-            agent.enabled = false;
-            rb.useGravity = true;
-            rb.linearVelocity = Vector3.zero;
-            
-            if (player == null)
-            {
-                player = fieldOfView.Target;
-            }
-            
-            Vector3 attackDirection = (player.transform.position - transform.position).normalized;
-            
-            attackDirection = attackDirection.normalized;
-
-            rb.linearVelocity = attackDirection * attackForce;
-            
-            StartCoroutine(ReturnToCeilingAfterAttack());
+            player = fieldOfView.Target;
         }
+        
+        Vector3 attackDirection = (player.transform.position - transform.position).normalized;
+        
+        attackDirection = attackDirection.normalized;
+
+        rb.linearVelocity = attackDirection * attackForce;
+        
+        StartCoroutine(ReturnToCeilingAfterAttack());
     }
 
     IEnumerator ReturnToCeilingAfterAttack()
     {
-        Debug.Log("ReturnToCeilingAfterAttack");
+        rb.isKinematic = false;
+        rb.useGravity = false;
+        
         yield return new WaitForSeconds(0.3f);
         
         float groundCheckTimeout = 3f;
@@ -271,6 +265,16 @@ public class SpikeyEnemy : Enemy
             isAttacking = false;
             isReturningToCeiling = false;
         }
+
+        if (agent.isOnNavMesh)
+        {
+            isReturningToCeiling = true;
+        }
+        else
+        {
+            isReturningToCeiling = true;
+            StartCoroutine(ReturnToCeilingAfterAttack());
+        }
     }
 
     bool IsGrounded()
@@ -280,6 +284,7 @@ public class SpikeyEnemy : Enemy
 
     void OnCollisionEnter(Collision collision)
     {
+        rb.isKinematic = true;
         if (collision.gameObject.CompareTag("Player") && isAttacking)
         {
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
@@ -288,8 +293,8 @@ public class SpikeyEnemy : Enemy
                 damageable.TakeDamage(20, 0);
             }
         }
-
         isAttacking = false;
+        rb.isKinematic = false;
     }
     
     bool CanReachDestination(Vector3 destination)
