@@ -13,13 +13,7 @@ public abstract class BaseInteractable : MonoBehaviour, IInteractable
     public UnityEvent OnInteract;
     [SerializeField] protected float interactionRange;
 
-    public virtual void AcceptInteraction(IInteractionHandler handler)
-    {
-        handler.InteractWith(this);
-        OnInteract?.Invoke();
-    }
-
-
+    public abstract void AcceptInteraction(IInteractionHandler handler);
     void Awake()
     {
         myCheckTrigger = gameObject.AddComponent<SphereCollider>();

@@ -19,6 +19,12 @@ namespace Blackout.Inventory
         public List<int> freeSlots = new List<int>(){0,1,2,3,4,5};
         public static int activeInventorySlotId = 0;
 
+        public static InventoryController Instance;
+
+        void Awake()
+        {
+            Instance = this;
+        }
         void Start()
         {
             for (int i = 0; i < inventory.Count; i++) {
@@ -27,8 +33,7 @@ namespace Blackout.Inventory
             }
             //inventorySlots1[0].icon = null; //= inventory[0].Icon
         }
- 
-        // Update is called once per frame
+
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab)) InvWheelSelected = !InvWheelSelected;

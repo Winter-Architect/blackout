@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -5,62 +6,163 @@ using UnityEngine;
 
 public class Support : NetworkBehaviour
 {
-    LinkedList<Controllable> controllables;
-    LinkedListNode<Controllable> current;
+    private LinkedList<Controllable> _controllables = new LinkedList<Controllable>();
+
+    private Controllable[] foundControllables;
+    private Room[] foundRooms;
+
+    private Room currentRoom;
+
+    private Agent player1;
+
+    public LinkedList<Controllable> Controllables
+    {
+        get => _controllables;
+        set
+        {
+            _controllables = value;
+            OnControllablesChanged?.Invoke();
+        }
+    }
+
+    private LinkedListNode<Controllable> current;
+    public event Action OnControllablesChanged;
 
     public override void OnNetworkSpawn()
     {
+        if (!IsOwner) return;
 
-        if(!IsOwner)
+        //var foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
+        //Controllables = new LinkedList<Controllable>(foundControllables);
+        //current = Controllables.First;
+
+        foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
+
+        foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
+
+        player1 = FindFirstObjectByType<Agent>();
+
+        foreach(var room in foundRooms)
         {
+            if(room.ContainsPlayer(player1))
+            {
+                currentRoom = room;
+                break;
+            }
+        }
+
+        Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
+        current = Controllables.First;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if (current != null)
+        {
+            SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+        }
+        OnControllablesChanged += HandleControllablesChanged;
+    }
+
+    public void RecheckForRoom(){
+        if(!IsOwner){
             return;
         }
-        var foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
-        controllables = new LinkedList<Controllable>(foundControllables);
-        current = controllables.First;
-        Cursor.lockState = CursorLockMode.Locked;
-        SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+        foreach(var room in foundRooms)
+        {
+            if(room.ContainsPlayer(player1))
+            {
+                currentRoom = room;
+                break;
+            }
+        }
 
+        Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
+        current = Controllables.First;
 
-        
+    }
+
+    private void HandleControllablesChanged()
+    {
+        Debug.Log("Controllables list has changed!");
+    }
+
+    public void AddControllable(Controllable newControllable)
+    {
+        Controllables.AddLast(newControllable);
+        OnControllablesChanged?.Invoke();
+    }
+
+    public void RemoveControllable(Controllable controllable)
+    {
+        if (Controllables.Contains(controllable))
+        {
+            if (current != null && current.Value == controllable)
+            {
+                current = current.Next ?? current.List.First;
+            }
+            Controllables.Remove(controllable);
+            OnControllablesChanged?.Invoke();
+        }
     }
 
     private void Update()
     {
-        if(!IsOwner)
-        {
+        if (!IsOwner) return;
+
+        if(player1 is null){
             return;
         }
-        SwitchCurrent();
-        current.Value.Control();
-        
+
+        if (current != null)
+        {
+            SwitchCurrent();
+            current.Value.Control();
+        }
+
+
 
     }
+
     private void SwitchCurrent()
-
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            current.Value.StopControlling();
-            SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
-            current = current.Next ?? current.List.First;
-            SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+            if (current != null)
+            {
+                current.Value.StopControlling();
+                SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+
+                current = current.Next ?? current.List.First;
+
+                if (current != null)
+                {
+                    SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+                }
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.J))
+        else if (Input.GetKeyDown(KeyCode.J))
         {
-            current.Value.StopControlling();
-            SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
-            current = current.Previous ?? current.List.Last;
-            SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+            if (current != null)
+            {
+                current.Value.StopControlling();
+                SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+
+                current = current.Previous ?? current.List.Last;
+
+                if (current != null)
+                {
+                    SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+                }
+            }
         }
     }
-    
 
-    [ServerRpc (RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     void SwitchCurrentOwnerOfObjectServerRpc(NetworkObjectReference myObject)
     {
-        if(myObject.TryGet(out NetworkObject networkObject)){
-            if(networkObject.IsOwnedByServer){
+        if (myObject.TryGet(out NetworkObject networkObject))
+        {
+            if (networkObject.IsOwnedByServer)
+            {
                 networkObject.ChangeOwnership(OwnerClientId);
             }
             else
@@ -68,6 +170,5 @@ public class Support : NetworkBehaviour
                 networkObject.RemoveOwnership();
             }
         }
-    }   
-
-}                                                                 
+    }
+}
