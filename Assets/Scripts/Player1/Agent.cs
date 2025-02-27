@@ -62,6 +62,8 @@ public class Agent : NetworkBehaviour, IInteractor
     public bool activeGrapple;
 
     private CursorLockMode cursorState;
+    public GameObject inventoryCanvas;
+    private InventoryController invController;
     
     public override void OnNetworkSpawn()
     {
@@ -78,6 +80,7 @@ public class Agent : NetworkBehaviour, IInteractor
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
+        invController = InventoryController.Instance.GetComponent<InventoryController>();
 
     }
 
@@ -183,10 +186,14 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             EquipItem();
         }
+
         if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.Locked) {
             cursorState = CursorLockMode.None;
+            invController.toggleInventory();
         } else if (Input.GetKeyDown(KeyCode.Tab) && cursorState == CursorLockMode.None) {
             cursorState = CursorLockMode.Locked;
+            invController.toggleInventory();
+
         }
     }
 
@@ -264,6 +271,8 @@ public class Agent : NetworkBehaviour, IInteractor
             playerRigidbody.linearDamping = 1;
         }
         ControlCamera();
+
+        
 
         if(!freeze)
         {
