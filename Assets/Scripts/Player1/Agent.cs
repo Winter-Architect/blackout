@@ -23,7 +23,7 @@ public class Agent : NetworkBehaviour, IInteractor
 
     [SerializeField] private float jumpForce = 10f;
 
-    [SerializeField] private float currentSpeed = 0;
+    [SerializeField] public float currentSpeed = 0;
     [SerializeField] private Transform groundCheck;
 
     private const float BASE_SPEED = 3f;

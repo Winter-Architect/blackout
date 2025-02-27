@@ -29,10 +29,7 @@ public class TurretEnemy : Enemy
         StartCoroutine(fieldOfView.FOVCoroutine());
         
         stateMachine = new StateMachine();
-
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        agent.updateRotation = false;
+        
         lookStraightTime = 5.5f;
         timeElapsed = 0;
 
@@ -117,13 +114,72 @@ public class TurretEnemy : Enemy
     
     private void FireLaser()
     {
-        Transform laserInstance = Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
-
-        NetworkObject laserNetworkObject = laserInstance.GetComponent<NetworkObject>();
-        if (laserNetworkObject is not null && IsServer)
+        if (IsServer)
         {
-            laserNetworkObject.Spawn();
+            Transform laserInstance = Instantiate(laserPrefab, transform.position, transform.rotation);
+
+            NetworkObject laserNetworkObject = laserInstance.GetComponent<NetworkObject>();
+            if (laserNetworkObject is not null)
+            {
+                laserNetworkObject.Spawn();
+            }
+
+            Laser laserScript = laserInstance.GetComponent<Laser>();
+            if (laserScript is not null)
+            {
+                laserScript.Initialize(40, 0, 25f, 4f);
+            }
+
+            FireLaserClientRpc(transform.position, transform.rotation);
         }
+        else
+        {
+            FireLaserServerRpc();
+        }
+    }
+    
+    private void FireLaserRaycast()
+    {
+        laserLine.enabled = true;
+        RaycastHit hit;
+
+        laserLine.SetPosition(0, transform.position);
+
+        float distanceToTarget = Vector3.Distance(transform.position, fieldOfView.Target.transform.position);
+        
+        
+        Vector3 laserEndPoint = transform.position + transform.forward * distanceToTarget;
+
+        if (Physics.Raycast(transform.position, (fieldOfView.Target.transform.position - transform.position).normalized, out hit))
+        {
+            if (hit.collider)
+            {
+                laserLine.SetPosition(1, fieldOfView.Target.transform.position);
+                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(0.05f, 0);
+                }
+            }
+        }
+        else
+        {
+            laserLine.SetPosition(1, laserEndPoint);
+        }
+
+        UpdateLaserPositionClientRpc(laserLine.GetPosition(0), laserLine.GetPosition(1));
+    }
+
+    [ServerRpc]
+    private void FireLaserServerRpc()
+    {
+        FireLaser();
+    }
+    
+    [ClientRpc]
+    private void FireLaserClientRpc(Vector3 position, Quaternion rotation)
+    {
+        Transform laserInstance = Instantiate(laserPrefab, position, rotation);
 
         Laser laserScript = laserInstance.GetComponent<Laser>();
         if (laserScript is not null)
@@ -131,41 +187,14 @@ public class TurretEnemy : Enemy
             laserScript.Initialize(40, 0, 25f, 4f);
         }
     }
-
-    [ServerRpc]
-    public void FireLaserRaycastServerRpc()
-    {
-        FireLaserRaycast();
-    }
-
-    private void FireLaserRaycast()
+    
+    [ClientRpc]
+    private void UpdateLaserPositionClientRpc(Vector3 start, Vector3 end)
     {
         laserLine.enabled = true;
-        RaycastHit hit;
-
-        laserLine.SetPosition(0, transform.position);
-        
-        float distanceToTarget = Vector3.Distance(transform.position, PlayerNetwork.LocalPlayer.transform.position);
-    
-        Transform thisTransform = gameObject.transform;
-        Vector3 laserEndPoint = thisTransform.position + thisTransform.forward * distanceToTarget;
-    
-        if (Physics.Raycast(thisTransform.position, (PlayerNetwork.LocalPlayer.transform.position - transform.position).normalized, out hit))
-        {
-            if (hit.collider)
-            {
-                laserLine.SetPosition(1, hit.point);
-            }
-
-            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(0.05f, 0);
-            }
-        }            
-        else
-        {
-            laserLine.SetPosition(1, PlayerNetwork.LocalPlayer.transform.position);
-        }
+        laserLine.SetPosition(0, start);
+        laserLine.SetPosition(1, end);
     }
+
+    
 }

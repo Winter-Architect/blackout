@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SensorDetector : NetworkBehaviour
@@ -9,8 +10,10 @@ public class SensorDetector : NetworkBehaviour
     
     
     private GameObject _target;
+    private Agent agent;
     private bool detected = false;
     private float detectionRange;
+    private float BASE_SPEED = 3f;
 
     public bool Detected
     {
@@ -72,15 +75,20 @@ public class SensorDetector : NetworkBehaviour
         if (!_target)
         {
             _target = GameObject.FindGameObjectWithTag("Player");
+            agent = _target.GetComponent<Agent>();
             if (_target is null) return;
+            if (agent is null) return;
+            
         }
         
         detectionRange = range;
-        if (isSneaking)
+        
+        if (agent.currentSpeed < BASE_SPEED)
             detectionRange /= 2;
-        else if (isRunning)
+        else if (agent.currentSpeed > BASE_SPEED)
             detectionRange *= 1.5f;
         
+        /*
         Collider[] objWithinRange = Physics.OverlapSphere(transform.position, detectionRange, playerMask);
         if (objWithinRange.Length>0)
         {
@@ -89,48 +97,12 @@ public class SensorDetector : NetworkBehaviour
         else
         {
             detected = false;
-        }
-        
-        /*
-        if (!_target)
-        {
-            _target = GameObject.FindGameObjectWithTag("Player");
-        }
-        else
-        {
-            if (isWalking)
-            {
-                if (Vector3.Distance(transform.position, _target.transform.position) < range)
-                {
-                    detected = true;
-                }
-                else
-                {
-                    detected = false;
-                }
-            }
-            else if (isSneaking)
-            {
-                if (Vector3.Distance(transform.position, _target.transform.position) < range/2)
-                {
-                    detected = true;
-                }
-                else
-                {
-                    detected = false;
-                }
-            }
-            else if (isRunning)
-            {
-                if (Vector3.Distance(transform.position, _target.transform.position) < range*1.5)
-                {
-                    detected = true;
-                }
-                else
-                {
-                    detected = false;
-                }
-            }
         }*/
+        
+        if (Vector3.Distance(transform.position, _target.transform.position) < detectionRange)
+            detected = true;
+        else detected = false;
+        
+        Debug.Log("Detected: " + detected);
     }
 }

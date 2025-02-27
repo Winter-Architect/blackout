@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  canGrapple: 0
   interactionRange: 0
   speed: 16000
   jumpForce: 10
@@ -128,7 +129,11 @@ MonoBehaviour:
   xMouseSensitivity: 2
   yMouseSensitivity: 2
   animator: {fileID: 1759173634505795487}
+  playerRightHandSlot: {fileID: 0}
   hasKey: 0
+  ItemLibrary: {fileID: 0}
+  freeze: 0
+  activeGrapple: 0
 --- !u!54 &2643502533287587449
 Rigidbody:
   m_ObjectHideFlags: 0
