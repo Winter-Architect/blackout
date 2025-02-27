@@ -1,9 +1,6 @@
-
-using System;
 using System.Collections.Generic;
 using Blackout.Inventory;
 using Unity.Netcode;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 
@@ -81,7 +78,6 @@ public class Agent : NetworkBehaviour, IInteractor
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
-       // inventory[activeInventorySlot] = ItemLibrary.GrapplingHook; // pour l'instant
 
     }
 
@@ -158,11 +154,6 @@ public class Agent : NetworkBehaviour, IInteractor
             return;
         }
         CheckIfCanGrapple();
-        if(currentSelectedInteractable is not null)
-        {
-            Debug.Log(currentSelectedInteractable.Value.gameObject.name);
-
-        }
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
@@ -182,7 +173,7 @@ public class Agent : NetworkBehaviour, IInteractor
             }            
 
             
-            if(Input.GetKey(KeyCode.E))
+            if(Input.GetKeyDown(KeyCode.E))
             {
                 InteractWith(currentSelectedInteractable.Value);
             }
@@ -406,6 +397,7 @@ public class Agent : NetworkBehaviour, IInteractor
     {
         if(CanInteract(interactable)){
             interactable.AcceptInteraction(handler);
+            Debug.Log("TEST");
         }
     }
 
@@ -418,17 +410,22 @@ public class Agent : NetworkBehaviour, IInteractor
 
     public class AgentInteractionHandler : IInteractionHandler
 
-    
     {
-        //Definir interactions de base avec differents types dInteractables, genre clic de bouton = animation
-        public void InteractWith(BaseInteractable interactable)
+        public void InteractWith(BaseInteractable item)
         {
-            Debug.Log("Clicked");
+            Debug.Log("tested");
+        }
+        public void InteractWith(CollectableItem item)
+        {
+            Debug.Log("collected");
+            InventoryController.Instance.AddItemToInventory(item.item);
         }
 
         public void InteractWith(InteractableButton button)
         {
             Debug.Log("Clicked 22");
         }
+
+
     }
 }

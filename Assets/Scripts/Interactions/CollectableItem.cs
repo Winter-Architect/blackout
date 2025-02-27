@@ -1,7 +1,10 @@
+
+using System.Collections;
 using UnityEngine;
 
-public class InteractableButton : BaseInteractable, IInteractable
+public class CollectableItem : BaseInteractable, IInteractable
 {
+    public Item item;
 
     public override void AcceptInteraction(IInteractionHandler handler)
     {
@@ -11,7 +14,8 @@ public class InteractableButton : BaseInteractable, IInteractable
 
     void Start()
     {
-        OnInteract.AddListener(() => Debug.Log("Button pressed"));
+        OnInteract.AddListener(() => gameObject.SetActive(false));
     }
+
 
 }
