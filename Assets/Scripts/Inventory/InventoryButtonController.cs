@@ -14,6 +14,7 @@ namespace Blackout.Inventory
         public Image ItemSlot;
         private bool selected = false;
         public Sprite icon;
+        [SerializeField] private int slotId;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -34,12 +35,15 @@ namespace Blackout.Inventory
 
         public void Selected() {
             selected = true;
+            InventoryController.activeInventorySlotId = slotId;
             InventoryController.selectedItemId = Id;
         }
-        
+
         public void Deselected() {
+            Debug.Log("Deselected");
             selected = false; 
-           // InventoryController.selectedItemId = 0;
+            if (InventoryController.selectedItemId == Id)
+           InventoryController.selectedItemId = -1;
         }
 
         public void HoverEnter() {
