@@ -31,11 +31,9 @@ public class Laser : NetworkBehaviour
     
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Touch");
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable is not null)
         {
-            Debug.Log("Hard Touch");
             damageable.TakeDamage(dmg, knockback);
         }
         Destroy(gameObject);
