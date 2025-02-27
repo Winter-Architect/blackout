@@ -1,24 +1,36 @@
-using TMPro;
 using UnityEngine;
+using TMPro;
 
-public class Testing : MonoBehaviour
+public class ChangeText : MonoBehaviour
 {
     public TextMeshProUGUI textMeshPro;
+    int digits = 4;
+    string code = "";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (textMeshPro != null)
+        if (textMeshPro == null)
         {
-            Debug.Log("Found TMP");
+            Debug.LogError("Not Found");
         }
+        else
+        {
+            Debug.LogError("Found !");
+
+        }
+
     }
 
     // Update is called once per frame
-    void Update(string newText)
+    void Update()
     {
-        if (textMeshPro != null)
+        for (int i = 0; i < digits; i++)
         {
-            textMeshPro.text = newText;
+            int value = Random.Range(0, 9);
+            code += value.ToString();
         }
+
+        Debug.Log(code);
+        code = "";
     }
 }
