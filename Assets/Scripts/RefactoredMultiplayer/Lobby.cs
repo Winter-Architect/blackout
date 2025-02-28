@@ -139,7 +139,7 @@ public class Lobby : NetworkBehaviour
 
         if(CanStart())
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("DemoScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("PlayScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
         else
         {
