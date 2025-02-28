@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2240749310
+  GlobalObjectIdHash: 4246153286
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -133,8 +133,11 @@ MonoBehaviour:
   playerRightHandSlot: {fileID: 5388673718756160265}
   hasKey: 0
   ItemLibrary: {fileID: 11400000, guid: f54a843f1ab891847838977591a905a1, type: 2}
+
   freeze: 0
   activeGrapple: 0
+  inventoryCanvas: {fileID: 4988085219231443046, guid: 6dadbe1d3bbf76d4b975e7f4a219081b, type: 3}
+  invController: {fileID: 0}
 --- !u!54 &2643502533287587449
 Rigidbody:
   m_ObjectHideFlags: 0
