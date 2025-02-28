@@ -59,7 +59,6 @@ public class Support : NetworkBehaviour
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
-        OnControllablesChanged += HandleControllablesChanged;
     }
 
     public void RecheckForRoom(){
@@ -75,35 +74,13 @@ public class Support : NetworkBehaviour
             }
         }
 
+        current.Value.StopControlling();
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
+        Debug.Log(current.Value.gameObject.name);
+        SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
 
     }
-
-    private void HandleControllablesChanged()
-    {
-        Debug.Log("Controllables list has changed!");
-    }
-
-    public void AddControllable(Controllable newControllable)
-    {
-        Controllables.AddLast(newControllable);
-        OnControllablesChanged?.Invoke();
-    }
-
-    public void RemoveControllable(Controllable controllable)
-    {
-        if (Controllables.Contains(controllable))
-        {
-            if (current != null && current.Value == controllable)
-            {
-                current = current.Next ?? current.List.First;
-            }
-            Controllables.Remove(controllable);
-            OnControllablesChanged?.Invoke();
-        }
-    }
-
     private void Update()
     {
         if (!IsOwner) return;
@@ -115,6 +92,9 @@ public class Support : NetworkBehaviour
         if (current != null)
         {
             SwitchCurrent();
+            if(current.Value.gameObject.GetComponent<NetworkObject>().IsOwnedByServer){
+                SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
+            }
             current.Value.Control();
         }
 

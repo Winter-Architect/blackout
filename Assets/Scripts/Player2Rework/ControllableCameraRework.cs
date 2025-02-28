@@ -9,7 +9,6 @@ public class ControllableCameraRework : Controllable
     [SerializeField] private GameObject myCamera;
     public override void Control()
     {
-        Debug.Log(gameObject.name);
         SetCamera(true);
         MoveCamera();
     }
@@ -30,7 +29,6 @@ public class ControllableCameraRework : Controllable
         yRotation += mouseInputX;
         yRotation = Mathf.Clamp(yRotation, -90f, 90f);
 
-        Debug.Log(yRotation);
 
         Quaternion verticalRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
