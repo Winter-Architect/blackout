@@ -36,6 +36,10 @@ namespace Blackout.Inventory
 
         void Update()
         {
+            
+        }
+
+        public void toggleInventory() {
             if (Input.GetKeyDown(KeyCode.Tab)) InvWheelSelected = !InvWheelSelected;
             anim.SetBool("OpenInv", InvWheelSelected);
         }
