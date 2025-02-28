@@ -82,11 +82,13 @@ public class SensorDetector : NetworkBehaviour
         }
         
         detectionRange = range;
-        
-        if (agent.currentSpeed < BASE_SPEED)
-            detectionRange /= 2;
-        else if (agent.currentSpeed > BASE_SPEED)
-            detectionRange *= 1.5f;
+        if (agent)
+        {
+            if (agent.currentSpeed < BASE_SPEED)
+                detectionRange /= 2;
+            else if (agent.currentSpeed > BASE_SPEED)
+                detectionRange *= 1.5f;
+        }
         
         /*
         Collider[] objWithinRange = Physics.OverlapSphere(transform.position, detectionRange, playerMask);
