@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TestEnemy : Enemy
+public class ZombZomb : Enemy
 {
     //////// For the pratrol /////////
     [SerializeField] private Transform[] _nodes;
