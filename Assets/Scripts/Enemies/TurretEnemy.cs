@@ -19,7 +19,9 @@ public class TurretEnemy : Enemy
     private LineRenderer laserLine;
 
     private Laser laser;
-    
+
+
+    [SerializeField] private bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
     
 
@@ -86,30 +88,27 @@ public class TurretEnemy : Enemy
 
     public override void Attack()
     {
-        
-        if (isInvestigating)
+        if (isRaycastLaser)
         {
-            timeElapsed = 0;
-            isInvestigating = false;
-        }
-        this.transform.LookAt(fieldOfView.Target.transform);
-
-        timeElapseBetweenFire += Time.deltaTime;
-        if (timeElapseBetweenFire >= delayFire)
-        {
-            // FireLaser();
-            timeElapseBetweenFire = 0;
-            
-        }
-        FireLaserRaycast();
-
-        /*
-        if (PlayerNetwork.LocalPlayer is not null)
-        {
+            if (!fieldOfView.Target) return;
             FireLaserRaycast();
         }
-        */
-        
+        else
+        {
+            if (isInvestigating)
+            {
+                timeElapsed = 0;
+                isInvestigating = false;
+            }
+            this.transform.LookAt(fieldOfView.Target.transform);
+
+            timeElapseBetweenFire += Time.deltaTime;
+            if (timeElapseBetweenFire >= delayFire)
+            {
+                FireLaser();
+                timeElapseBetweenFire = 0;
+            }
+        }
     }
     
     private void FireLaser()

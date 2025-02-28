@@ -174,7 +174,7 @@ public class RoomsGeneration : MonoBehaviour
     
     void BakeNavMesh()
     {
-        if (navMeshSurface != null)
+        if (navMeshSurface is not null)
         {
             navMeshSurface.BuildNavMesh();
         }
