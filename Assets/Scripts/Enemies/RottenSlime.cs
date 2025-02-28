@@ -11,7 +11,7 @@ public class RottenSlime : Enemy
     private bool hasAmbushed;
     private bool isAttacking;
     private Rigidbody rb;
-    private PlayerNetwork player;
+    private GameObject player;
 
     [SerializeField] private float jumpForce = 30f;
     [SerializeField] private LayerMask groundLayer;
@@ -83,10 +83,8 @@ public class RottenSlime : Enemy
 
     public override void Ambush()
     {
-        if (PlayerNetwork.LocalPlayer != null)
+        if (player)
         {
-            player = PlayerNetwork.LocalPlayer;
-        
             RaycastHit playerGroundHit;
             float playerGroundCheckDistance = 1.0f;
         
@@ -111,9 +109,9 @@ public class RottenSlime : Enemy
         }
         else
         {
-            if (fieldOfView.Spotted && fieldOfView.Target != null)
+            if (fieldOfView.Spotted && fieldOfView.Target is not null)
             {
-                player = fieldOfView.Target.GetComponent<PlayerNetwork>();
+                player = fieldOfView.Target;
             }
         }
     }
