@@ -53,8 +53,6 @@ public class TurretEnemy : Enemy
         At(attackState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted));
         At(investigateState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && !isInvestigating));
         At(investigateState, attackState, new FuncPredicate(()=>fieldOfView.Spotted));
-        Any(patrolState, new FuncPredicate(()=>PlayerNetwork.LocalPlayer is null));
-
         
         stateMachine.SetState(patrolState);
     }
@@ -88,9 +86,14 @@ public class TurretEnemy : Enemy
 
     public override void Attack()
     {
+        if (!IsServer)
+        {
+            return;
+        }
         if (isRaycastLaser)
         {
             if (!fieldOfView.Target) return;
+            this.transform.LookAt(fieldOfView.Target.transform);
             FireLaserRaycast();
         }
         else
@@ -102,6 +105,7 @@ public class TurretEnemy : Enemy
             }
             this.transform.LookAt(fieldOfView.Target.transform);
 
+            
             timeElapseBetweenFire += Time.deltaTime;
             if (timeElapseBetweenFire >= delayFire)
             {

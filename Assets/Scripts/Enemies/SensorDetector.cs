@@ -75,10 +75,9 @@ public class SensorDetector : NetworkBehaviour
         if (!_target)
         {
             _target = GameObject.FindGameObjectWithTag("Player");
-            agent = _target.GetComponent<Agent>();
             if (_target is null) return;
+            agent = _target.GetComponent<Agent>();
             if (agent is null) return;
-            
         }
         
         detectionRange = range;
@@ -105,6 +104,5 @@ public class SensorDetector : NetworkBehaviour
             detected = true;
         else detected = false;
         
-        Debug.Log("Detected: " + detected);
     }
 }
