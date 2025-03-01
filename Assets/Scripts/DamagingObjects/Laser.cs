@@ -31,6 +31,11 @@ public class Laser : NetworkBehaviour
     
     public void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+        
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable is not null)
         {

@@ -128,6 +128,7 @@ public class SpikeyEnemy : Enemy
     {
         if (player != null)
         {
+            
             RaycastHit hit;
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
         
@@ -137,6 +138,7 @@ public class SpikeyEnemy : Enemy
                 {
                     SpikeAttack();
                 }
+                SpikeAttack();
             }
 
             timeElapsed = 0;
