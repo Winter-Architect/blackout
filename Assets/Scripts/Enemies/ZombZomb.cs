@@ -56,7 +56,7 @@ public class ZombZomb : Enemy
         var huntDownState = new EnemyHuntDownState(this, animator);
         var investigateState = new EnemyInvestigateState(this, animator);
         
-        At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted || isHeard));
+        At(patrolState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted));
         At(huntDownState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && lastPlayerPositionVisited));
         At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && !isHeard && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
@@ -73,6 +73,11 @@ public class ZombZomb : Enemy
             if (fieldOfView.Target)
             {
                 target = fieldOfView.Target;
+            }
+
+            if (sensorDetector.Target)
+            {
+                target = sensorDetector.Target;
             }
         }
         
@@ -96,6 +101,10 @@ public class ZombZomb : Enemy
     
     public override void HuntDown()
     {
+        if (!target)
+        {
+            return;
+        }
         if (isInvestigating)
         {
             SetEndInvestigateDatas();
