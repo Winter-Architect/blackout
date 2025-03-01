@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : NetworkBehaviour
 {
@@ -13,11 +14,22 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if(IsServer)
         {
-            SpawnPlayers();
+            NetworkManager.SceneManager.OnLoadComplete += OnSceneLoaded;
+
         }
-        
-        
     }
+
+    private async void OnSceneLoaded(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    {
+        if (!IsServer) return;
+
+        await Task.Delay(200);
+
+        SpawnPlayers();
+
+        NetworkManager.SceneManager.OnLoadComplete -= OnSceneLoaded;
+    }
+
 
     async void SpawnPlayers()
     {

@@ -16,8 +16,7 @@ public class RoomsGeneration : MonoBehaviour
     private System.Random random = new System.Random(0);
      public NavMeshSurface navMeshSurface;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         if (roomPrefabs.roomPrefabs.Length <= 1)
         {
