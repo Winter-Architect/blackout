@@ -143,9 +143,25 @@ public class Agent : NetworkBehaviour, IInteractor
     private void UnEquipItemLocalClientRpc()
     {
         Destroy(currentlyEquippedItem);
+        
         currentlyEquippedItem = null;
 
     }
+
+
+    [ServerRpc]
+    private void CallDestroyCollectibleServerRpc()
+    {
+        DestroyCollectibleClientRpc();
+    }
+    [ClientRpc]
+    private void DestroyCollectibleClientRpc()
+    {
+        currentSelectedInteractable.Value.gameObject.SetActive(false);
+        interactablesInRange.Remove(currentSelectedInteractable);
+        currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List.First;
+    } //Mauvais
+
 
     void Update()
     {
@@ -153,6 +169,7 @@ public class Agent : NetworkBehaviour, IInteractor
         activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();
+
         if(!IsOwner){
             return;
         }
@@ -181,6 +198,7 @@ public class Agent : NetworkBehaviour, IInteractor
                 InteractWith(currentSelectedInteractable.Value);
             }
         }
+
 
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -407,6 +425,9 @@ public class Agent : NetworkBehaviour, IInteractor
         if(CanInteract(interactable)){
             interactable.AcceptInteraction(handler);
             Debug.Log("TEST");
+        }
+        if(interactable is CollectableItem){
+            CallDestroyCollectibleServerRpc();
         }
     }
 

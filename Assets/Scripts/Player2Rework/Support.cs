@@ -36,6 +36,8 @@ public class Support : NetworkBehaviour
         //Controllables = new LinkedList<Controllable>(foundControllables);
         //current = Controllables.First;
 
+        Destroy(GameObject.FindGameObjectWithTag("Inventory"));
+
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
 
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);

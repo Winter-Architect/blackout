@@ -56,6 +56,25 @@ public class Grappling : NetworkBehaviour
         }
         lr.enabled = true;
         lr.SetPosition(1, grapplePoint);
+
+        EnableLrServerRpc();
+    }
+    [ServerRpc]
+    void EnableLrServerRpc(){
+        EnableLrClientRpc();
+    }
+    [ClientRpc]
+    void EnableLrClientRpc(){
+        lr.enabled = true;
+        lr.SetPosition(1, grapplePoint);
+    }
+    [ServerRpc]
+    void DisableLrServerRpc(){
+        DisableLrClientRpc();
+    }
+    [ClientRpc]
+    void DisableLrClientRpc(){
+        lr.enabled = false;
     }
     void ExecuteGrapple(){
         PlayerMovement.freeze = false;
@@ -77,6 +96,7 @@ public class Grappling : NetworkBehaviour
         grappling = false;
         grapplingCdTimer = grapplingCd;
 
+        DisableLrServerRpc();
         lr.enabled = false;
 
     }

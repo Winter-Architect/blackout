@@ -4,8 +4,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = Unity.Mathematics.Random;
-using SystemInfo = UnityEngine.Device.SystemInfo;
+
 
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : NetworkBehaviour, IDamageable

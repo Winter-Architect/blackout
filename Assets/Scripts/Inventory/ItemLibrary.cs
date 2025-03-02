@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemLibrary", menuName = "ItemLibrary", order = 1)]
