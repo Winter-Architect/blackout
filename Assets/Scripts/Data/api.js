@@ -31,6 +31,19 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+app.get("/blackout/connectedUsers", async (req, res) => {
+  try {
+    const client = await getClient();
+    const database = client.db(DB_NAME);
+    const users = database.collection("connectedUsers");
+    const documents = await users.find().toArray();
+    res.send(documents);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send({ error: "Failed to fetch users" });
+  }
+});
+
 app.get("/blackout/users", async (req, res) => {
   try {
     const client = await getClient();
@@ -49,7 +62,15 @@ app.post("/blackout/users", async (req, res) => {
     const client = await getClient();
     const database = client.db(DB_NAME);
     const users = database.collection("users");
-    const result = await users.insertOne({ id: req.body.id });
+    const usersConected = database.collection("connectedUsers");
+
+    const result = await users.updateOne(
+      { id: req.body.id },
+      { $setOnInsert: { id: req.body.id } },
+      { upsert: true }
+    );
+
+    const result2 = await usersConected.insertOne({ id: req.body.id });
     res.send(result);
   } catch (error) {
     console.error("Error adding user:", error);
@@ -61,12 +82,38 @@ app.delete("/blackout/users", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
-    const users = database.collection("users");
+    const users = database.collection("connectedUsers");
     const result = await users.deleteOne({ id: req.body.id });
     res.send(result);
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).send({ error: "Failed to delete user" });
+  }
+});
+
+app.get("/blackout/download", async (req, res) => {
+  try {
+    const client = await getClient();
+    const database = client.db(DB_NAME);
+    const users = database.collection("downloads");
+    const documents = await users.find().toArray();
+    res.send(documents);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send({ error: "Failed to fetch users" });
+  }
+});
+
+app.post("/blackout/download", async (req, res) => {
+  try {
+    const client = await getClient();
+    const database = client.db(DB_NAME);
+    const downloads = database.collection("downloads");
+    const result = await downloads.insertOne({});
+    res.send(result);
+  } catch (error) {
+    console.error("Error adding download:", error);
+    res.status(500).send({ error: "Failed to add download" });
   }
 });
 
