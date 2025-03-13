@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const Express = require("express");
 const BodyParser = require("body-parser");
+const cors = require("cors");
 
 const DATABASE_URI =
   "mongodb+srv://nocteln:rUCXu8qnZFmIsvS3@cluster0.cu600.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -12,6 +13,7 @@ let client;
 const app = Express();
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
