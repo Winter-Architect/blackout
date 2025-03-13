@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/users", async (req, res) => {
+app.get("/blackout/users", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
@@ -42,7 +42,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.post("/users", async (req, res) => {
+app.post("/blackout/users", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
@@ -55,7 +55,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.delete("/users", async (req, res) => {
+app.delete("/blackout/users", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
@@ -68,7 +68,7 @@ app.delete("/users", async (req, res) => {
   }
 });
 
-app.get("/runs", async (req, res) => {
+app.get("/blackout/runs", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
@@ -81,7 +81,7 @@ app.get("/runs", async (req, res) => {
   }
 });
 
-app.post("/runs", async (req, res) => {
+app.post("/blackout/runs", async (req, res) => {
   try {
     const client = await getClient();
     const database = client.db(DB_NAME);
