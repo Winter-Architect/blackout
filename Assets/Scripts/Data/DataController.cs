@@ -11,13 +11,16 @@ public class DataController : MonoBehaviour
     private string userId = null;
     void Start() {
      userId = SystemInfo.deviceUniqueIdentifier;
+     Debug.Log("1");
         StartCoroutine(AddPlayerRequest(userId));
+        Debug.Log("2");
     }
 
     void OnApplicationQuit() {
         if (userId == null) return;
         StartCoroutine(RemovePlayerRequest(userId));
     }
+
 
     IEnumerator AddPlayerRequest(string playerId)
     {
