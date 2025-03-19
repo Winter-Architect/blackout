@@ -820,6 +820,53 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &739722586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 739722588}
+  - component: {fileID: 739722587}
+  m_Layer: 0
+  m_Name: DiscordManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &739722587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739722586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f998be7a468c575468d6d3d44d46e239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clientId: 1351613475742285866
+  loginButton: {fileID: 0}
+  statusText: {fileID: 0}
+--- !u!4 &739722588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739722586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.81518, y: -1.6435655, z: -7.2206573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &766315898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1278,6 +1325,18 @@ MonoBehaviour:
   numberOfRooms: 20
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
   navMeshSurface: {fileID: 0}
+--- !u!114 &1216017594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216017592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48bf535b711a644b94dbd933785324e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1247526735
 GameObject:
   m_ObjectHideFlags: 0
@@ -2077,6 +2136,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1216017593}
+    - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1216017594}
   m_SourcePrefab: {fileID: 100100000, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
 --- !u!1001 &1946881037
 PrefabInstance:
@@ -2534,3 +2596,4 @@ SceneRoots:
   - {fileID: 1918099747}
   - {fileID: 591231404}
   - {fileID: 385759462}
+  - {fileID: 739722588}

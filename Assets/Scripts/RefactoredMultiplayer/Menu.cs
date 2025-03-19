@@ -46,7 +46,10 @@ public class Menu : MonoBehaviour
     private Dictionary<string, Button> qualityButtons;
     private const string SELECTED_CLASS = "qualityButtonsSelected";
     private const string DEFAULT_CLASS = "qualityButtons";
-    
+
+    public Button LoginToDiscord;
+    private DiscordManager discordManager;
+
     public void Awake()
     {
         menuUI = gameObject.GetComponent<UIDocument>();
@@ -54,6 +57,7 @@ public class Menu : MonoBehaviour
         ui = menuUI.rootVisualElement;
         LobbyUI.rootVisualElement.visible = false;
         masterMixer.SetFloat("MasterVolume", PlayerPrefs.GetFloat("SavedMasterVolume"));
+        discordManager = FindObjectOfType<DiscordManager>();
     }
     
     private void OnEnable()
@@ -107,6 +111,9 @@ public class Menu : MonoBehaviour
             int qualityLevel = kvp.Key == "Low" ? 0 : kvp.Key == "Medium" ? 1 : 2;
             kvp.Value.clicked += () => SetQuality(kvp.Key, qualityLevel);
         }
+
+        LoginToDiscord = ui.Q<Button>("DiscordLogin");
+        LoginToDiscord.clicked += OnDiscordLoginClicked;
         
         playPanel = ui.Q<VisualElement>("PlayPanel");
         hostButton = ui.Q<Button>("Host");
@@ -365,5 +372,17 @@ public class Menu : MonoBehaviour
         if (value < 1) value = .0001f;
         PlayerPrefs.SetFloat("SavedMasterVolume", value);
         masterMixer.SetFloat("MasterVolume", Mathf.Log10(value / 100) * 20f);
+    }
+
+    private void OnDiscordLoginClicked()
+    {
+        if (discordManager != null)
+        {
+            discordManager.StartOAuthFlow();
+        }
+        else
+        {
+            Debug.LogError("DiscordManager not found!");
+        }
     }
 }
