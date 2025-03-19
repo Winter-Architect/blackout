@@ -1,11 +1,13 @@
 using UnityEngine;
 using Discord.Sdk;
+using System;
 
 public class UpdateDiscordData : MonoBehaviour {
     private DiscordManager discordManager;
     private Room[] foundRooms;
     private Room currentRoom;
     private Agent player1;
+    private long startTimestamp;
 
     void Start() {
         try {
@@ -17,6 +19,7 @@ public class UpdateDiscordData : MonoBehaviour {
                 discordManager.client.AddLogCallback(OnLog, LoggingSeverity.Error);
                 discordManager.client.SetStatusChangedCallback(OnStatusChanged);
                 Debug.Log("DiscordManager and client initialized successfully in Start");
+                startTimestamp = GetCurrentUnixTimestamp();
             } else {
                 Debug.LogError("DiscordManager or client is null in Start");
             }
@@ -65,6 +68,12 @@ public class UpdateDiscordData : MonoBehaviour {
             activity.SetType(ActivityTypes.Playing);
             activity.SetState("Current room : " + currentRoom.RoomID);
             activity.SetDetails("In Game");
+
+            // Créez un objet ActivityTimestamps et définissez le timestamp
+            ActivityTimestamps timestamps = new ActivityTimestamps();
+            timestamps.SetStart((ulong)startTimestamp); // Convertissez le long en ulong
+            activity.SetTimestamps(timestamps);
+
             discordManager.UpdateRichPresence(activity);
             Debug.Log("Updated Discord Rich Presence");
         } catch (System.Exception ex) {
@@ -81,5 +90,9 @@ public class UpdateDiscordData : MonoBehaviour {
         if (error != Client.Error.None) {
             Debug.LogError($"Error: {error}, code: {errorCode}");
         }
+    }
+
+    private long GetCurrentUnixTimestamp() {
+        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }
