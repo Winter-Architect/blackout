@@ -49,10 +49,8 @@ public class UpdateDiscordData : MonoBehaviour {
             }
 
             foreach (var room in foundRooms) {
-                Debug.Log("Checking room ");
                 if (room.ContainsPlayer(player1)) {
                     currentRoom = room;
-                    Debug.Log("Player is in room " + currentRoom.RoomID);
                     SetNewActivity();
                     break;
                 }
@@ -75,7 +73,6 @@ public class UpdateDiscordData : MonoBehaviour {
             activity.SetTimestamps(timestamps);
 
             discordManager.UpdateRichPresence(activity);
-            Debug.Log("Updated Discord Rich Presence");
         } catch (System.Exception ex) {
             Debug.LogError("Exception in SetNewActivity: " + ex.Message);
         }
