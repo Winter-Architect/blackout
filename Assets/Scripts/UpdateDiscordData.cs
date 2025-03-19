@@ -78,6 +78,20 @@ public class UpdateDiscordData : MonoBehaviour {
         }
     }
 
+    private void OnApplicationQuit() {
+            try {
+                if (discordManager != null && discordManager.client != null) {
+                    // Activity activity = new Activity();
+                    // activity.SetType(ActivityTypes.None); // Arrête l'activité
+                    // discordManager.UpdateRichPresence(activity);
+                    discordManager.client.Dispose();
+                    Debug.Log("Stopped Discord Rich Presence");
+                }
+            } catch (System.Exception ex) {
+                Debug.LogError("Exception in OnApplicationQuit: " + ex.Message);
+            }
+        }
+
     private void OnLog(string message, LoggingSeverity severity) {
         Debug.Log($"Log: {severity} - {message}");
     }

@@ -124,16 +124,12 @@ public class DiscordManager : MonoBehaviour
 
     private void ClientReady()
     {
-        Debug.Log($"Friend Count: {client.GetRelationships().Count()}");
-
         Activity activity = new Activity();
         activity.SetType(ActivityTypes.Playing);
         activity.SetState("In Lobby");
         // activity.SetDetails("Rank: Diamond II");
         client.UpdateRichPresence(activity, (ClientResult result) => {
-            if (result.Successful()) {
-                Debug.Log("Rich presence updated!");
-            } else {
+            if (!result.Successful()) {
                 Debug.LogError("Failed to update rich presence");
             }
         });
@@ -142,9 +138,7 @@ public class DiscordManager : MonoBehaviour
     public void UpdateRichPresence(Activity activity)
     {
         client.UpdateRichPresence(activity, (ClientResult result) => {
-            if (result.Successful()) {
-                Debug.Log("Rich presence updated!");
-            } else {
+            if (!result.Successful()) {
                 Debug.LogError("Failed to update rich presence");
             }
         });
