@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,6 +13,7 @@ public class NavMeshBuilder : MonoBehaviour
         surface = GetComponent<NavMeshSurface>();
     }
 
+    [Obsolete("Obsolete")]
     public void BuildNavMesh()
     {
         if (surface != null)
@@ -24,6 +26,7 @@ public class NavMeshBuilder : MonoBehaviour
         }
     }
 
+    [Obsolete("Obsolete")]
     private IEnumerator UpdateNavMeshLinks()
     {
         yield return new WaitForSeconds(0.1f);
