@@ -18,7 +18,7 @@ public class Agent : NetworkBehaviour, IInteractor
     LinkedListNode<BaseInteractable> currentSelectedInteractable;
     [SerializeField] private float speed;
 
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 5f;
 
     [SerializeField] public float currentSpeed = 0;
     [SerializeField] private Transform groundCheck;
@@ -318,7 +318,7 @@ public class Agent : NetworkBehaviour, IInteractor
     void CheckAirborne()
     {
         RaycastHit hit;
-        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.01f * transform.localScale.y)){
+        if(Physics.Raycast(groundCheck.position, Vector3.down, out hit, 3f * transform.localScale.y)){
             isAirborne = false;
         }
         else{

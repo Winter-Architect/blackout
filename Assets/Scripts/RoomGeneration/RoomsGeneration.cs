@@ -102,7 +102,7 @@ public class RoomsGeneration : MonoBehaviour
         entryPoint.GetComponent<BoxCollider>().enabled = false;
         exitPoint.GetComponent<BoxCollider>().enabled = false;
 
-        GenerateDoor(room);
+        //GenerateDoor(room);
         
         BakeNavMesh();
 
