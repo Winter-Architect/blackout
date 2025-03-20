@@ -9,7 +9,7 @@ public class Room : MonoBehaviour
     public bool isTurningRight;
     public bool isStairs;
     public float Weight;
-    public int RoomID;
+    public AudioSource Audio; // Reference to AudioSource
 
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
@@ -29,6 +29,10 @@ public class Room : MonoBehaviour
     public bool ContainsPlayer(Agent Player)
     {
         Bounds myBounds = GetComponent<Collider>().bounds;
+        if (Audio != null && !Audio.isPlaying)
+        {
+            Audio.Play();
+        }
         return myBounds.Contains(Player.transform.position);
     }
 
@@ -40,6 +44,10 @@ public class Room : MonoBehaviour
             if(Player2 is not null)
             {
                 Player2.RecheckForRoom();
+            }
+            if (Audio != null && !Audio.isPlaying)
+            {
+                Audio.Stop();
             }
         }
     }

@@ -7,6 +7,7 @@ public class locker : MonoBehaviour
     public string Open;
     public bool open = false;
     public bool debounce = false;
+    public AudioSource Audio; // Reference to AudioSource
     IEnumerator WaitForAnimation()
     {
         AnimatorStateInfo animState = Animator.GetCurrentAnimatorStateInfo(0);
@@ -23,11 +24,19 @@ public class locker : MonoBehaviour
             {
                 Animator.SetBool(Open, false);
                 open = false;
+                if (Audio != null && !Audio.isPlaying)
+                {
+                    Audio.Play();
+                }
             }
             else
             {
                 Animator.SetBool(Open, true);
                 open = true;
+                if (Audio != null && !Audio.isPlaying)
+                {
+                    Audio.Play();
+                }
             }
 
             StartCoroutine(WaitForAnimation());
