@@ -38,7 +38,7 @@ public class RoomsGeneration : MonoBehaviour
         }
         for (int i = 0; i < numberOfRooms; i++)
         {
-           currRoom = GenerateRoom(currRoom);
+           currRoom = GenerateRoom(currRoom, i);
         }
 
         if (endRoom != null)
@@ -66,7 +66,7 @@ public class RoomsGeneration : MonoBehaviour
     }
 
 
-     GameObject GenerateRoom(GameObject PreviousRoom)
+     GameObject GenerateRoom(GameObject PreviousRoom, int id)
     {
 
         GameObject room = GetRandomRoom(PreviousRoom);
@@ -103,6 +103,8 @@ public class RoomsGeneration : MonoBehaviour
         exitPoint.GetComponent<BoxCollider>().enabled = false;
 
         //GenerateDoor(room);
+        Room roomScript = room.GetComponent<Room>();
+        roomScript.RoomID = id+1;
         
         BakeNavMesh();
 

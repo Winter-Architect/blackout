@@ -11,9 +11,7 @@ public class DataController : MonoBehaviour
     private string userId = null;
     void Start() {
      userId = SystemInfo.deviceUniqueIdentifier;
-     Debug.Log("1");
         StartCoroutine(AddPlayerRequest(userId));
-        Debug.Log("2");
     }
 
     void OnApplicationQuit() {
@@ -41,7 +39,7 @@ public class DataController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Response: " + req.downloadHandler.text);
+                // Debug.Log("Response: " + req.downloadHandler.text);
             }
         }
     }
