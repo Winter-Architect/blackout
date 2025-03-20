@@ -9,6 +9,7 @@ public class Room : MonoBehaviour
     public bool isTurningRight;
     public bool isStairs;
     public float Weight;
+    public int RoomID;
 
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
