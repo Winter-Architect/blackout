@@ -21,17 +21,17 @@ public class UpdateDiscordData : MonoBehaviour {
                 Debug.Log("DiscordManager and client initialized successfully in Start");
                 startTimestamp = GetCurrentUnixTimestamp();
             } else {
-                Debug.LogError("DiscordManager or client is null in Start");
+                Debug.Log("DiscordManager or client is null in Start");
             }
         } catch (System.Exception ex) {
-            Debug.LogError("Exception in Start: " + ex.Message);
+            Debug.Log("Exception in Start: " + ex.Message);
         }
     }
 
     private void Update() {
         try {
             if (player1 == null) {
-                Debug.LogError("Player is null in Update");
+                Debug.Log("Player is null in Update");
                 player1 = FindFirstObjectByType<Agent>();
                 return;
             } else {
@@ -39,7 +39,7 @@ public class UpdateDiscordData : MonoBehaviour {
             }
 
             if (discordManager == null || discordManager.client == null) {
-                Debug.LogError("DiscordManager or client is null in Update");
+                Debug.Log("DiscordManager or client is null in Update");
                 return;
             }
 
@@ -56,7 +56,7 @@ public class UpdateDiscordData : MonoBehaviour {
                 }
             }
         } catch (System.Exception ex) {
-            Debug.LogError("Exception in Update: " + ex.Message);
+            Debug.Log("Exception in Update: " + ex.Message);
         }
     }
 
@@ -74,7 +74,7 @@ public class UpdateDiscordData : MonoBehaviour {
 
             discordManager.UpdateRichPresence(activity);
         } catch (System.Exception ex) {
-            Debug.LogError("Exception in SetNewActivity: " + ex.Message);
+            Debug.Log("Exception in SetNewActivity: " + ex.Message);
         }
     }
 
