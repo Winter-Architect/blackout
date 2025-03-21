@@ -7,11 +7,11 @@ public class Door : MonoBehaviour
     public Animator Animator;
     public string PlayerTag;
     public string OpenCloseAnnimBoolName;
-    public bool CanOpenDoor = true;
     public AudioSource DoorAudio; // Reference to AudioSource
+    private bool doorOpen = false;
     void OnTriggerEnter(Collider other)
     {        
-        if (CanOpenDoor && other.CompareTag(PlayerTag))
+        if (doorOpen == false && other.CompareTag(PlayerTag))
         {
             Animator.SetBool(OpenCloseAnnimBoolName, true);
             
@@ -20,6 +20,7 @@ public class Door : MonoBehaviour
             {
                 DoorAudio.Play();
             }
+            doorOpen = true;
         }
     }
 
