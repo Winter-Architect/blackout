@@ -16,6 +16,7 @@ public class MiniDoorScript : MonoBehaviour
             {
                 DoorAudio.Play();
             }
+            doorOpen = true;
         }
     }
 

@@ -8,9 +8,10 @@ public class Door : MonoBehaviour
     public string PlayerTag;
     public string OpenCloseAnnimBoolName;
     public AudioSource DoorAudio; // Reference to AudioSource
+    private bool doorOpen = false;
     void OnTriggerEnter(Collider other)
     {        
-        if (other.CompareTag(PlayerTag))
+        if (doorOpen == false && other.CompareTag(PlayerTag))
         {
             Animator.SetBool(OpenCloseAnnimBoolName, true);
             
@@ -19,6 +20,7 @@ public class Door : MonoBehaviour
             {
                 DoorAudio.Play();
             }
+            doorOpen = true;
         }
     }
 

@@ -35,7 +35,7 @@ public class Room : MonoBehaviour
         }
         return myBounds.Contains(Player.transform.position);
     }
-
+        
     void OnTriggerExit(Collider col)
     {
         if(col.gameObject.tag == "Player")
