@@ -105,6 +105,12 @@ public class RoomsGeneration : MonoBehaviour
         //GenerateDoor(room);
         Room roomScript = room.GetComponent<Room>();
         roomScript.RoomID = id+1;
+
+        TextMeshProGUI tmp = room.GetComponentInChildren<TextMeshProGUI>();
+        if (tmp != null)
+        {
+            tmp.SetText(roomScript.RoomID.ToString());
+        }
         
         BakeNavMesh();
 

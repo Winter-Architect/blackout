@@ -10,6 +10,7 @@ public class Room : MonoBehaviour
     public bool isStairs;
     public float Weight;
     public AudioSource Audio; // Reference to AudioSource
+    public int RoomID;
 
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
