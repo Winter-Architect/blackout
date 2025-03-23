@@ -1096,6 +1096,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 963f81328381e1149b05c8f5d35cbdd6, type: 2}
     - target: {fileID: 1534350543138309982, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534350543138309982, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 652f5deac1baf7943978f6a980a9f367, type: 2}
@@ -1148,6 +1152,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 963f81328381e1149b05c8f5d35cbdd6, type: 2}
     - target: {fileID: 3830967700645303918, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3830967700645303918, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 652f5deac1baf7943978f6a980a9f367, type: 2}
@@ -1195,6 +1203,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 91548fd5756ba684baee2019785c584c, type: 2}
+    - target: {fileID: 8563675250217955441, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8563675250217955441, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2485,12 +2497,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 1
   Weight: 5
   Audio: {fileID: 0}
-  RoomID: 0
 --- !u!65 &8248197396750021546
 BoxCollider:
   m_ObjectHideFlags: 0

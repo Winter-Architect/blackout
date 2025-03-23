@@ -3717,12 +3717,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
   Weight: 5
   Audio: {fileID: 0}
-  RoomID: 0
 --- !u!65 &8054796016409432823
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5243,6 +5243,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1573821958528498504}
     m_Modifications:
+    - target: {fileID: 1835500453173170436, guid: c237f162445f18a4c921fce0576a67f2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3471250482613841843, guid: c237f162445f18a4c921fce0576a67f2, type: 3}
       propertyPath: m_LocalScale.x
       value: 21.993933
@@ -5691,6 +5695,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1573821958528498504}
     m_Modifications:
+    - target: {fileID: 1835500453173170436, guid: c237f162445f18a4c921fce0576a67f2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3471250482613841843, guid: c237f162445f18a4c921fce0576a67f2, type: 3}
       propertyPath: m_LocalScale.x
       value: 21.993933
