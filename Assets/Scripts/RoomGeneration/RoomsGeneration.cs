@@ -1,5 +1,6 @@
 using Unity.AI.Navigation;
 using UnityEngine;
+using TMPro; 
 
 public class RoomsGeneration : MonoBehaviour
 {
@@ -106,11 +107,15 @@ public class RoomsGeneration : MonoBehaviour
         Room roomScript = room.GetComponent<Room>();
         roomScript.RoomID = id+1;
 
-        TextMeshProGUI tmp = room.GetComponentInChildren<TextMeshProGUI>();
+        TextMeshProUGUI tmp = room.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null)
         {
-            tmp.SetText(roomScript.RoomID.ToString());
-        }
+            tmp.text = roomScript.RoomID < 9 ? "0" + (roomScript.RoomID + 1).ToString() : (roomScript.RoomID + 1).ToString();
+
+        }else
+{
+    Debug.LogWarning("TextMeshProUGUI non trouvé dans les enfants de 'room'");
+}
         
         BakeNavMesh();
 
