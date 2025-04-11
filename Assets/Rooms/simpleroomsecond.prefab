@@ -1040,12 +1040,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
   Weight: 5
   Audio: {fileID: 0}
-  RoomID: 0
+  lights:
+  - {fileID: 7842896745319796213}
+  - {fileID: 2753066136619089631}
+  - {fileID: 6786569536010151567}
+  - {fileID: 6324337983550518225}
 --- !u!65 &8054796016409432823
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1833,6 +1838,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: light (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Name
+      value: Spot Light 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1841,6 +1858,11 @@ PrefabInstance:
 --- !u!4 &3921876536195717653 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455285355275294528, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+  m_PrefabInstance: {fileID: 1477076137728642389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &6786569536010151567 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
   m_PrefabInstance: {fileID: 1477076137728642389}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1603993825877839706
@@ -1981,6 +2003,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: light (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Name
+      value: Spot Light 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1989,6 +2023,11 @@ PrefabInstance:
 --- !u!4 &4577767203024408395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455285355275294528, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+  m_PrefabInstance: {fileID: 2131770535914444811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &6324337983550518225 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
   m_PrefabInstance: {fileID: 2131770535914444811}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2175176873137249101
@@ -2062,6 +2101,10 @@ PrefabInstance:
     - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: Condition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: DoorAudio
@@ -2658,6 +2701,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2666,6 +2717,11 @@ PrefabInstance:
 --- !u!4 &329996349001396591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455285355275294528, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+  m_PrefabInstance: {fileID: 2776061164621162031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &7842896745319796213 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
   m_PrefabInstance: {fileID: 2776061164621162031}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3189829316140291498
@@ -3480,11 +3536,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: light (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_Name
+      value: Spot Light 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352687713601258566, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+--- !u!108 &2753066136619089631 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5355094291018083290, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+  m_PrefabInstance: {fileID: 7810867871538255109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5654036199626211909 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455285355275294528, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}

@@ -291,6 +291,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: Condition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: DoorAudio
       value: 
       objectReference: {fileID: 4723323155802028347}
@@ -2503,6 +2507,7 @@ MonoBehaviour:
   isStairs: 1
   Weight: 5
   Audio: {fileID: 0}
+  lights: []
 --- !u!65 &8248197396750021546
 BoxCollider:
   m_ObjectHideFlags: 0

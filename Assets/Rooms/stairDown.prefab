@@ -1684,6 +1684,7 @@ MonoBehaviour:
   isStairs: 1
   Weight: 5
   Audio: {fileID: 0}
+  lights: []
 --- !u!65 &8057011019826849678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2689,6 +2690,10 @@ PrefabInstance:
     - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: Condition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: DoorAudio

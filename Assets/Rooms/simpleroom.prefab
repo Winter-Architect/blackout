@@ -779,12 +779,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
   Weight: 5
   Audio: {fileID: 0}
-  RoomID: 0
+  lights: []
 --- !u!114 &8351467607561298262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,6 +1644,10 @@ PrefabInstance:
     - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: Condition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: DoorAudio
