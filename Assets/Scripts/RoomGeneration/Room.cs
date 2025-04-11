@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Room : MonoBehaviour
 {
@@ -11,7 +13,16 @@ public class Room : MonoBehaviour
     public bool isStairs;
     public float Weight;
     public AudioSource Audio; // Reference to AudioSource
-
+    public List<Light> lights;
+    /*
+    private void Start()
+    {
+        foreach (Light lit in lights)
+        {
+            lit.gameObject.SetActive(false);
+        }
+    }
+    */
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
         List<Controllable> res = new List<Controllable>();
@@ -34,9 +45,21 @@ public class Room : MonoBehaviour
         {
             Audio.Play();
         }
-        return myBounds.Contains(Player.transform.position);
-    }
         
+        return myBounds.Contains(Player.transform.position);
+        
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            foreach (Light lit in lights)
+            {
+                lit.gameObject.SetActive(true);
+            }
+        }
+    }
     void OnTriggerExit(Collider col)
     {
         if(col.gameObject.tag == "Player")
@@ -49,6 +72,11 @@ public class Room : MonoBehaviour
             if (Audio != null && !Audio.isPlaying)
             {
                 Audio.Stop();
+                
+            }
+            foreach (Light lit in lights)
+            {
+                lit.gameObject.SetActive(false);
             }
         }
     }

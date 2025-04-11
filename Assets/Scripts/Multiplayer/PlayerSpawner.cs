@@ -47,7 +47,7 @@ public class PlayerSpawner : NetworkBehaviour
             else{
                 playerPrefab = thirdPlayerPrefab;
             }
-            Vector3 spawnPoint = new Vector3(0, 2f, 0);
+            Vector3 spawnPoint = new Vector3(-10f, -0.74f, -65.91f);
             GameObject playerInstance = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
             NetworkObject networkObject = playerInstance.GetComponent<NetworkObject>();
             networkObject.SpawnWithOwnership(clientId);
@@ -59,3 +59,4 @@ public class PlayerSpawner : NetworkBehaviour
         }
     }
 }
+//-10.83396 -0.7400001 -65.91
