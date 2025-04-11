@@ -6,5 +6,6 @@ public class ItemLibrary : ScriptableObject
 
 {    
     public Item GrapplingHook;
+    public Item Flashlight;
 
 }
