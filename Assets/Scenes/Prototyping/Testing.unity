@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.2
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: bf3ae30d7bd23e54e8ee209a010e9086, type: 2}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 1
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -22404,6 +22404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 2979480424639057402, guid: 3d572aea3232719438a78025d7cf3f83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -35301,6 +35305,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: distrib
       objectReference: {fileID: 0}
+    - target: {fileID: 7456912217792573409, guid: 92df11ae4f3d5c54eae9e37f3c4862ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7797866806990583131, guid: 92df11ae4f3d5c54eae9e37f3c4862ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.121534
@@ -35787,6 +35795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b2f45341e73bd4398c01880d70f6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   roomPrefabs: {fileID: 11400000, guid: 5a46ce6666d51874ca526179a0e27e22, type: 2}
   endRoom: {fileID: 0}
   numberOfRooms: 20
@@ -84879,7 +84888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  controllableCamera: {fileID: 0}
+  controllableCamera: {fileID: 7078815346239715473, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
   placesToSpawn: []
 --- !u!64 &1851430986
 MeshCollider:
@@ -87677,10 +87686,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2873184337001929096, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3349539858
+      objectReference: {fileID: 0}
+    - target: {fileID: -2873184337001929096, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3949523160
+      objectReference: {fileID: 0}
     - target: {fileID: -2568011686715992916, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: Audio
       value: 
       objectReference: {fileID: 1216017601}
+    - target: {fileID: -2568011686715992916, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 856835485806951018, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_Convex
       value: 1
@@ -89436,6 +89457,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 678d989a2b57f864d8dbe06125fa0b77, type: 2}
+      - {fileID: 11400000, guid: 931315baf42d8dd4d953379f40104d02, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
