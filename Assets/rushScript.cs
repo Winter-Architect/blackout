@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Video;
 public class rushScript : MonoBehaviour
@@ -7,6 +8,13 @@ public class rushScript : MonoBehaviour
     
     public GameObject ScreamerPanel;         // The UI Panel with the RawImage
     public VideoPlayer ScreamerVideo;        // The VideoPlayer component
+    private FieldOfView fieldOfView;
+    private void Awake()
+    {
+        fieldOfView = gameObject.GetComponent<FieldOfView>();
+        StartCoroutine(fieldOfView.FOVCoroutine());
+    }
+
     void OnTriggerEnter(Collider other)
     {        
         if ( other.CompareTag(PlayerTag) && Condition == true)
