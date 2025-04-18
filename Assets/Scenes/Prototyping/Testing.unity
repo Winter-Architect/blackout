@@ -322,6 +322,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.767854
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.178578
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: -39.535717
       objectReference: {fileID: 0}
@@ -16910,6 +16920,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.910719
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.178565
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: -39.535713
       objectReference: {fileID: 0}
@@ -28373,7 +28393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerTag: Player
-  Condition: 0
+  Condition: 1
   ScreamerPanel: {fileID: 1109212213}
   ScreamerVideo: {fileID: 815305705}
 --- !u!82 &976007991
