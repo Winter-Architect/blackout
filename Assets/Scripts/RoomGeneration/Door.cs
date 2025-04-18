@@ -16,6 +16,12 @@ public class Door : MonoBehaviour
         {
             Animator.SetBool(OpenCloseAnnimBoolName, true);
             
+            Agent agent = other.gameObject.GetComponent<Agent>();
+            if (agent.shouldSpawnEntity == true)
+            {
+                
+            }
+            
             // Play sound when door opens
             if (DoorAudio != null && !DoorAudio.isPlaying)
             {
