@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Blackout.Inventory
 {
-    public class InventoryButtonController : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class InventoryButtonController : MonoBehaviour
     {
         public int Id;
         private Animator anim;
@@ -35,33 +35,25 @@ namespace Blackout.Inventory
         }
 
         public void Selected() {
-            Debug.LogWarning("Selected");
             selected = true;
             InventoryController.activeInventorySlotId = slotId;
             InventoryController.selectedItemId = Id;
         }
 
         public void Deselected() {
-            Debug.LogWarning("Deselected");
             selected = false; 
             if (InventoryController.selectedItemId == Id)
            InventoryController.selectedItemId = -1;
         }
 
         public void HoverEnter() {
-            Debug.LogWarning("HoverEnter");
             anim.SetBool("Hover", true);
             itemText.text = itemName;
         }
 
         public void HoverExit() {
-            Debug.LogWarning("HoverExit");
             anim.SetBool("Hover", false);
             itemText.text = "";
         }
-
-        public void OnPointerClick(PointerEventData eventData) => Debug.Log("Click!");
-        public void OnPointerEnter(PointerEventData eventData) => Debug.Log("Enter!");
-        public void OnPointerExit(PointerEventData eventData) => Debug.Log("Exit!");
     }
 }
