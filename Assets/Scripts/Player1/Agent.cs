@@ -130,7 +130,12 @@ public class Agent : NetworkBehaviour, IInteractor
             Debug.LogError("Item not found, update ItemManager from editor");
             return;
         }
-        GameObject item = Instantiate(prefab, playerRightHandSlot.transform);
+        GameObject item = Instantiate(prefab);
+        item.transform.SetParent(playerRightHandSlot.transform);
+        if (item.TryGetComponent<Flashlight>(out var flashlight))
+        {
+            flashlight.followTarget = playerRightHandSlot.transform;
+        }
         currentlyEquippedItem = item;
     }
 
@@ -157,10 +162,13 @@ public class Agent : NetworkBehaviour, IInteractor
     [ClientRpc]
     private void DestroyCollectibleClientRpc()
     {
-        currentSelectedInteractable.Value.gameObject.SetActive(false);
-        interactablesInRange.Remove(currentSelectedInteractable);
-        currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List.First;
-    } //Mauvais
+        if (currentSelectedInteractable != null && currentSelectedInteractable.Value != null)
+        {
+            currentSelectedInteractable.Value.gameObject.SetActive(false);
+            interactablesInRange.Remove(currentSelectedInteractable);
+            currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List?.First;
+        }
+    }
 
 
     void Update()
@@ -183,6 +191,13 @@ public class Agent : NetworkBehaviour, IInteractor
         if(Input.GetKeyDown(KeyCode.Space) && !isAirborne && !freeze){
             animator.SetBool("IsJumping", true);
             Jump();
+        }
+
+        // Maybe ???
+        if (currentlyEquippedItem != null) {
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                currentlyEquippedItem.GetComponent<IActionItem>().PrimaryAction(this);
+            }
         }
 
         if(currentSelectedInteractable is not null)
@@ -328,7 +343,6 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void ControlCamera()
     {
-
         xRotation += yMouseInput * yMouseSensitivity;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
@@ -338,7 +352,8 @@ public class Agent : NetworkBehaviour, IInteractor
 
         playerCameraPivotTransform.localRotation = verticalRotation;
 
-    
+        // Synchroniser la rotation du corps avec la caméra (axe Y uniquement)
+        playerBody.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
 
 
@@ -360,11 +375,11 @@ public class Agent : NetworkBehaviour, IInteractor
 
         Vector3 myMovement = (myForward * yInput + myRight * xInput).normalized * currentSpeed;
         Vector3 myVelocity = new Vector3(myMovement.x, playerRigidbody.linearVelocity.y, myMovement.z);
-        if (myMovement != Vector3.zero) 
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(myMovement, Vector3.up);
-            playerBody.rotation = Quaternion.RotateTowards(playerBody.rotation, targetRotation, 1000f * Time.deltaTime);
-        }
+        // if (myMovement != Vector3.zero) 
+        // {
+        //     Quaternion targetRotation = Quaternion.LookRotation(myMovement, Vector3.up);
+        //     playerBody.rotation = Quaternion.RotateTowards(playerBody.rotation, targetRotation, 1000f * Time.deltaTime);
+        // }
         playerRigidbody.linearVelocity = myVelocity;
         
     }
@@ -449,6 +464,7 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.Log("collected");
             InventoryController.Instance.AddItemToInventory(item.item);
+            Agent.AddItemToAgentInventory(item.item);
         }
 
         public void InteractWith(InteractableButton button)

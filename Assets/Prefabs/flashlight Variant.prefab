@@ -105,6 +105,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2485369848785103702, guid: 41c777e763eeb6d479bbbf05bf0e9311, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485369848785103702, guid: 41c777e763eeb6d479bbbf05bf0e9311, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8516770795417921992, guid: 41c777e763eeb6d479bbbf05bf0e9311, type: 3}
       propertyPath: m_Name
       value: flashlight Variant
