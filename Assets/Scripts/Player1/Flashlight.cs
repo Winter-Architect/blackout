@@ -7,7 +7,6 @@ public class Flashlight : MonoBehaviour , IActionItem
 
     public void PrimaryAction(Agent agent)
     {
-        Debug.Log("Tried to shine");  
         var light = gameObject.GetComponentInChildren<Light>();
         if (light == null)
         {

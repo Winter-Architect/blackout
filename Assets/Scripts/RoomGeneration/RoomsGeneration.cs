@@ -46,6 +46,7 @@ public class RoomsGeneration : NetworkBehaviour
         for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
             NetworkObject room = roomPrefabs.roomPrefabs[i];
+            Debug.Log($"[Generation de salles] Salle {i} : {room.name}");
             Room roomScript2 = room.GetComponent<Room>();
             totalWeight += roomScript2.Weight;
         }

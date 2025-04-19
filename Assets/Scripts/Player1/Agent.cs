@@ -9,6 +9,15 @@ public class Agent : NetworkBehaviour, IInteractor
 
     private AgentInteractionHandler handler = new AgentInteractionHandler();
 
+    public bool isInLocker;
+    
+    public int health;
+    
+    public bool isDead;
+    
+    public float spawnTimer = 20f;
+    public bool shouldSpawnEntity = false;
+    
     public bool canGrapple;
 
     private SphereCollider myCheckTrigger;
@@ -173,6 +182,26 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
+        if (health == 0)
+        {
+            isDead = true;
+        }
+        // Only count down when not waiting to spawn the next entity
+        if (!shouldSpawnEntity)
+        {
+            spawnTimer -= Time.deltaTime;
+
+            if (spawnTimer <= 0)
+            {
+                shouldSpawnEntity = true;
+            }
+        }
+        // Once door clears the flag, restart the timer
+        else if (shouldSpawnEntity == false && spawnTimer <= 0)
+        {
+            spawnTimer = 120f;
+        }
+        
         Cursor.lockState = cursorState; 
         activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
