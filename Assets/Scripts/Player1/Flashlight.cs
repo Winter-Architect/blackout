@@ -5,7 +5,7 @@ public class Flashlight : MonoBehaviour, IActionItem
     public Transform followTarget; // assign this when equipping
     public Vector3 rotationOffset = new Vector3(30, 50, 30);
     private Agent agent;
-
+    
     private float energyTimer = 0f; // Ajout du timer
     public float batteryLifeSeconds = 120f; // current charge
     public float maxBatteryLife = 120f;
