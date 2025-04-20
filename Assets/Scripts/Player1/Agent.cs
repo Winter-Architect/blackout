@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Blackout.Inventory;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class Agent : NetworkBehaviour, IInteractor
@@ -10,8 +11,7 @@ public class Agent : NetworkBehaviour, IInteractor
     private AgentInteractionHandler handler = new AgentInteractionHandler();
 
     public bool isInLocker;
-    
-    public int health;
+
     
     public bool isDead;
     
@@ -73,10 +73,22 @@ public class Agent : NetworkBehaviour, IInteractor
     private CursorLockMode cursorState;
     public GameObject inventoryCanvas;
     private InventoryController invController;
+
+    
+
+    // For Health and energy bars
+    public GameObject PlayerHUDPrefab;
+    public UIDocument PlayerHUD;
+    public VisualElement PlayerHUDui;
+    public VisualElement BarsContainer;
+    public VisualElement HealthBar;
+    public VisualElement EnergyBar;
+    public int Health = 100;
+    public int Energy = 25;
     
     public override void OnNetworkSpawn()
     {
-
+       
         myCheckTrigger = gameObject.AddComponent<SphereCollider>();
         myCheckTrigger.isTrigger = true;
         myCheckTrigger.radius = interactionRange;
@@ -85,7 +97,19 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             playerCamera.gameObject.SetActive(false);
             return;
-        }      
+        }  
+
+        PlayerHUD = playerCamera.GetComponentInChildren<UIDocument>();
+        if (PlayerHUD == null)
+        {
+            Debug.LogError("PlayerHUD not found in children of playerCamera.");
+            return;
+        }
+        PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
+        BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
+        HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
+        EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
+    
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
@@ -182,10 +206,13 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
-        if (health == 0)
+        if (Health == 0)
         {
             isDead = true;
         }
+
+        HealthBar.style.width = Length.Percent(Health);
+        EnergyBar.style.width = Length.Percent(Energy);
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -202,7 +229,7 @@ public class Agent : NetworkBehaviour, IInteractor
             spawnTimer = 120f;
         }
         
-        Cursor.lockState = cursorState; 
+        UnityEngine.Cursor.lockState = cursorState; 
         activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();
