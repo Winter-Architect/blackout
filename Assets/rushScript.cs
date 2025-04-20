@@ -27,7 +27,7 @@ public class rushScript : NetworkBehaviour
             
             if (agent.isInLocker == false)
             {
-                agent.health = 0;
+                agent.Health = 0;
                 ScreamerPanel.SetActive(true);   // Show the screamer panel
                 ScreamerVideo.Play();            // Start the video
             }
