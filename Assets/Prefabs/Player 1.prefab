@@ -141,6 +141,10 @@ MonoBehaviour:
   freeze: 0
   activeGrapple: 0
   inventoryCanvas: {fileID: 4988085219231443046, guid: 6dadbe1d3bbf76d4b975e7f4a219081b, type: 3}
+  PlayerHUDPrefab: {fileID: 8303243591920336953, guid: 75f9d82e2135efa4e8a4d103340530c4, type: 3}
+  PlayerHUD: {fileID: 941007199689001503, guid: 75f9d82e2135efa4e8a4d103340530c4, type: 3}
+  Health: 100
+  Energy: 100
 --- !u!54 &2643502533287587449
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -277,6 +281,7 @@ GameObject:
   - component: {fileID: 6594598655190588432}
   - component: {fileID: 6738240434989586335}
   - component: {fileID: 7819644994926359533}
+  - component: {fileID: 5328825647140023649}
   m_Layer: 7
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -358,6 +363,25 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705037762319420277}
   m_Enabled: 1
+--- !u!114 &5328825647140023649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705037762319420277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7909fb229dd738f4a8355708a524df75, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &2634009915891528854
 GameObject:
   m_ObjectHideFlags: 0
