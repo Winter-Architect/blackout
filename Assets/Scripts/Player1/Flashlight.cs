@@ -1,50 +1,22 @@
 using UnityEngine;
 
-public class Flashlight : MonoBehaviour, IActionItem
+public class Flashlight : MonoBehaviour , IActionItem
 {
-    public Transform followTarget; // assign this when equipping
+    public Transform followTarget; // à assigner lors de l'équipement
     public Vector3 rotationOffset = new Vector3(30, 50, 30);
     private Agent agent;
-    
-    private float energyTimer = 0f; // Ajout du timer
-    public float batteryLifeSeconds = 120f; // current charge
-    public float maxBatteryLife = 120f;
-    
-    private Light flashlightLight;
-    private bool isOn = false;
 
-    void Start()
-    {
-        flashlightLight = GetComponentInChildren<Light>();
-        if (flashlightLight == null)
-        {
-            Debug.LogWarning("No light component found in children.");
-        }
-    }
+    private float energyTimer = 0f; // Ajout du timer
 
     public void PrimaryAction(Agent agent)
     {
-        if (flashlightLight == null) return;
-
-        // If battery is empty, try to refill
-        if (batteryLifeSeconds <= 0f)
+        var light = gameObject.GetComponentInChildren<Light>();
+        if (light == null)
         {
-            if (agent.batteryCount > 0)
-            {
-                agent.batteryCount--;
-                batteryLifeSeconds = maxBatteryLife;
-                Debug.Log("Battery replaced. Batteries left: " + agent.batteryCount);
-            }
-            else
-            {
-                Debug.Log("No batteries left!");
-                return;
-            }
-        }
-
-        // Toggle flashlight
-        isOn = !isOn;
-        flashlightLight.enabled = isOn;
+            Debug.LogWarning("No light component found in children.");
+            return;
+        }  
+        light.enabled = !light.enabled;
     }
 
     void Update()
@@ -79,19 +51,6 @@ public class Flashlight : MonoBehaviour, IActionItem
         {
             transform.position = followTarget.position;
             transform.rotation = followTarget.rotation * Quaternion.Euler(rotationOffset);
-        }
-
-        if (isOn && batteryLifeSeconds > 0f)
-        {
-            batteryLifeSeconds -= Time.deltaTime;
-
-            if (batteryLifeSeconds <= 0f)
-            {
-                batteryLifeSeconds = 0f;
-                isOn = false;
-                flashlightLight.enabled = false;
-                Debug.Log("Battery depleted.");
-            }
         }
     }
 }
