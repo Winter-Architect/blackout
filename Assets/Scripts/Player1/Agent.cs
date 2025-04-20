@@ -19,7 +19,8 @@ public class Agent : NetworkBehaviour, IInteractor
     public bool shouldSpawnEntity = false;
     
     public bool canGrapple;
-
+    public int batteryCount = 5;
+    
     private SphereCollider myCheckTrigger;
     [SerializeField] private float interactionRange;
 
@@ -168,6 +169,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if (item.TryGetComponent<Flashlight>(out var flashlight))
         {
             flashlight.followTarget = playerRightHandSlot.transform;
+        }
+        else if (item.TryGetComponent<Keycard>(out var keycard))
+        {
+            keycard.followTarget = playerRightHandSlot.transform;
         }
         currentlyEquippedItem = item;
     }
