@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.2
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: bf3ae30d7bd23e54e8ee209a010e9086, type: 2}
   m_HaloStrength: 1
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -25670,6 +25670,63 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2401176808032296077, guid: d0b21490e871c9649b0c16b254723971, type: 3}
+--- !u!1001 &890020478
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.28239906
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3945253
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.7285156
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710784
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.70710576
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531163753162440931, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_Name
+      value: Collectablekeycard
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
 --- !u!64 &890346835
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69540,6 +69597,7 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: 6730451013332014007, guid: 9c9701e8f2dfe3f41a26be70240eb369, type: 3}
   - {fileID: 3921355894859940697, guid: fdbfff5af9e36c84b824b8d8d7a88b12, type: 3}
+  - {fileID: 7531163753162440931, guid: 11bcce00f3a337641a1fd6489a6b62c7, type: 3}
 --- !u!4 &1348786351
 Transform:
   m_ObjectHideFlags: 0
@@ -81644,6 +81702,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 731186880724824955, guid: 3cc9d324905e5c143a5f7f4213c81928, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3921355894859940697, guid: 3cc9d324905e5c143a5f7f4213c81928, type: 3}
       propertyPath: m_Name
       value: CollectFlashlight
@@ -98543,3 +98605,4 @@ SceneRoots:
   - {fileID: 760145789}
   - {fileID: 1205243082}
   - {fileID: 1614704711}
+  - {fileID: 890020478}

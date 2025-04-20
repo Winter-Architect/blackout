@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c7a58f7dd3c7a4fbdbc2f406b0c68e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followTarget: {fileID: 0}
+  rotationOffset: {x: 30, y: 50, z: 180}
 --- !u!4 &4404701598995093987 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9041668148578628466, guid: 41c777e763eeb6d479bbbf05bf0e9311, type: 3}
