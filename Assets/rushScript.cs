@@ -1,8 +1,7 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Video;
-public class rushScript : NetworkBehaviour
+public class rushScript : MonoBehaviour
 {
     public string PlayerTag;
     public bool Condition = false;
