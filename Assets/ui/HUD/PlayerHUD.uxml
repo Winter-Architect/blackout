@@ -1,0 +1,19 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ui/HUD/playerHUD.uss?fileID=7433441132597879392&amp;guid=0618ab21504008a4ea0daa5e08a79191&amp;type=3#playerHUD" />
+    <engine:VisualElement name="Container" style="flex-grow: 1; align-items: center;">
+        <engine:VisualElement name="BarsContainer" class="container bars-container" style="flex-grow: 1; flex-direction: column; width: 30%; align-self: auto; height: 20%; bottom: 0; top: auto; margin-left: 15px;">
+            <engine:VisualElement name="HealthBar" class="bar-container">
+                <engine:VisualElement name="BarBG" class="bar-bg" style="justify-content: center; height: 44px;">
+                    <engine:VisualElement name="BarFill" class="bar-fill" />
+                    <engine:VisualElement name="Icon" class="bar-icon" style="align-items: stretch; align-self: auto; justify-content: flex-start; align-content: center; padding-left: 15px; margin-left: 15px; background-image: url(&quot;project://database/Assets/ui/Sprites/icons/Heart%20Outline%20256.png?fileID=2800000&amp;guid=8d2ab4dbecb621746bbbf65548d904e4&amp;type=3#Heart Outline 256&quot;); background-color: rgba(0, 128, 0, 0);" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="EnergyBar" class="bar-container">
+                <engine:VisualElement name="BarBG" class="bar-bg" style="justify-content: center;">
+                    <engine:VisualElement name="BarFill" class="bar-fill" style="background-color: rgba(255, 235, 54, 0.84);" />
+                    <engine:VisualElement name="Icon" class="bar-icon" style="align-items: stretch; align-self: auto; justify-content: flex-start; align-content: center; padding-left: 15px; margin-left: 15px; background-image: url(&quot;project://database/Assets/ui/Sprites/icons/Lightning%20Bolt%20Outline%20256.png?fileID=2800000&amp;guid=90eb2260527381e49a41507ec4b29cca&amp;type=3#Lightning Bolt Outline 256&quot;); background-color: rgba(0, 128, 0, 0);" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
