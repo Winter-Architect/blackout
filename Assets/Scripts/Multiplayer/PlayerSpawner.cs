@@ -15,7 +15,6 @@ public class PlayerSpawner : NetworkBehaviour
         if(IsServer)
         {
             NetworkManager.SceneManager.OnLoadComplete += OnSceneLoaded;
-
         }
     }
 
@@ -59,4 +58,3 @@ public class PlayerSpawner : NetworkBehaviour
         }
     }
 }
-//-10.83396 -0.7400001 -65.91

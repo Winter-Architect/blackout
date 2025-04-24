@@ -12,7 +12,6 @@ public class Player1Controller : NetworkBehaviour
             myCamera.gameObject.SetActive(false);
         }
         Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     void Update()
@@ -28,6 +27,5 @@ public class Player1Controller : NetworkBehaviour
         Vector3 myRightVector = myCamera.transform.right;
         Vector3 myDirectionVector = ((myForwardVector * Input.GetAxisRaw("Vertical")) + (myRightVector * Input.GetAxisRaw("Horizontal"))).normalized;
         transform.position += myDirectionVector * speed * Time.deltaTime;
-
     }
 }
