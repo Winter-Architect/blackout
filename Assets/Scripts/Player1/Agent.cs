@@ -107,6 +107,8 @@ public class Agent : NetworkBehaviour, IInteractor
             return;
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
+        
+         PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
         EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
