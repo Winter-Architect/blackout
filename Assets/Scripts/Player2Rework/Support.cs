@@ -76,9 +76,11 @@ public class Support : NetworkBehaviour
             }
         }
 
+        if (current == null) return;
         current.Value.StopControlling();
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
+        if (current == null) return;
         Debug.Log(current.Value.gameObject.name);
         SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
 
