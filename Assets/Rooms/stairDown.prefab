@@ -649,6 +649,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
       insertIndex: -1
       addedObject: {fileID: -4464731369107924589}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6182952762964308338}
     - targetCorrespondingSourceObject: {fileID: -8881116832499420809, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8599407275648182671}
@@ -1681,7 +1684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicClip: {fileID: 8300000, guid: f5555f738197f2d48af6b3a2ac7d99ab, type: 3}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
@@ -1722,7 +1724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2472297232
+  GlobalObjectIdHash: 1190320002
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1735,6 +1737,19 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &-6182952762964308338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5169585760068542190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa6b29652b27842b5d1c9a5be10d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &5254065018845334730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8965163524115026059, guid: c6410e6926bdd254cad5c3755ca107af, type: 3}
