@@ -1,23 +1,19 @@
-using Unity.Netcode;
 using UnityEngine;
 
-public class RoomTrigger : NetworkBehaviour
+public class RoomTrigger : MonoBehaviour
 {
     private bool triggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggered || !IsServer) return;
+        if (triggered) return;
         if (other.CompareTag("Player"))
         {
-            Debug.Log("trigger");
             triggered = true;
-            var generator = FindFirstObjectByType<RoomsGeneration>();
-            var currentRoom = GetComponent<Room>();
-
-            if (generator != null && currentRoom != null)
+            var generator = FindObjectOfType<RoomsGeneration>();
+            if (generator != null)
             {
-                generator.GenerateRoom(currentRoom, currentRoom.RoomID);
+                generator.GenerateNextRoom();
             }
         }
     }
