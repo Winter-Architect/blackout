@@ -2,21 +2,21 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using TMPro;
 using Unity.Netcode;
-using System.Collections.Generic; // Ajoute ceci en haut
 
 public class RoomsGeneration : NetworkBehaviour
 {
     public Rooms roomPrefabs;
     public Room endRoom;
     public int numberOfRooms = 20; // Nombre total de salles à générer
+
     public GameObject DoorPrefab;
+
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
      
     private System.Random random = new System.Random(0);
-    public NavMeshSurface navMeshSurface;
-    private List<Room> generatedRooms = new List<Room>(); // Ajoute cette ligne
+     public NavMeshSurface navMeshSurface;
 
      public override void OnNetworkSpawn() {
         if (!IsServer)
@@ -56,70 +56,44 @@ public class RoomsGeneration : NetworkBehaviour
             Debug.LogError("[Generation de salles] La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
             return;
         }
+        // for (int i = 0; i < numberOfRooms; i++)
+        // {
+        //    currRoom = GenerateRoom(currRoom, i);
+        // }
+        currRoom = GenerateRoom(currRoom, 0);
 
-        generatedRooms.Clear();
-        generatedRooms.Add(currRoom);
-
-        // Génère seulement deux salles au début
-        for (int i = 0; i < 2 && i < numberOfRooms; i++)
+        if (endRoom != null && numberOfRooms <= 0)
         {
-            currRoom = GenerateRoom(currRoom, i);
-            generatedRooms.Add(currRoom);
-        }
+            GameObject roomObject = Instantiate(endRoom.gameObject);
+            NetworkObject roomNetworkObject = roomObject.GetComponent<NetworkObject>();
+            if (roomNetworkObject != null && !roomNetworkObject.IsSpawned)
+            {
+                roomNetworkObject.Spawn();
+            }
+            
+            Transform entryPoint = roomObject.transform.Find("Entry");
+            Transform lastRoomExit = currRoom.transform.Find("Exit");
 
-        // Ne génère pas la salle de fin tout de suite
+            if (entryPoint == null || lastRoomExit == null)
+            {
+                Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
+                return;
+            }
 
+            float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
+            roomObject.transform.Rotate(Vector3.up, angleDifference);
+
+            Vector3 offset = entryPoint.position - roomObject.transform.position;
+            roomObject.transform.position = lastRoomExit.position - offset;
+
+            entryPoint.GetComponent<BoxCollider>().enabled = false;
+        } else Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
+        
         BakeNavMesh();
     }
 
-    // Appelle cette méthode pour générer la salle suivante
-    public void GenerateNextRoom()
-    {
-        if (generatedRooms.Count - 1 >= numberOfRooms)
-        {
-            // Génère la salle de fin si toutes les salles sont faites
-            if (endRoom != null)
-            {
-                Room currRoom = generatedRooms[generatedRooms.Count - 1];
-                GameObject roomObject = Instantiate(endRoom.gameObject);
-                NetworkObject roomNetworkObject = roomObject.GetComponent<NetworkObject>();
-                if (roomNetworkObject != null && !roomNetworkObject.IsSpawned)
-                {
-                    roomNetworkObject.Spawn();
-                }
 
-                Transform entryPoint = roomObject.transform.Find("Entry");
-                Transform lastRoomExit = currRoom.transform.Find("Exit");
-
-                if (entryPoint == null || lastRoomExit == null)
-                {
-                    Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
-                    return;
-                }
-
-                float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
-                roomObject.transform.Rotate(Vector3.up, angleDifference);
-
-                Vector3 offset = entryPoint.position - roomObject.transform.position;
-                roomObject.transform.position = lastRoomExit.position - offset;
-
-                entryPoint.GetComponent<BoxCollider>().enabled = false;
-            }
-            else
-            {
-                Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
-            }
-            BakeNavMesh();
-            return;
-        }
-
-        Room lastRoom = generatedRooms[generatedRooms.Count - 1];
-        Room newRoom = GenerateRoom(lastRoom, generatedRooms.Count - 1);
-        generatedRooms.Add(newRoom);
-        BakeNavMesh();
-    }
-
-    Room GenerateRoom(Room PreviousRoom, int id)
+     public Room GenerateRoom(Room PreviousRoom, int id)
     {
         NetworkObject roomNetworkObject = GetRandomRoom(PreviousRoom.gameObject);
         Room roomScript = roomNetworkObject.GetComponent<Room>();
@@ -135,6 +109,7 @@ public class RoomsGeneration : NetworkBehaviour
 
         Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
 
+       
         if (lastRoomExit != null)
         {
             float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
@@ -164,10 +139,13 @@ public class RoomsGeneration : NetworkBehaviour
         
         BakeNavMesh();
 
+        // ...dans GenerateRoom, juste avant le return...
         if (roomScript.GetComponent<RoomTrigger>() == null)
         {
             roomScript.gameObject.AddComponent<RoomTrigger>();
         }
+
+        numberOfRooms--;
 
         return roomScript;
     }
@@ -192,6 +170,7 @@ public class RoomsGeneration : NetworkBehaviour
             }
         }
 
+
         if (selectedRoomPrefab == null) {
             Debug.LogError("[Generation de salles] Aucune salle n'a été trouvée !");
             return GetRandomRoom(PreviousRoom);
@@ -202,6 +181,7 @@ public class RoomsGeneration : NetworkBehaviour
             Debug.LogError($"[Generation de salles] La salle {selectedRoomPrefab.name} ne contient pas de script Room !");
             return null;
         }
+        
         
         string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
@@ -226,6 +206,7 @@ public class RoomsGeneration : NetworkBehaviour
             instanceNetworkObject.Spawn();
         } else Debug.LogWarning($"[Generation de salles] NetworkObject non trouvé ou déjà spawn dans la salle générée ! Nom : {room.name}");
 
+        
         if (direction != null) {
             LastRoomDirection = direction;
         }

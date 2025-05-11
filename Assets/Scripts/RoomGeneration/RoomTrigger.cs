@@ -10,10 +10,12 @@ public class RoomTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             triggered = true;
-            var generator = FindObjectOfType<RoomsGeneration>();
-            if (generator != null)
+            var generator = FindFirstObjectByType<RoomsGeneration>();
+            var currentRoom = GetComponent<Room>();
+
+            if (generator != null && currentRoom != null)
             {
-                generator.GenerateNextRoom();
+                generator.GenerateRoom(currentRoom, currentRoom.RoomID);
             }
         }
     }
