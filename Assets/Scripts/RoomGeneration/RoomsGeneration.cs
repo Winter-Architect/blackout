@@ -47,7 +47,7 @@ public class RoomsGeneration : NetworkBehaviour
         for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
             NetworkObject room = roomPrefabs.roomPrefabs[i];
-            Debug.Log($"[Generation de salles] Salle {i} : {room.name}");
+            Debug.Log($"[Generation de salles] Salle {i} : {room.name} ajoutée");
             Room roomScript2 = room.GetComponent<Room>();
             totalWeight += roomScript2.Weight;
         }
@@ -147,6 +147,7 @@ public class RoomsGeneration : NetworkBehaviour
         }
 
         numberOfRooms--;
+        Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
         return roomScript;
     }
