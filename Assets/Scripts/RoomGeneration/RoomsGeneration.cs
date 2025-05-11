@@ -2,6 +2,8 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
+using Unity.Netcode.Components;
 
 public class RoomsGeneration : NetworkBehaviour
 {
@@ -48,6 +50,12 @@ public class RoomsGeneration : NetworkBehaviour
             NetworkObject room = roomPrefabs.roomPrefabs[i];
             Debug.Log($"[Generation de salles] Salle {i} : {room.name} ajoutée");
             Room roomScript2 = room.GetComponent<Room>();
+
+            if (roomScript2.GetComponent<RoomTrigger>() == null)
+        {
+            roomScript2.gameObject.AddComponent<RoomTrigger>();
+        }
+
             totalWeight += roomScript2.Weight;
         }
 
@@ -60,8 +68,9 @@ public class RoomsGeneration : NetworkBehaviour
         // {
         //    currRoom = GenerateRoom(currRoom, i);
         // }
-        currRoom = GenerateRoom(currRoom, 0);
+         //GenerateRoom(currRoom, 0);
 
+//TODO: decaler dans generate room
         if (endRoom != null && numberOfRooms <= 0)
         {
             GameObject roomObject = Instantiate(endRoom.gameObject);
@@ -93,9 +102,12 @@ public class RoomsGeneration : NetworkBehaviour
     }
 
 
-     public Room GenerateRoom(Room PreviousRoom, int id)
+     public void GenerateRoom(Room PreviousRoom, int id)
     {
+        if (!IsServer) return;
+        Debug.Log("1");
         NetworkObject roomNetworkObject = GetRandomRoom(PreviousRoom.gameObject);
+       // roomNetworkObject.AddComponent<NetworkTransform>();
         Room roomScript = roomNetworkObject.GetComponent<Room>();
 
         Transform entryPoint = roomScript.transform.Find("Entry");
@@ -104,7 +116,7 @@ public class RoomsGeneration : NetworkBehaviour
         if (entryPoint == null || exitPoint == null)
         {
             Debug.LogError($"[Generation de salles] La salle {roomScript.name} ne contient pas d'Entry ou d'Exit !");
-            return null;
+            return;
         }
 
         Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
@@ -139,16 +151,11 @@ public class RoomsGeneration : NetworkBehaviour
         
         BakeNavMesh();
 
-        // ...dans GenerateRoom, juste avant le return...
-        if (roomScript.GetComponent<RoomTrigger>() == null)
-        {
-            roomScript.gameObject.AddComponent<RoomTrigger>();
-        }
-
+        
         numberOfRooms--;
         Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
-        return roomScript;
+        return;
     }
 
     NetworkObject GetRandomRoom(GameObject PreviousRoom) {
