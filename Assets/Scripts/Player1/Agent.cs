@@ -19,7 +19,8 @@ public class Agent : NetworkBehaviour, IInteractor
     public bool shouldSpawnEntity = false;
     
     public bool canGrapple;
-
+    public int batteryCount = 5;
+    
     private SphereCollider myCheckTrigger;
     [SerializeField] private float interactionRange;
 
@@ -106,7 +107,7 @@ public class Agent : NetworkBehaviour, IInteractor
             return;
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
-        
+
          PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
@@ -206,6 +207,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if (item.TryGetComponent<Flashlight>(out var flashlight))
         {
             flashlight.followTarget = playerRightHandSlot.transform;
+        }
+        else if (item.TryGetComponent<Keycard>(out var keycard))
+        {
+            keycard.followTarget = playerRightHandSlot.transform;
         }
         currentlyEquippedItem = item;
     }

@@ -15,7 +15,6 @@ public class NewMonoBehaviourScript : MonoBehaviour
     
     void Start()
     {
-        // UIDocument.rootVisualElement.pickingMode = PickingMode.Ignore;
 
          ui = UIDocument.rootVisualElement.Q<VisualElement>("Container");
          ui.pickingMode = PickingMode.Ignore;
@@ -27,7 +26,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         HealthBar.style.width = Length.Percent(HealthBarValue);
-         EnergyBar.style.width = Length.Percent(EnergyBarValue);
+        // HealthBar.style.width = Length.Percent(HealthBarValue);
+        // EnergyBar.style.width = Length.Percent(EnergyBarValue);
     }
 }

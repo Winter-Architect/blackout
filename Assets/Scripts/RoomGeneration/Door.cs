@@ -10,6 +10,11 @@ public class Door : MonoBehaviour
     public AudioSource DoorAudio; // Reference to AudioSource
     private bool doorOpen = false;
     public bool Condition = false;
+    
+    public GameObject monsterPrefab;
+    public Transform spawnPoint; // at this door
+    public Transform exitDoor;   // the other door across the room
+    
     void OnTriggerEnter(Collider other)
     {        
         if (doorOpen == false && other.CompareTag(PlayerTag) && Condition == true)
@@ -17,9 +22,13 @@ public class Door : MonoBehaviour
             Animator.SetBool(OpenCloseAnnimBoolName, true);
             
             Agent agent = other.gameObject.GetComponent<Agent>();
-            if (agent.shouldSpawnEntity == true)
+            if (agent.shouldSpawnEntity)
             {
                 
+            }
+            else
+            {
+                agent.spawnTimer -= 10;
             }
             
             // Play sound when door opens
@@ -30,7 +39,7 @@ public class Door : MonoBehaviour
             doorOpen = true;
         }
     }
-
+    
     // void OnTriggerExit(Collider other)
     // {
         

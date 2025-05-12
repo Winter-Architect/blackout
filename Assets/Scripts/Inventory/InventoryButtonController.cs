@@ -46,7 +46,7 @@ namespace Blackout.Inventory
         public void Deselected() {
             selected = false; 
             if (InventoryController.selectedItemId == Id)
-           InventoryController.selectedItemId = -1;
+                InventoryController.selectedItemId = -1;
         }
 
         public void HoverEnter() {
