@@ -107,6 +107,8 @@ public class Agent : NetworkBehaviour, IInteractor
             return;
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
+
+         PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
         EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
@@ -122,6 +124,7 @@ public class Agent : NetworkBehaviour, IInteractor
     {
         for(int i = 0; i < inventory.Length; i++)
         {
+            if (inventory[i] == item) return;
             if(inventory[i] == null)
             {
                 inventory[i] = item;
@@ -130,25 +133,60 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
-    private void EquipItem()
-    {
-        Debug.Log("EquipItem " + activeInventorySlot);
-        isItemEquipped = !isItemEquipped;
+    // private void EquipItem()
+    // {
+    //     Debug.Log("EquipItem " + activeInventorySlot);
+    //     if (isItemEquipped)
+    // {
+    //     CallUnequipItemServerRpc();
+    //     isItemEquipped = false;
+    // }
         
-        if(isItemEquipped)
-        {
-            if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
-        {
-            Debug.LogWarning("Item not found, update ItemManager from editor");
-            return;
-        }
-            CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
-        }
-        else
-        {
-            CallUnequipItemServerRpc();
-        }
+    //     // if(isItemEquipped)
+    //     // {
+    //     //     if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
+    //     // {
+    //     //     Debug.LogWarning("Item not found, update ItemManager from editor");
+    //     //     return;
+    //     // }
+    //     Debug.Log(inventory[activeInventorySlot].Name);
+    //     Debug.Log("slot" + activeInventorySlot);
+    //     CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
+    //     isItemEquipped = !isItemEquipped;
+
+    //     //}
+    //     // else
+    //     // {
+    //     //     CallUnequipItemServerRpc();
+    //     // }
+    // }
+
+   private void EquipItem()
+{
+    Debug.Log("EquipItem " + InventoryController.activeInventorySlotId);
+
+    // Déséquipe l'objet actuel si besoin
+    if (isItemEquipped)
+    {
+        CallUnequipItemServerRpc();
+        isItemEquipped = false;
+        return;
     }
+
+    // Récupère l'objet à équiper depuis l'InventoryController
+    Item itemToEquip = invController.GetItemInSlot(InventoryController.activeInventorySlotId);
+
+    if (itemToEquip == null)
+    {
+        Debug.LogWarning("Aucun objet à équiper dans ce slot.");
+        return;
+    }
+
+    Debug.Log(itemToEquip.Name);
+    Debug.Log("slot " + InventoryController.activeInventorySlotId);
+    CallEquipItemServerRpc(itemToEquip.Id);
+    isItemEquipped = true;
+}
 
     [ServerRpc]
     private void CallEquipItemServerRpc(int prefabId)
@@ -188,9 +226,8 @@ public class Agent : NetworkBehaviour, IInteractor
         Destroy(currentlyEquippedItem);
         
         currentlyEquippedItem = null;
-
+        isItemEquipped = false;
     }
-
 
     [ServerRpc]
     private void CallDestroyCollectibleServerRpc()

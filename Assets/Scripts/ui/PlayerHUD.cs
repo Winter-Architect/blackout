@@ -15,7 +15,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     
     void Start()
     {
+
          ui = UIDocument.rootVisualElement.Q<VisualElement>("Container");
+         ui.pickingMode = PickingMode.Ignore;
             BarsContainer = ui.Q<VisualElement>("BarsContainer");
             HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
             EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
