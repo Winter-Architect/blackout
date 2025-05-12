@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 
 public class Room : MonoBehaviour
 {
+    public AudioClip musicClip;
+    
     public int RoomID;
     public bool isTurningLeft;
     public bool isTurningRight;
@@ -14,6 +16,7 @@ public class Room : MonoBehaviour
     public float Weight;
     public AudioSource Audio; // Reference to AudioSource
     public List<Light> lights;
+    
     /*
     private void Start()
     {
@@ -57,6 +60,18 @@ public class Room : MonoBehaviour
             foreach (Light lit in lights)
             {
                 lit.gameObject.SetActive(true);
+            }
+            AudioSource playerAudio = col.GetComponent<AudioSource>();
+            if (playerAudio != null)
+            {
+                if (playerAudio.clip == musicClip && playerAudio.isPlaying)
+                {
+                    // Same music is already playing — do nothing.
+                    return;
+                }
+
+                playerAudio.clip = musicClip;
+                playerAudio.Play();
             }
         }
     }
