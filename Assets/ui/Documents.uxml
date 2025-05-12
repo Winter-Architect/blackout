@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="Container" style="flex-grow: 1; flex-direction: row; background-color: rgba(34, 51, 59, 0.99);">
+        <engine:VisualElement name="AllDocs" style="flex-grow: 1; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px; background-color: rgba(0, 0, 0, 0.64);">
+            <engine:ListView />
+        </engine:VisualElement>
+        <engine:VisualElement name="Visu" style="flex-grow: 1; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px; background-color: rgba(0, 0, 0, 0.67);" />
+    </engine:VisualElement>
+</engine:UXML>
