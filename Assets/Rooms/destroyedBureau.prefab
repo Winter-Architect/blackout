@@ -4439,6 +4439,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: exitDoor
+      value: 
+      objectReference: {fileID: 284709224822177596}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: Condition
       value: 1
       objectReference: {fileID: 0}
@@ -4447,9 +4451,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8473255974407729846}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 8801777016411823273}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: CanOpenDoor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: monsterPrefab
+      value: 
+      objectReference: {fileID: 4295161634368001776, guid: 777ab78952a62e140ae2d3d2edd4f953, type: 3}
     m_RemovedComponents:
     - {fileID: 8344885643309613668, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
     - {fileID: 7524507364604799892, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
