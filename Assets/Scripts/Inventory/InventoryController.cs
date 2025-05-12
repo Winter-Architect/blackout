@@ -71,7 +71,6 @@ namespace Blackout.Inventory
             inventorySlots[freeSlots[0]].itemName = obj.Name;
             freeSlots.RemoveAt(0);
             if (inventory.Count <= 1) ItemSlot.sprite = obj.Icon;
-            else Debug.Log("bite");
             // Agent.AddItemToAgentInventory(obj);
         }
 
