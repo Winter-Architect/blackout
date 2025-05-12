@@ -12,13 +12,14 @@ namespace Blackout.Inventory
         private bool InvWheelSelected = false;
         public Image selectedItem;
         public Sprite noImage;
-        public static int selectedItemId = 0;
+        public static int selectedItemId = 0; 
         public Dictionary<int, Item> inventory = new Dictionary<int, Item>();
         // public List<Image> inventorySlots = new List<Image>();
         public List<InventoryButtonController> inventorySlots = new List<InventoryButtonController>();
         public List<int> freeSlots = new List<int>(){0,1,2,3,4,5};
         public static int activeInventorySlotId = 0;
-
+        public Agent agent;
+        public Image ItemSlot;
         public static InventoryController Instance;
 
         void Awake()
@@ -27,16 +28,31 @@ namespace Blackout.Inventory
         }
         void Start()
         {
+            agent = FindFirstObjectByType<Agent>();
+            if (!agent){ Debug.Log("not agent");
+            return;}
             for (int i = 0; i < inventory.Count; i++) {
                 inventorySlots[i].icon = inventory[i].Icon;
                 freeSlots.Remove(i);
             }
             //inventorySlots1[0].icon = null; //= inventory[0].Icon
+            foreach (var btn in inventorySlots)
+            {
+                btn.agent = agent;
+            }
         }
 
         void Update()
         {
-            
+            if (!agent) {
+                agent = FindFirstObjectByType<Agent>();
+            }
+            else {
+                foreach (var btn in inventorySlots)
+            {
+                btn.agent = agent;
+            }
+            }
         }
 
         public void toggleInventory() {
@@ -54,7 +70,9 @@ namespace Blackout.Inventory
             inventorySlots[freeSlots[0]].icon = obj.Icon;
             inventorySlots[freeSlots[0]].itemName = obj.Name;
             freeSlots.RemoveAt(0);
-            Agent.AddItemToAgentInventory(obj);
+            if (inventory.Count <= 1) ItemSlot.sprite = obj.Icon;
+            else Debug.Log("bite");
+            // Agent.AddItemToAgentInventory(obj);
         }
 
         public void RemoveItemFromInv(Item obj) {
@@ -70,5 +88,13 @@ namespace Blackout.Inventory
                 }
             }
         }
+
+        public Item GetItemInSlot(int slotId)
+        {
+            if (inventory.ContainsKey(slotId))
+                return inventory[slotId];
+            return null;
+        }
+
     }
 }
