@@ -52,7 +52,7 @@ namespace Blackout.Inventory
         public void HoverEnter() {
             anim.SetBool("Hover", true);
             itemText.text = itemName;
-        }
+        } 
 
         public void HoverExit() {
             anim.SetBool("Hover", false);
