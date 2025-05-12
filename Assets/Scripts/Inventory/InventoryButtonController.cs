@@ -37,10 +37,10 @@ namespace Blackout.Inventory
 
         public void Selected() {
             selected = true;
+            agent.CallUnequipItemServerRpc();
             InventoryController.activeInventorySlotId = slotId;
             Debug.Log("Selected" + slotId);
             InventoryController.selectedItemId = Id;
-            agent.CallUnequipItemServerRpc();
         }
 
         public void Deselected() {

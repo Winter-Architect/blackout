@@ -217,6 +217,7 @@ public class Agent : NetworkBehaviour, IInteractor
     [ServerRpc]
     public void CallUnequipItemServerRpc()
     {
+        Debug.Log("Call unequip");
         UnEquipItemLocalClientRpc();
     }
     [ClientRpc]

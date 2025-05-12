@@ -28,7 +28,8 @@ namespace Blackout.Inventory
         void Start()
         {
             agent = FindFirstObjectByType<Agent>();
-            if (!agent) Debug.Log("not agent");
+            if (!agent){ Debug.Log("not agent");
+            return;}
             for (int i = 0; i < inventory.Count; i++) {
                 inventorySlots[i].icon = inventory[i].Icon;
                 freeSlots.Remove(i);
@@ -42,7 +43,15 @@ namespace Blackout.Inventory
 
         void Update()
         {
-            
+            if (!agent) {
+                agent = FindFirstObjectByType<Agent>();
+            }
+            else {
+                foreach (var btn in inventorySlots)
+            {
+                btn.agent = agent;
+            }
+            }
         }
 
         public void toggleInventory() {
