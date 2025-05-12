@@ -19,6 +19,7 @@ namespace Blackout.Inventory
         public List<int> freeSlots = new List<int>(){0,1,2,3,4,5};
         public static int activeInventorySlotId = 0;
         public Agent agent;
+        public Image ItemSlot;
         public static InventoryController Instance;
 
         void Awake()
@@ -69,6 +70,8 @@ namespace Blackout.Inventory
             inventorySlots[freeSlots[0]].icon = obj.Icon;
             inventorySlots[freeSlots[0]].itemName = obj.Name;
             freeSlots.RemoveAt(0);
+            if (inventory.Count <= 1) ItemSlot.sprite = obj.Icon;
+            else Debug.Log("bite");
             // Agent.AddItemToAgentInventory(obj);
         }
 

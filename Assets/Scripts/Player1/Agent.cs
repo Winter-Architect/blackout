@@ -169,6 +169,7 @@ public class Agent : NetworkBehaviour, IInteractor
     {
         CallUnequipItemServerRpc();
         isItemEquipped = false;
+        return;
     }
 
     // Récupère l'objet à équiper depuis l'InventoryController
@@ -212,7 +213,6 @@ public class Agent : NetworkBehaviour, IInteractor
     [ServerRpc]
     public void CallUnequipItemServerRpc()
     {
-        Debug.Log("Call unequip");
         UnEquipItemLocalClientRpc();
     }
     [ClientRpc]
@@ -221,6 +221,7 @@ public class Agent : NetworkBehaviour, IInteractor
         Destroy(currentlyEquippedItem);
         
         currentlyEquippedItem = null;
+        isItemEquipped = false;
     }
 
     [ServerRpc]
