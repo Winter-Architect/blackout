@@ -332,7 +332,7 @@ MonoBehaviour:
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
-  Weight: 50
+  Weight: 5
   Audio: {fileID: 0}
   lights: []
 --- !u!114 &8351467607561298262
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 566030568
+  GlobalObjectIdHash: 1491623698
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1120,7 +1120,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 186246625557260938, guid: 7995b635f3ca9b04ca21d5535884b1e9, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 566030568
+      value: 486173587
       objectReference: {fileID: 0}
     - target: {fileID: 2568669213628219420, guid: 7995b635f3ca9b04ca21d5535884b1e9, type: 3}
       propertyPath: m_LocalScale.x
