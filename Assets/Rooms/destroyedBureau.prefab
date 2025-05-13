@@ -3697,6 +3697,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7919229503522221281}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8788580108381766375}
   m_SourcePrefab: {fileID: 100100000, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
 --- !u!4 &1573821958528498504 stripped
 Transform:
@@ -3720,7 +3723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicClip: {fileID: 8300000, guid: f5555f738197f2d48af6b3a2ac7d99ab, type: 3}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
@@ -3761,7 +3763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1225963530
+  GlobalObjectIdHash: 1204470023
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3774,6 +3776,19 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &8788580108381766375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205785350905569778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa6b29652b27842b5d1c9a5be10d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1001 &1437899834403537583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4439,10 +4454,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: exitDoor
-      value: 
-      objectReference: {fileID: 284709224822177596}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: Condition
       value: 1
       objectReference: {fileID: 0}
@@ -4451,17 +4462,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8473255974407729846}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 8801777016411823273}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: CanOpenDoor
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: monsterPrefab
-      value: 
-      objectReference: {fileID: 4295161634368001776, guid: 777ab78952a62e140ae2d3d2edd4f953, type: 3}
     m_RemovedComponents:
     - {fileID: 8344885643309613668, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
     - {fileID: 7524507364604799892, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}

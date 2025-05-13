@@ -237,10 +237,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: exitDoor
-      value: 
-      objectReference: {fileID: 1110074744423882990}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: Condition
       value: 1
       objectReference: {fileID: 0}
@@ -249,17 +245,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2789212915334418585}
     - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 802356733495843807}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: CanOpenDoor
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8242590023597152265, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
-      propertyPath: monsterPrefab
-      value: 
-      objectReference: {fileID: 4295161634368001776, guid: 777ab78952a62e140ae2d3d2edd4f953, type: 3}
     m_RemovedComponents:
     - {fileID: 7524507364604799892, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
     - {fileID: 8344885643309613668, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
@@ -1042,6 +1030,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3953614461161849045}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1022633222287230186}
     - targetCorrespondingSourceObject: {fileID: -4673698229946128718, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4702901737679400202}
@@ -2106,7 +2097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicClip: {fileID: 8300000, guid: f5555f738197f2d48af6b3a2ac7d99ab, type: 3}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 1
@@ -2147,7 +2137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2862788769
+  GlobalObjectIdHash: 3107419198
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2160,6 +2150,19 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &-1022633222287230186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946710213189345572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa6b29652b27842b5d1c9a5be10d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &8334003377397672127 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1234365554930889930, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
