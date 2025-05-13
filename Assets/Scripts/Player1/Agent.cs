@@ -253,8 +253,7 @@ public class Agent : NetworkBehaviour, IInteractor
             isDead = true;
         }
 
-        HealthBar.style.width = Length.Percent(Health);
-        EnergyBar.style.width = Length.Percent(Energy);
+       
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -279,6 +278,9 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!IsOwner){
             return;
         }
+
+         HealthBar.style.width = Length.Percent(Health);
+        EnergyBar.style.width = Length.Percent(Energy);
         CheckIfCanGrapple();
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
@@ -564,6 +566,7 @@ public class Agent : NetworkBehaviour, IInteractor
             if (item.item.Name == "Document") {
                 Debug.Log("itemName");
                 DocumentManager.Instance.CollectDocument(item.item.Id);
+                return;
             }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
