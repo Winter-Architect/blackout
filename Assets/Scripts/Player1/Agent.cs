@@ -561,6 +561,10 @@ public class Agent : NetworkBehaviour, IInteractor
         public void InteractWith(CollectableItem item)
         {
             Debug.Log("collected");
+            if (item.item.Name == "Document") {
+                Debug.Log("itemName");
+                DocumentManager.Instance.CollectDocument(item.item.Id);
+            }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
         }
