@@ -51,6 +51,7 @@ public class Document : MonoBehaviour
     // Collecte un document par son ID
     public void CollectDocument(int documentId)
     {
+        Debug.Log("collectdoc");
         if (!collectedDocumentIds.Contains(documentId))
         {
             collectedDocumentIds.Add(documentId);
