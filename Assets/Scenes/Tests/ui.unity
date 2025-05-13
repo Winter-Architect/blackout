@@ -369,7 +369,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a8d7f7f9cbbbef84c94bb7c288340458, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
@@ -400,8 +400,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5d400478409c84cb16b14a986ac87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Documents:
+  AllDocuments:
   - {fileID: 11400000, guid: 2a55be98610d92a488fd4f8ae21fe6f6, type: 2}
+  - {fileID: 11400000, guid: a48db3325132f1e49a6e017f8163705d, type: 2}
+  - {fileID: 11400000, guid: 00a3855087483b741975e3105a1cc8e0, type: 2}
   UIDocument: {fileID: 1200964403}
   TempImage: {fileID: 21300000, guid: 36c0187f6f04c55428771419eb336234, type: 3}
 --- !u!1 &1337380649
@@ -639,15 +641,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1966879653}
-  - component: {fileID: 1966879652}
   - component: {fileID: 1966879651}
+  - component: {fileID: 1966879654}
+  - component: {fileID: 1966879652}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1966879651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,7 +678,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 6da2cc0a385313844b8d561803f50d56, type: 3}
-  m_SortingOrder: 99999
+  m_SortingOrder: 9
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
@@ -694,6 +697,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1966879654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966879650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c21fde2c5a6c241b11351540d68d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterMixer: {fileID: 24100000, guid: 0855ad0d121cf354b8759c1bcdae3222, type: 2}
+  LobbyUI: {fileID: 1966879652}
+  DocumentUi: {fileID: 1200964403}
+  UIDocument: {fileID: 1966879652}
 --- !u!1 &2024768817
 GameObject:
   m_ObjectHideFlags: 0

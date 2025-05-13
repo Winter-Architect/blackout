@@ -14,6 +14,7 @@ public class Document : MonoBehaviour
     private VisualElement ImageContainer;
     public Sprite TempImage;
     public Label ImageName;
+    private Button MenuButton;
 
     // Liste des IDs des documents collectés
     private List<int> collectedDocumentIds = new List<int>();
@@ -40,20 +41,11 @@ public class Document : MonoBehaviour
         ButtonTemplate = scrollView.Q<Button>("Template");
         ImageContainer = ui.Q<VisualElement>("Visu").Q<VisualElement>("Image");
         ImageName = ui.Q<VisualElement>("Visu").Q<Label>("Name");
+        MenuButton = ui.Q<Button>("MenuButton");
+    }
 
-        // Si pas de documents préconfiguré, on crée des exemples
-        if (AllDocuments == null || AllDocuments.Count == 0)
-        {
-            AllDocuments = new List<DocumentObject>();
-            // for (int i = 0; i < 15; i++)
-            // {
-            //     var doc = ScriptableObject.CreateInstance<DocumentObject>();
-            //     doc.Name = $"Document {i+1}";
-            //     doc.Id = i;
-            //     doc.Image = TempImage; 
-            //     AllDocuments.Add(doc);
-            // }
-        }
+    void ExitView() {
+        UIDocument.sortingOrder = 0;
     }
 
     // Collecte un document par son ID
@@ -64,19 +56,14 @@ public class Document : MonoBehaviour
             collectedDocumentIds.Add(documentId);
             SaveCollectedDocuments();
             
-            // Notification optionnelle pour l'UI
             DocumentObject doc = GetDocumentById(documentId);
             if (doc != null)
             {
                 Debug.Log($"Document collecté: {doc.Name}");
             }
-            
-            // Mise à jour de l'UI si nécessaire
-            // RefreshDocumentList();
         }
     }
     
-    // Sauvegarde seulement les IDs
     private void SaveCollectedDocuments()
     {
         // Convertir la liste en string séparée par des virgules
@@ -85,7 +72,6 @@ public class Document : MonoBehaviour
         PlayerPrefs.Save();
     }
     
-    // Charge les IDs des documents collectés
     private void LoadCollectedDocuments()
     {
         collectedDocumentIds.Clear();
@@ -107,7 +93,6 @@ public class Document : MonoBehaviour
         }
     }
 
-    // Récupère un document de la liste complète par son ID
     private DocumentObject GetDocumentById(int id)
     {
         return AllDocuments.Find(doc => doc.Id == id);
@@ -115,7 +100,6 @@ public class Document : MonoBehaviour
 
     void Start()
     {
-        // Afficher les documents collectés
         foreach (int id in collectedDocumentIds)
         {
             DocumentObject doc = GetDocumentById(id);
@@ -124,9 +108,12 @@ public class Document : MonoBehaviour
                 CreateButton(doc.Name, doc.Id, doc.Image);
             }
         }
+        Debug.Log("cc");
+        MenuButton.clicked += ExitView;
+        UIDocument.sortingOrder = 0;
     }
 
-    // Méthode publique pour collecter un document à partir d'un objet de jeu
+
     public void CollectDocumentObject(DocumentObject doc)
     {
         CollectDocument(doc.Id);
