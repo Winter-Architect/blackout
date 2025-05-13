@@ -9,6 +9,7 @@
             </engine:ScrollView>
         </engine:VisualElement>
         <engine:VisualElement name="Visu" style="flex-grow: 1; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px; background-color: rgba(0, 0, 0, 0.67);">
+            <engine:Label name="Name" style="color: rgb(255, 255, 255); font-size: 35px; -unity-text-align: upper-center; -unity-font-style: bold;" />
             <engine:VisualElement name="Image" style="flex-grow: 1; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px;" />
         </engine:VisualElement>
     </engine:VisualElement>
