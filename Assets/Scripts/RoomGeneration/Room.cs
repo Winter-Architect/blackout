@@ -43,13 +43,17 @@ public class Room : MonoBehaviour
 
     public bool ContainsPlayer(Agent Player)
     {
-        Bounds myBounds = GetComponent<Collider>().bounds;
-        if (Audio != null && !Audio.isPlaying)
-        {
-            Audio.Play();
+        try {
+            Bounds myBounds = GetComponent<Collider>().bounds;
+            if (Audio != null && !Audio.isPlaying)
+            {
+                Audio.Play();
+            }
+            
+            return myBounds.Contains(Player.transform.position);
+        } catch {
+            return false;
         }
-        
-        return myBounds.Contains(Player.transform.position);
         
     }
 

@@ -69,33 +69,6 @@ public class RoomsGeneration : NetworkBehaviour
 
        // GeneratedRooms.Enqueue(currRoom.GetComponent<NetworkObject>());
 
-//TODO: decaler dans generate room
-        if (endRoom != null && numberOfRooms <= 0)
-        {
-            GameObject roomObject = Instantiate(endRoom.gameObject);
-            NetworkObject roomNetworkObject = roomObject.GetComponent<NetworkObject>();
-            if (roomNetworkObject != null && !roomNetworkObject.IsSpawned)
-            {
-                roomNetworkObject.Spawn();
-            }
-            
-            Transform entryPoint = roomObject.transform.Find("Entry");
-            Transform lastRoomExit = currRoom.transform.Find("Exit");
-
-            if (entryPoint == null || lastRoomExit == null)
-            {
-                Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
-                return;
-            }
-
-            float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
-            roomObject.transform.Rotate(Vector3.up, angleDifference);
-
-            Vector3 offset = entryPoint.position - roomObject.transform.position;
-            roomObject.transform.position = lastRoomExit.position - offset;
-
-            entryPoint.GetComponent<BoxCollider>().enabled = false;
-        } else Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
         
         BakeNavMesh();
     }
@@ -104,7 +77,12 @@ public class RoomsGeneration : NetworkBehaviour
     public void GenerateRoom(Room previousRoom, int id)
     {
         if (!IsServer) return;
+        if (numberOfRooms <= 0) {
+            GenerateLastRoom(previousRoom);
+            return; 
+        }
         if (GeneratedRooms.Count > 2) DeleteRoom();
+        
 
         NetworkObject roomNetworkObject = GetRandomRoom(previousRoom.gameObject);
         if (roomNetworkObject == null) return;
@@ -221,6 +199,66 @@ public class RoomsGeneration : NetworkBehaviour
         }
     }
 
+ private void GenerateLastRoom(Room previousRoom) {
+    if (!IsServer) return;
+    if (GeneratedRooms.Count > 2) DeleteRoom();
+    
+    if (endRoom == null) {
+        Debug.LogError("[Generation de salles] La salle de fin n'a pas été initialisée !");
+        return;
+    }
+    
+    // Instantier mais ne pas spawner encore
+    NetworkObject roomInstance = Instantiate(endRoom.GetComponent<NetworkObject>());
+    Room roomScript = roomInstance.GetComponent<Room>();
+    
+    // Mettre à jour l'ID de la salle et le label visuel
+    roomScript.RoomID = previousRoom.RoomID + 1;
+    var tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
+    if (tmp != null)
+    {
+        tmp.text = roomScript.RoomID < 9 ? "0" + (roomScript.RoomID + 1).ToString()
+                                        : (roomScript.RoomID + 1).ToString();
+    }
+    
+    // Récupérer les points d'entrée/sortie et positionner/tourner avant Spawn()
+    Transform entryPoint = roomInstance.transform.Find("Entry");
+    Transform lastRoomExit = previousRoom.transform.Find("Exit");
+
+    if (entryPoint == null || lastRoomExit == null)
+    {
+        Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
+        Destroy(roomInstance.gameObject);
+        return;
+    }
+
+    // Appliquer la rotation pour aligner l'entrée avec la sortie précédente
+    float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
+    roomInstance.transform.Rotate(Vector3.up, angleDifference);
+
+    // Mettre à jour la référence entryPoint (la rotation a changé)
+    entryPoint = roomInstance.transform.Find("Entry");
+    
+    // Aligner la position
+    Vector3 offset = entryPoint.position - roomInstance.transform.position;
+    roomInstance.transform.position = lastRoomExit.position - offset;
+    
+    // Désactiver les colliders sur l'entrée/sortie
+    if (entryPoint) entryPoint.GetComponent<BoxCollider>().enabled = false;
+    var exitPoint = roomInstance.transform.Find("Exit");
+    if (exitPoint) exitPoint.GetComponent<BoxCollider>().enabled = false;
+    
+    // Spawn APRÈS positionnement
+    roomInstance.Spawn();
+    
+    // Ajouter à la file des salles générées
+    GeneratedRooms.Enqueue(roomInstance);
+    
+    Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la dernière salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
+    
+    // Mettre à jour le NavMesh
+    BakeNavMesh();
+}
     void DeleteRoom() {
         if (GeneratedRooms.Count <= 1) { // On garde toujours la salle de départ
             Debug.LogWarning("Aucune salle à retirer (hors salle de départ) !");
