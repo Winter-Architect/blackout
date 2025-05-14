@@ -224,8 +224,6 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             isDead = true;
         }
-
-        
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -250,7 +248,7 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!IsOwner){
             return;
         }
-
+        
         HealthBar.style.width = Length.Percent(Health);
         EnergyBar.style.width = Length.Percent(Energy);
         CheckIfCanGrapple();
@@ -537,6 +535,7 @@ public class Agent : NetworkBehaviour, IInteractor
             Debug.Log("collected");
             if (item.item.Name == "Document") {
                 DocumentManager.Instance.CollectDocument(item.item.Id);
+                return;
             }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
