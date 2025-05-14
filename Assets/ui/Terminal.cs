@@ -23,7 +23,7 @@ public class Terminal : MonoBehaviour
     // Nouvelle liste pour sauvegarder les messages
     private List<string> messageHistory = new List<string>();
 
-    void Awake()
+    void Awake() 
     {
         if (TryGetComponent<UIDocument>(out uIDocument))
         {
@@ -114,12 +114,12 @@ public class Terminal : MonoBehaviour
             MapContainer.style.display = DisplayStyle.None;
             ScrollContainer.style.display = DisplayStyle.Flex;
             isMapOpen = false;
-            OpenMapButton.text = "Close Map";
+            OpenMapButton.text = "Open Map";
         } else {
             MapContainer.style.display = DisplayStyle.Flex;
             ScrollContainer.style.display = DisplayStyle.None;
             isMapOpen = true;
-            OpenMapButton.text = "Open Map";
+            OpenMapButton.text = "Close Map";
         }
     }
 

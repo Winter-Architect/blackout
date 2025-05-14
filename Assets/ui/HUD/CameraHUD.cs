@@ -12,19 +12,20 @@ public class CameraHUD : MonoBehaviour
 
     void Awake()
     {
-        uIDocument = GetComponent<UIDocument>();
-        ui = uIDocument.rootVisualElement;
+       
     }
 
     void OnEnable()
     {
+        uIDocument = gameObject.GetComponent<UIDocument>();
+        ui = uIDocument.rootVisualElement;
         OpenTerminalButton = ui.Q<Button>("OpenTerminal");
         OpenTerminalButton.clicked += OpenTerminal;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T)) OpenTerminal();
+        if (!isTermOpen) if (Input.GetKeyDown(KeyCode.T)) OpenTerminal();
     }
 
     void OpenTerminal()
