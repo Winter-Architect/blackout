@@ -32,16 +32,11 @@ public class Support : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log("11111");
         supportHUD = GameObject.Find("SupportHUD");
         if (supportHUD != null) {
-            Debug.LogWarning("instance");
-            // Instantiate(supportHUD);
-            // supportHUD.SetActive(IsOwner);
             UIDocument ui = supportHUD.GetComponent<UIDocument>();
             ui.enabled = IsOwner;
-
-        } else Debug.LogWarning("bite");
+        }
 
         if (!IsOwner) return;
 
@@ -66,9 +61,6 @@ public class Support : NetworkBehaviour
             }
         }
 
-                Debug.Log("22222");
-
-
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -77,7 +69,6 @@ public class Support : NetworkBehaviour
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
-                Debug.Log("3333");
 
     }
 

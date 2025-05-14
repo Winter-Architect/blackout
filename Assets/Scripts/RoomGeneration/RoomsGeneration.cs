@@ -18,7 +18,8 @@ public class RoomsGeneration : NetworkBehaviour
     private System.Random random = new System.Random(0);
      public NavMeshSurface navMeshSurface;
 
-     public override void OnNetworkSpawn() {
+    
+    public override void OnNetworkSpawn() {
         if (!IsServer)
         {
             Debug.LogWarning("[Generation de salles] Ce script ne doit être exécuté que sur le serveur !");
