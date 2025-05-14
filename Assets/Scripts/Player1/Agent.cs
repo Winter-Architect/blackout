@@ -224,6 +224,8 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             isDead = true;
         }
+
+        
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -248,9 +250,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!IsOwner){
             return;
         }
-        
+
         HealthBar.style.width = Length.Percent(Health);
         EnergyBar.style.width = Length.Percent(Energy);
+        
         CheckIfCanGrapple();
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
