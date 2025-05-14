@@ -12,15 +12,16 @@ public class CameraHUD : MonoBehaviour
 
     void Awake()
     {
-       
+        uIDocument = terminal.gameObject.GetComponent<UIDocument>();
+        ui = uIDocument.rootVisualElement;
     }
 
     void OnEnable()
     {
-        uIDocument = gameObject.GetComponent<UIDocument>();
-        ui = uIDocument.rootVisualElement;
-        OpenTerminalButton = ui.Q<Button>("OpenTerminal");
+       try {
+         OpenTerminalButton = ui.Q<Button>("OpenTerminal");
         OpenTerminalButton.clicked += OpenTerminal;
+       } catch {}
     }
 
     void Update()
