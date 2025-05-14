@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Support : NetworkBehaviour
 {
@@ -27,9 +28,21 @@ public class Support : NetworkBehaviour
 
     private LinkedListNode<Controllable> current;
     public event Action OnControllablesChanged;
+    private GameObject supportHUD;
 
     public override void OnNetworkSpawn()
     {
+        Debug.Log("11111");
+        supportHUD = GameObject.Find("SupportHUD");
+        if (supportHUD != null) {
+            Debug.LogWarning("instance");
+            // Instantiate(supportHUD);
+            // supportHUD.SetActive(IsOwner);
+            UIDocument ui = supportHUD.GetComponent<UIDocument>();
+            ui.enabled = IsOwner;
+
+        } else Debug.LogWarning("bite");
+
         if (!IsOwner) return;
 
         //var foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
@@ -53,20 +66,28 @@ public class Support : NetworkBehaviour
             }
         }
 
+                Debug.Log("22222");
+
+
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
-        Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         if (current != null)
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
+                Debug.Log("3333");
+
     }
 
     public void RecheckForRoom(){
         if(!IsOwner){
             return;
         }
+
+        
+        supportHUD.SetActive(IsOwner);
         foreach(var room in foundRooms)
         {
             if(room.ContainsPlayer(player1))

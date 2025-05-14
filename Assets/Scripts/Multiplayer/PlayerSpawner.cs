@@ -33,7 +33,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     async void SpawnPlayers()
     {
-        var clients = NetworkManager.Singleton.ConnectedClientsIds;
+         var clients = NetworkManager.Singleton.ConnectedClientsIds;
         int index = 0;
         foreach(ulong clientId in clients)
         {
