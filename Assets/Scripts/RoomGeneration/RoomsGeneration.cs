@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using Unity.Netcode.Components;
+using System.Collections.Generic;
 
 public class RoomsGeneration : NetworkBehaviour
 {
@@ -12,6 +13,7 @@ public class RoomsGeneration : NetworkBehaviour
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
     public GameObject DoorPrefab;
+    [SerializeField] public Queue<NetworkObject> GeneratedRooms = new Queue<NetworkObject>() ;
 
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
@@ -64,11 +66,8 @@ public class RoomsGeneration : NetworkBehaviour
             Debug.LogError("[Generation de salles] La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
             return;
         }
-        // for (int i = 0; i < numberOfRooms; i++)
-        // {
-        //    currRoom = GenerateRoom(currRoom, i);
-        // }
-         //GenerateRoom(currRoom, 0);
+
+       // GeneratedRooms.Enqueue(currRoom.GetComponent<NetworkObject>());
 
 //TODO: decaler dans generate room
         if (endRoom != null && numberOfRooms <= 0)
@@ -105,6 +104,7 @@ public class RoomsGeneration : NetworkBehaviour
     public void GenerateRoom(Room previousRoom, int id)
     {
         if (!IsServer) return;
+        if (GeneratedRooms.Count > 2) DeleteRoom();
 
         NetworkObject roomNetworkObject = GetRandomRoom(previousRoom.gameObject);
         if (roomNetworkObject == null) return;
@@ -202,6 +202,9 @@ public class RoomsGeneration : NetworkBehaviour
         // ✅ Only now — spawn the networked object
         roomInstance.Spawn();
 
+        
+        GeneratedRooms.Enqueue(roomInstance);
+
         // Sync state
         if (direction != null)
             LastRoomDirection = direction;
@@ -216,5 +219,24 @@ public class RoomsGeneration : NetworkBehaviour
         {
             navMeshSurface.BuildNavMesh();
         }
+    }
+
+    void DeleteRoom() {
+        if (GeneratedRooms.Count <= 1) { // On garde toujours la salle de départ
+            Debug.LogWarning("Aucune salle à retirer (hors salle de départ) !");
+            return;
+        }
+        // On saute la salle de départ
+        var room = GeneratedRooms.Dequeue();
+        if (room == null) {
+            Debug.LogWarning("Room null !");
+            return;
+        }
+        if (!room.IsSpawned) {
+            Debug.LogWarning($"Room {room.gameObject.name} n'est pas spawn, impossible de despawn.");
+            return;
+        }
+        room.Despawn(true);
+        Debug.LogWarning($"Removed {room.gameObject.name}");
     }
 }
