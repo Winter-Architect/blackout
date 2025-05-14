@@ -133,34 +133,7 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
-    // private void EquipItem()
-    // {
-    //     Debug.Log("EquipItem " + activeInventorySlot);
-    //     if (isItemEquipped)
-    // {
-    //     CallUnequipItemServerRpc();
-    //     isItemEquipped = false;
-    // }
-        
-    //     // if(isItemEquipped)
-    //     // {
-    //     //     if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
-    //     // {
-    //     //     Debug.LogWarning("Item not found, update ItemManager from editor");
-    //     //     return;
-    //     // }
-    //     Debug.Log(inventory[activeInventorySlot].Name);
-    //     Debug.Log("slot" + activeInventorySlot);
-    //     CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
-    //     isItemEquipped = !isItemEquipped;
-
-    //     //}
-    //     // else
-    //     // {
-    //     //     CallUnequipItemServerRpc();
-    //     // }
-    // }
-
+// Removed commented-out implementation of EquipItem to improve code readability and maintainability.
    private void EquipItem()
 {
     Debug.Log("EquipItem " + InventoryController.activeInventorySlotId);
