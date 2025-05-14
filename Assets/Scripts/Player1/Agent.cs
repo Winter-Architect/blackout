@@ -108,7 +108,7 @@ public class Agent : NetworkBehaviour, IInteractor
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
 
-        PlayerHUDui.pickingMode = PickingMode.Ignore;
+         PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
         EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
@@ -133,6 +133,7 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
+// Removed commented-out implementation of EquipItem to improve code readability and maintainability.
    private void EquipItem()
 {
     Debug.Log("EquipItem " + InventoryController.activeInventorySlotId);
@@ -224,6 +225,8 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             isDead = true;
         }
+
+        
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -248,9 +251,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!IsOwner){
             return;
         }
-        
+
         HealthBar.style.width = Length.Percent(Health);
         EnergyBar.style.width = Length.Percent(Energy);
+        
         CheckIfCanGrapple();
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
@@ -534,8 +538,8 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.Log("collected");
             if (item.item.Name == "Document") {
+                Debug.Log("itemName");
                 DocumentManager.Instance.CollectDocument(item.item.Id);
-                return;
             }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
