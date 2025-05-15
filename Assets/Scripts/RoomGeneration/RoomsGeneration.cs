@@ -108,6 +108,23 @@ public class RoomsGeneration : NetworkBehaviour
 
         Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
+        // Fermer la porte de la salle précédente (si elle existe)
+        if (GeneratedRooms.Count > 2)
+        {
+            // Récupère la salle précédente (avant-dernière dans la queue)
+            NetworkObject[] roomsArray = GeneratedRooms.ToArray();
+            NetworkObject previousRoomObject = roomsArray[0];
+            Debug.Log(previousRoomObject.name);
+            if (previousRoomObject != null)
+            {
+                Door door = previousRoomObject.GetComponentInChildren<Door>();
+                if (door != null)
+                {
+                    door.CloseDoor();
+                }
+            }
+        }
+
         BakeNavMesh();
     }
 
