@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-
     public Animator Animator;
     public string PlayerTag;
     public string OpenCloseAnnimBoolName;
     public AudioSource DoorAudio; // Reference to AudioSource
     private bool doorOpen = false;
     public bool Condition = false;
+    public bool CanBeOpen = true;
     
     public GameObject monsterPrefab;
     public Transform spawnPoint; // at this door
@@ -18,7 +18,7 @@ public class Door : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {        
-        if (!doorOpen && other.CompareTag(PlayerTag) && Condition)
+        if (!doorOpen && other.CompareTag(PlayerTag) && Condition && CanBeOpen)
         {
             Animator.SetBool(OpenCloseAnnimBoolName, true);
 
@@ -63,4 +63,8 @@ public class Door : MonoBehaviour
         Destroy(monster);
     }
 
+    public void CloseDoor() {
+        Animator.SetBool(OpenCloseAnnimBoolName, false);
+        CanBeOpen = false;
+    }
 }
