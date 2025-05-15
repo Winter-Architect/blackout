@@ -108,6 +108,7 @@ public class RoomsGeneration : NetworkBehaviour
 
         Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
+
         // Fermer la porte de la salle précédente (si elle existe)
         if (GeneratedRooms.Count > 2)
         {
