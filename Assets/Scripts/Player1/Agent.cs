@@ -246,7 +246,10 @@ public class Agent : NetworkBehaviour, IInteractor
             spawnTimer = 120f;
         }
         
-        UnityEngine.Cursor.lockState = cursorState; 
+        if (!KeyPad.IsAnyKeyPadOpen)
+        {
+            UnityEngine.Cursor.lockState = cursorState;
+        }
         activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();

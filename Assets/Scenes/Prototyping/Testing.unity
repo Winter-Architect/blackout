@@ -3073,6 +3073,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: electricalBox
       objectReference: {fileID: 0}
+    - target: {fileID: 8401969088321402300, guid: 71d06a4ec505dbd49a48d57668712e4d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9210453815978225414, guid: 71d06a4ec505dbd49a48d57668712e4d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.1549752
@@ -67755,6 +67759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMapOpen: 0
   isOpen: 0
+  helpButtonClicked: 0
   messageHistory: []
 --- !u!114 &1274266763
 MonoBehaviour:
@@ -92697,6 +92702,10 @@ PrefabInstance:
     - target: {fileID: 6754493464789739899, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_LocalPosition.y
       value: -5.357143
+      objectReference: {fileID: 0}
+    - target: {fileID: 7803691573770863428, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: Condition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7803691573770863428, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: DoorAudio
