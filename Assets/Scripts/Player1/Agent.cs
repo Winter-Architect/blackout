@@ -61,7 +61,7 @@ public class Agent : NetworkBehaviour, IInteractor
     [SerializeField] private ItemLibrary ItemLibrary;
 
     private static Item[] inventory = new Item[6];
-    private bool isItemEquipped = false;
+    public bool isItemEquipped = false;
     private int activeInventorySlot = 0;
 
     private GameObject currentlyEquippedItem;
@@ -75,6 +75,7 @@ public class Agent : NetworkBehaviour, IInteractor
     public GameObject inventoryCanvas;
     private InventoryController invController;
 
+
     
 
     // For Health and energy bars
@@ -86,19 +87,19 @@ public class Agent : NetworkBehaviour, IInteractor
     public VisualElement EnergyBar;
     public int Health = 100;
     public int Energy = 25;
-    
+
     public override void OnNetworkSpawn()
     {
-       
+
         myCheckTrigger = gameObject.AddComponent<SphereCollider>();
         myCheckTrigger.isTrigger = true;
         myCheckTrigger.radius = interactionRange;
 
-        if(!IsOwner)
+        if (!IsOwner)
         {
             playerCamera.gameObject.SetActive(false);
             return;
-        }  
+        }
 
         PlayerHUD = playerCamera.GetComponentInChildren<UIDocument>();
         if (PlayerHUD == null)
@@ -108,16 +109,18 @@ public class Agent : NetworkBehaviour, IInteractor
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
 
-         PlayerHUDui.pickingMode = PickingMode.Ignore;
+        PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
         EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
-    
+
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
         invController = InventoryController.Instance.GetComponent<InventoryController>();
 
+
+        TutorialManager.Instance.StartTutorial("player1");
     }
 
     public static void AddItemToAgentInventory(Item item)

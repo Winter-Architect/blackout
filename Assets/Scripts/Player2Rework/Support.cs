@@ -33,7 +33,8 @@ public class Support : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         supportHUD = GameObject.Find("SupportHUD");
-        if (supportHUD != null) {
+        if (supportHUD != null)
+        {
             UIDocument ui = supportHUD.GetComponent<UIDocument>();
             ui.enabled = IsOwner;
         }
@@ -52,9 +53,9 @@ public class Support : NetworkBehaviour
 
         player1 = FindFirstObjectByType<Agent>();
 
-        foreach(var room in foundRooms)
+        foreach (var room in foundRooms)
         {
-            if(room.ContainsPlayer(player1))
+            if (room.ContainsPlayer(player1))
             {
                 currentRoom = room;
                 break;
@@ -69,6 +70,9 @@ public class Support : NetworkBehaviour
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
+        
+        
+        TutorialManager.Instance.StartTutorial("player2");
 
     }
 
