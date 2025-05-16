@@ -14302,7 +14302,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 474268858}
-  - component: {fileID: 474268857}
+  - component: {fileID: 474268859}
   m_Layer: 0
   m_Name: TutorialManager
   m_TagString: Untagged
@@ -14310,19 +14310,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &474268857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 474268856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fca8c300de6a8342ba30da4504a6b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogUI: {fileID: 2194878293026417265, guid: dc80f5e5631b06f4a8009e83c11d8a46, type: 3}
 --- !u!4 &474268858
 Transform:
   m_ObjectHideFlags: 0
@@ -14338,6 +14325,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &474268859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474268856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fca8c300de6a8342ba30da4504a6b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogUI: {fileID: 2194878293026417265, guid: dc80f5e5631b06f4a8009e83c11d8a46, type: 3}
+  SwitchesBoxDoor: {fileID: 1596681283}
+  switchesManager: {fileID: 418839961}
 --- !u!64 &475379143
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -81158,6 +81160,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2064843542920993271, guid: d0b21490e871c9649b0c16b254723971, type: 3}
+--- !u!114 &1596681283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2657455192216068249, guid: 71d06a4ec505dbd49a48d57668712e4d, type: 3}
+  m_PrefabInstance: {fileID: 99525873}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c7318b0b932724db6eb8339955410f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1596917655
 GameObject:
   m_ObjectHideFlags: 0
