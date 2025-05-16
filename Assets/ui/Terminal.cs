@@ -19,15 +19,17 @@ public class Terminal : MonoBehaviour
     private Button ExecuteCommandButton;
 
     private bool isFirstStart = true;
-    private bool isMapOpen = false;
+    public bool isMapOpen = false;
+    public bool isOpen = false;
     // Nouvelle liste pour sauvegarder les messages
-    private List<string> messageHistory = new List<string>();
+    public List<string> messageHistory = new List<string>();
 
     void Awake() 
     {
         if (TryGetComponent<UIDocument>(out uIDocument))
         {
             uIDocument.gameObject.SetActive(true);
+            isOpen = true;
         }
         else
         {
@@ -104,8 +106,10 @@ public class Terminal : MonoBehaviour
         AddMessageToTerminal("clear", true);
     }
 
-    void ExitTerminal() {
+    void ExitTerminal()
+    {
         uIDocument.gameObject.SetActive(false);
+        isOpen = false;
     }
 
     void DisplayMap() {

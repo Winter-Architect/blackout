@@ -43,6 +43,7 @@ public class TutorialManager : MonoBehaviour
     private Agent agent;
     [SerializeField] private Drawer SwitchesBoxDoor;
     [SerializeField] private Door firstDoorToOpen;
+    [SerializeField] private Terminal terminal;
 
     private bool waitingToDestroy = false;
     private float destroyTimer = 0f;
@@ -227,7 +228,6 @@ public class TutorialManager : MonoBehaviour
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;
-                            PlayerPrefs.SetInt("TutorialDone_player1", 1);
                             waitingToDestroy = true;
                             destroyTimer = 0f;
                         }
@@ -235,16 +235,17 @@ public class TutorialManager : MonoBehaviour
                     }
                     case 9: // Attente 5 secondes puis suppression
                     {
+                        PlayerPrefs.SetInt("TutorialDone_player1", 1);
                         if (waitingToDestroy)
-                        {
-                            destroyTimer += Time.deltaTime;
-                            if (destroyTimer >= 5f)
                             {
-                                Destroy(myDialogUI);
-                                myDialogUI = null;
-                                waitingToDestroy = false;
+                                destroyTimer += Time.deltaTime;
+                                if (destroyTimer >= 5f)
+                                {
+                                    Destroy(myDialogUI);
+                                    myDialogUI = null;
+                                    waitingToDestroy = false;
+                                }
                             }
-                        }
                         break;
                     }
                     default:
@@ -266,26 +267,67 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 1:
+                    case 1: // Attente du clic pour continuer
                     {
-                        dialogBox.DisplayNextText();
-                        startedSwitchTutorial = true;
-                        messageCounter++;
-                        break;
-                    }
-                    case 2:
-                    {
-                        if (finishedSwappingControls)
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;
-                            waitingToDestroy = true;
-                            destroyTimer = 0f;
                         }
                         break;
                     }
-                    case 3: // Attente 5 secondes puis suppression
+                    case 2: // Changement de caméra (clic droit)
                     {
+                        if (Input.GetKeyDown(KeyCode.Mouse1))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 3: // Ouvrir le terminal (T)
+                    {
+                        if (Input.GetKeyDown(KeyCode.T))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 4: // Envoyer la commande "help"
+                    {
+                        // À adapter selon ton système de terminal, exemple :
+                        if (terminal.messageHistory.Contains("help"))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 5: // Ouvrir la map (bouton ou "map")
+                    {
+                        // À adapter selon ton système de map, exemple :
+                        if (terminal.isMapOpen)
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 6: // Fermer le terminal
+                    {
+                        // À adapter selon ton système, ici on suppose terminal.isOpen == false quand il est fermé
+                        if (!terminal.isOpen)
+                        {
+                            dialogBox.DisplayNextText();
+                            waitingToDestroy = true;
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 7: // Dernier message, clic pour fermer le tuto
+                    {
+                        PlayerPrefs.SetInt("TutorialDone_player2", 1);
                         if (waitingToDestroy)
                         {
                             destroyTimer += Time.deltaTime;
@@ -347,10 +389,12 @@ public class TutorialManager : MonoBehaviour
             DialogBox dialogBox = myDialogUI.GetComponent<DialogBox>();
             dialogBox.EnqueueMessage("Welcome to Blackout", "> Click to continue!");
             dialogBox.EnqueueMessage("You have successfully inflitrated the electronics system of the Site", "> Click to continue!");
-            dialogBox.EnqueueMessage("Look at another camera and RightClick to control it and get a different perspective", "> switch caméra\n> Click to continue!");
+            dialogBox.EnqueueMessage("Control other Controllables with RightClick!", "> switch caméra");
             dialogBox.EnqueueMessage("You've got access to the terminal of the facility! Press \"T\" to open it!", "> Open the terminal");
             dialogBox.EnqueueMessage("You have access to some commands! Send the command \"help\" to see all of them.", "> list all of the commands");
             dialogBox.EnqueueMessage("In some room, you have access to the map of the room with some details! Open the map with the button or by tapping (\"map\")", "> open the map");
+            dialogBox.EnqueueMessage("You can now close the terminal by pressing the button or write \"exit\"", "> Close the terminal");
+            dialogBox.EnqueueMessage("You have prooven your value! You are now ready to help our agent to complete this mission!");
             dialogBox.DisplayNextText();
             this.myDialogUI = myDialogUI;
         }

@@ -14339,7 +14339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogUI: {fileID: 2194878293026417265, guid: dc80f5e5631b06f4a8009e83c11d8a46, type: 3}
   SwitchesBoxDoor: {fileID: 1596681283}
-  switchesManager: {fileID: 418839961}
+  firstDoorToOpen: {fileID: 1772886204}
+  terminal: {fileID: 1274266762}
 --- !u!64 &475379143
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67752,6 +67753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e77072232c1e6249ba7ea4fe225ea4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMapOpen: 0
+  messageHistory: []
 --- !u!114 &1274266763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67767,7 +67770,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: eb1f5b190bbffea49a02fc5dca9416a3, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 1e+10
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
@@ -92592,7 +92595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 37641786940196187, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.29
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 856835485806951018, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_Convex
