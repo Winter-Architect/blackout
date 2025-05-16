@@ -194,7 +194,8 @@ public class TutorialManager : MonoBehaviour
                             {
                                 dialogBox.DisplayNextText();
                                 messageCounter++;
-                               // startedOpeningDoor = true;
+                                // startedOpeningDoor = true;
+                                PlayerPrefs.SetInt("TutorialDone_player1", 1);
                             }
                             break;
                     }
@@ -262,7 +263,8 @@ public class TutorialManager : MonoBehaviour
     public void StartTutorial(string player)
     {
         this.player = player;
-        if(player == "player1")
+        if (PlayerPrefs.GetInt($"TutorialDone_{player}", 0) == 1) return;
+        if (player == "player1")
         {
             GameObject myDialogUI = Instantiate(dialogUI);
             DialogBox dialogBox = myDialogUI.GetComponent<DialogBox>();
@@ -278,7 +280,7 @@ public class TutorialManager : MonoBehaviour
             dialogBox.DisplayNextText();
             this.myDialogUI = myDialogUI;
         }
-        else if(player == "player2")
+        else if (player == "player2")
         {
             GameObject myDialogUI = Instantiate(dialogUI);
             DialogBox dialogBox = myDialogUI.GetComponent<DialogBox>();
