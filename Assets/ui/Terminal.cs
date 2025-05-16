@@ -15,12 +15,14 @@ public class Terminal : MonoBehaviour
     private Button ClearTerminalButton;
     private Button ExitTerminalButton;
     private Button OpenMapButton;
+    private Button HelpButton;
     private TextField commandInput;
     private Button ExecuteCommandButton;
 
     private bool isFirstStart = true;
     public bool isMapOpen = false;
     public bool isOpen = false;
+    public bool helpButtonClicked = false;
     // Nouvelle liste pour sauvegarder les messages
     public List<string> messageHistory = new List<string>();
 
@@ -52,14 +54,17 @@ public class Terminal : MonoBehaviour
         ClearTerminalButton = BoutonsContainer.Q<Button>("ClearTerminal");      
         ExitTerminalButton = BoutonsContainer.Q<Button>("ExitTerminal");  
         OpenMapButton = BoutonsContainer.Q<Button>("OpenMap");
+        HelpButton = BoutonsContainer.Q<Button>("Help");
 
         ClearTerminalButton.clicked += ClearTerminal;
         ExitTerminalButton.clicked += ExitTerminal;
         OpenMapButton.clicked += DisplayMap;
         ExecuteCommandButton.clicked += ExecuteCommand;
+        HelpButton.clicked += ListAllCommands;
 
         // Restaurer les messages affichés
-        if (isFirstStart) {
+        if (isFirstStart)
+        {
             isFirstStart = false;
             StartCoroutine(StartingTerminal());
         }
@@ -84,14 +89,8 @@ public class Terminal : MonoBehaviour
             case "map":
                 DisplayMap();
                 break;
-            case "bite":
-                AddMessageToTerminal("BIIITTTEEEE!!!");
-                break;
-            case "titouan":
-                AddMessageToTerminal("<3");
-                break;
-            case "arcane":
-                AddMessageToTerminal("Arcane, la série animée inspirée de l'univers de League of Legends, est une véritable œuvre d'art qui transcende les attentes. Sa narration captivante plonge les spectateurs dans un monde riche, avec des personnages profonds et nuancés comme Vi, Jinx, et Silco, dont les motivations complexes les rendent terriblement humains. L'animation est un chef-d'œuvre en soi, mélangeant un style visuel unique et des séquences d'action époustouflantes qui semblent tout droit sorties d'une peinture vivante. La bande-son, vibrante et immersive, amplifie chaque moment clé, donnant une profondeur émotionnelle supplémentaire. En outre, Arcane ne se contente pas de séduire les fans de League of Legends : elle s'adresse à un public plus large grâce à son exploration de thèmes universels tels que la famille, la trahison, et la lutte des classes. Ce mariage parfait entre esthétique, narration et émotion place Arcane parmi les meilleures séries jamais créées.");
+            case "help":
+                ListAllCommands();
                 break;
             default:
                 AddMessageToTerminal("Command \"" + commandInput.value + "\" unknown");
@@ -106,10 +105,25 @@ public class Terminal : MonoBehaviour
         AddMessageToTerminal("clear", true);
     }
 
+    void ListAllCommands()
+    {
+        AddMessageToTerminal("List of all the commands :\n>>> clear: clear the terminal\n>>> exit: exit the terminal\n>>> map: display the map of the current room");
+        helpButtonClicked = true;
+    }
+
     void ExitTerminal()
     {
-        uIDocument.gameObject.SetActive(false);
-        isOpen = false;
+        // Cherche le CameraHUD parent ou via une référence
+        CameraHUD cameraHUD = FindFirstObjectByType<CameraHUD>();
+        if (cameraHUD != null)
+        {
+            cameraHUD.CloseTerminal();
+        }
+        else
+        {
+            // fallback si jamais CameraHUD n'est pas trouvé
+            gameObject.SetActive(false);
+        }
     }
 
     void DisplayMap() {

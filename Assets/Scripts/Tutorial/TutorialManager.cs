@@ -297,7 +297,7 @@ public class TutorialManager : MonoBehaviour
                     case 4: // Envoyer la commande "help"
                     {
                         // À adapter selon ton système de terminal, exemple :
-                        if (terminal.messageHistory.Contains("help"))
+                        if (terminal.messageHistory.Contains("help") || terminal.helpButtonClicked)
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;

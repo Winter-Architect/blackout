@@ -356,12 +356,17 @@ public class Agent : NetworkBehaviour, IInteractor
     private void SwitchCurrentInteractable()
 
     {
-        if(Input.GetKeyDown(KeyCode.O))
+        if (currentSelectedInteractable == null)
+        {
+           // Debug.LogWarning("currentSelectInteractble null");
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
         {
             currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
             currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List.First;
         }
-        else if(Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.P))
         {
             currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
             currentSelectedInteractable = currentSelectedInteractable.Previous ?? currentSelectedInteractable.List.Last;

@@ -35739,7 +35739,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 1.2710347
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -67754,6 +67754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMapOpen: 0
+  isOpen: 0
   messageHistory: []
 --- !u!114 &1274266763
 MonoBehaviour:
@@ -67770,7 +67771,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 1a26f286c3025674f9a75498f3eecb21, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: eb1f5b190bbffea49a02fc5dca9416a3, type: 3}
-  m_SortingOrder: 1e+10
+  m_SortingOrder: 99
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080

@@ -29,6 +29,9 @@ public class Support : NetworkBehaviour
     private LinkedListNode<Controllable> current;
     public event Action OnControllablesChanged;
     private GameObject supportHUD;
+    private CameraHUD supportHUDscript;
+    
+    private CursorLockMode cursorState;
 
     public override void OnNetworkSpawn()
     {
@@ -36,6 +39,7 @@ public class Support : NetworkBehaviour
         if (supportHUD != null)
         {
             UIDocument ui = supportHUD.GetComponent<UIDocument>();
+            supportHUDscript = supportHUD.gameObject.GetComponent<CameraHUD>();
             ui.enabled = IsOwner;
         }
 
@@ -70,9 +74,11 @@ public class Support : NetworkBehaviour
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
-        
-        
+
+        cursorState = CursorLockMode.Locked;
+
         TutorialManager.Instance.StartTutorial("player2");
+        
 
     }
 
@@ -105,21 +111,34 @@ public class Support : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if(player1 is null){
+        if (player1 is null)
+        {
             return;
         }
 
         if (current != null)
         {
             SwitchCurrent();
-            if(current.Value.gameObject.GetComponent<NetworkObject>().IsOwnedByServer){
+            if (current.Value.gameObject.GetComponent<NetworkObject>().IsOwnedByServer)
+            {
                 SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
             }
             current.Value.Control();
         }
 
-
-
+        // --- MODIFICATION ICI ---
+        // On vérifie si le terminal est ouvert via le script CameraHUD
+        if (supportHUDscript != null && supportHUDscript.isTermOpen)
+        {
+            cursorState = CursorLockMode.None;
+        }
+        else
+        {
+            cursorState = CursorLockMode.Locked;
+        }
+        UnityEngine.Cursor.lockState = cursorState;
+        UnityEngine.Cursor.visible = cursorState == CursorLockMode.None;
+        // --- FIN MODIFICATION ---
     }
 
     private void SwitchCurrent()
