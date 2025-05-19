@@ -81,7 +81,7 @@ public class RoomsGeneration : NetworkBehaviour
             GenerateLastRoom(previousRoom);
             return; 
         }
-        if (GeneratedRooms.Count > 2) DeleteRoom();
+        if (GeneratedRooms.Count > 3) DeleteRoom();
         
 
         NetworkObject roomNetworkObject = GetRandomRoom(previousRoom.gameObject);
@@ -110,7 +110,7 @@ public class RoomsGeneration : NetworkBehaviour
         Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
         // Fermer la porte de la salle précédente (si elle existe)
-        if (GeneratedRooms.Count > 2)
+        if (GeneratedRooms.Count > 3)
         {
             // Récupère la salle précédente (avant-dernière dans la queue)
             NetworkObject[] roomsArray = GeneratedRooms.ToArray();
