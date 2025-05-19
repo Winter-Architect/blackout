@@ -120,13 +120,25 @@ public class Support : NetworkBehaviour
         if (player1 is null)
             return;
 
-        if ((player1.isDead || player1.Health <= 0) && !isGameOverScreenActive)
+        if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
             supportHUD?.SetActive(false);
             Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
             GameOverScreen = GameOverScreenPrefab.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
+        }
+
+        if (player1.isGameWon.Value && !isGameOverScreenActive)
+        {
+            supportHUD?.SetActive(false);
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
             GameOverScreen.sortingOrder = 99999;
         }
 
@@ -161,7 +173,7 @@ public class Support : NetworkBehaviour
         {
             cursorState = CursorLockMode.None;
         }
-        else if (player1.isDead || player1.Health <= 0)
+        else if (player1.isDead.Value || player1.Health <= 0 || player1.isGameWon.Value)
         {
             cursorState = CursorLockMode.None;
         }
