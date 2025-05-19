@@ -114,6 +114,7 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.LogError("PlayerHUD not found in children of playerCamera.");
             return;
+        }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
         PlayerHUDui.style.display = DisplayStyle.Flex;
         PlayerHUDui.pickingMode = PickingMode.Ignore;
@@ -239,7 +240,8 @@ public class Agent : NetworkBehaviour, IInteractor
             cursorState = CursorLockMode.None;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
-
+        }
+        
          if (isGameWon.Value && !isGameOverScreenActive)
         {
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
