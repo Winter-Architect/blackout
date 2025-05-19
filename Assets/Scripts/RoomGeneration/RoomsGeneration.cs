@@ -5,13 +5,18 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using Unity.Netcode.Components;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.AI;
+using Random = System.Random;
 
 public class RoomsGeneration : NetworkBehaviour
 {
     public Rooms roomPrefabs;
-    public Room endRoom;
+    public Room endRoom;    
+    public GameObject zombPrefab;
+    public GameObject turretPrefab;
     public int numberOfRooms = 20; // Nombre total de salles à générer
-
+    
     public GameObject DoorPrefab;
     [SerializeField] public Queue<NetworkObject> GeneratedRooms = new Queue<NetworkObject>() ;
 
@@ -20,7 +25,6 @@ public class RoomsGeneration : NetworkBehaviour
      private float totalWeight = 0;
      
     private System.Random random = new System.Random(0);
-     public NavMeshSurface navMeshSurface;
 
      public override void OnNetworkSpawn() {
         if (!IsServer)
@@ -70,7 +74,6 @@ public class RoomsGeneration : NetworkBehaviour
        // GeneratedRooms.Enqueue(currRoom.GetComponent<NetworkObject>());
 
         
-        BakeNavMesh();
     }
 
 
@@ -126,9 +129,55 @@ public class RoomsGeneration : NetworkBehaviour
             }
         }
 
-        BakeNavMesh();
+        SpawnEnemies(roomScript);
     }
 
+    public void SpawnEnemies(Room room)
+    {
+        Debug.Log("In SpawnEnemies");
+        var allTransforms = room.GetComponentsInChildren<Transform>(true);
+    
+        var zombPaths = allTransforms
+            .Where(t => t.name.StartsWith("ZombNodes"))
+            .ToList();
+
+        var turretPositions = allTransforms
+            .Where(t => t.name.StartsWith("TurretNodes"))
+            .ToList();
+
+        foreach (var zombPathRoot in zombPaths)
+        {
+            List<Transform> path = new List<Transform>();
+            foreach (Transform child in zombPathRoot)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(child.position, out hit, 2.0f, NavMesh.AllAreas))
+                {
+                    child.position = hit.position;
+                }
+
+                path.Add(child);
+            }
+
+            GameObject zombObj = Instantiate(zombPrefab, path[0].position, Quaternion.identity);
+            var zombNetworkObj = zombObj.GetComponent<NetworkObject>();
+            if (zombNetworkObj != null) zombNetworkObj.Spawn();
+            ZombZomb zomb = zombObj.GetComponent<ZombZomb>();
+            zombObj.GetComponent<NavMeshAgent>().Warp(path[0].position);
+            zomb.InitializePath(path.OrderBy(t => t.name).ToList());
+            
+        }
+
+        foreach (var turretNode in turretPositions)
+        {
+            GameObject turretObj = Instantiate(turretPrefab, turretNode.position, turretNode.rotation);
+            var turretNetworkObj = turretObj.GetComponent<NetworkObject>();
+            if (turretNetworkObj != null) turretNetworkObj.Spawn();
+            TurretEnemy turret = turretObj.GetComponent<TurretEnemy>();
+            turretObj.GetComponent<NavMeshAgent>().Warp(turretNode.position);
+            turret.isRaycastLaser = (turretNode.GetChild(0).name == "isLaser");
+        }
+    }
 
     NetworkObject GetRandomRoom(GameObject PreviousRoom)
     {
@@ -209,13 +258,6 @@ public class RoomsGeneration : NetworkBehaviour
         return roomInstance;
     }
     
-    void BakeNavMesh()
-    {
-        if (navMeshSurface is not null)
-        {
-            navMeshSurface.BuildNavMesh();
-        }
-    }
 
  private void GenerateLastRoom(Room previousRoom) {
     if (!IsServer) return;
@@ -274,8 +316,6 @@ public class RoomsGeneration : NetworkBehaviour
     
     Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la dernière salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
     
-    // Mettre à jour le NavMesh
-    BakeNavMesh();
 }
     void DeleteRoom() {
         if (GeneratedRooms.Count <= 1) { // On garde toujours la salle de départ
