@@ -123,10 +123,10 @@ public class Support : NetworkBehaviour
         if ((player1.isDead || player1.Health <= 0) && !isGameOverScreenActive)
         {
             supportHUD?.SetActive(false);
-            Instantiate(GameOverScreenPrefab);
+            var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
-            GameOverScreen = GameOverScreenPrefab.GetComponent<UIDocument>();
+            GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
         }
 
