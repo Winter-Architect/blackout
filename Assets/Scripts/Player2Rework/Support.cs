@@ -123,10 +123,10 @@ public class Support : NetworkBehaviour
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
             supportHUD?.SetActive(false);
-            Instantiate(GameOverScreenPrefab);
+            var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
-            GameOverScreen = GameOverScreenPrefab.GetComponent<UIDocument>();
+            GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
         }
 
@@ -146,7 +146,7 @@ public class Support : NetworkBehaviour
         if (current != null && current.Value != null && current.Value.gameObject != null)
         {
             var netObj = current.Value.gameObject.GetComponent<NetworkObject>();
-            if (netObj != null && netObj != null && netObj.gameObject != null)
+            if (netObj != null && netObj.gameObject != null)
             {
                 SwitchCurrent();
                 if (netObj.IsOwnedByServer)
