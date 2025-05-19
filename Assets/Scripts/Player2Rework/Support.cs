@@ -137,7 +137,7 @@ public class Support : NetworkBehaviour
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
-            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
+           // GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
             GameOverScreen.sortingOrder = 99999;
         }
