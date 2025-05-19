@@ -28185,6 +28185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834de40834570354bbeb516d22d41a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   PlayerTag: Player
   Condition: 1
   ScreamerPanel: {fileID: 1109212213}
@@ -92549,6 +92550,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -5.357143
       objectReference: {fileID: 0}
+    - target: {fileID: 6890615792003430753, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 589755888
+      objectReference: {fileID: 0}
     - target: {fileID: 7803691573770863428, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: DoorAudio
       value: 
@@ -92618,6 +92623,7 @@ PrefabInstance:
     - {fileID: 3595361308211334516, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     - {fileID: 4253149184064907721, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     - {fileID: 3278163123428784657, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+    - {fileID: 2116712440119110057, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1573821958528498504, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: 1
