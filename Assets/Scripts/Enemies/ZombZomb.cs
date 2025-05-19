@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,8 +22,7 @@ public class ZombZomb : Enemy
 
     private bool isHeard;
     
-    private bool _isWaitingForNextNode;
-
+    
     void Awake()
     {
         fieldOfView = gameObject.GetComponent<FieldOfView>();
@@ -45,8 +43,7 @@ public class ZombZomb : Enemy
         rotationSpeed = 30f;
 
         isHeard = false;
-        _isWaitingForNextNode = false;
-            
+        
         stateMachine = new StateMachine();
         
     }
@@ -94,10 +91,12 @@ public class ZombZomb : Enemy
         {
             agent.updateRotation = true;
         }
-        if (!agent.pathPending && agent.remainingDistance < 0.3f && !_isWaitingForNextNode)
+        if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f || (!agent.pathPending && agent.remainingDistance < 0.3f))
         {
-            StartCoroutine(NewDest());
+            _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
+            _currentNode = _nodes[_currentNodeIndex];
         }
+        agent.destination = _currentNode.transform.position;
         Listen();
     }
     
@@ -229,17 +228,5 @@ public class ZombZomb : Enemy
             _nodes[i] = node;
             i++;
         }
-    }
-    
-    IEnumerator NewDest()
-    {
-        _isWaitingForNextNode = true;
-        yield return new WaitForSeconds(1f);
-    
-        _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
-        _currentNode = _nodes[_currentNodeIndex];
-        agent.destination = _currentNode.position;
-
-        _isWaitingForNextNode = false;
     }
 }
