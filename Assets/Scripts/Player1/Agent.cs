@@ -13,7 +13,7 @@ public class Agent : NetworkBehaviour, IInteractor
     public bool isInLocker;
 
     
-    public bool isDead;
+    public NetworkVariable<bool> isDead = new NetworkVariable<bool>(false);
     
     public float spawnTimer = 20f;
     public bool shouldSpawnEntity = false;
@@ -92,6 +92,8 @@ public class Agent : NetworkBehaviour, IInteractor
     private UIDocument GameOverScreen;
     public bool isGameOverScreenActive = false;
 
+    public NetworkVariable<bool> isGameWon = new NetworkVariable<bool>(false);
+
     public override void OnNetworkSpawn()
     {
 
@@ -110,7 +112,8 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.LogError("PlayerHUD not found in children of playerCamera.");
             return;
-        } else Debug.Log("PlayerHUD found in children of playerCamera.");
+        }
+        else Debug.Log("PlayerHUD found in children of playerCamera.");
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
         PlayerHUDui.style.display = DisplayStyle.Flex;
         PlayerHUDui.pickingMode = PickingMode.Ignore;
@@ -228,13 +231,24 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
-        if ((Health <= 0 || isDead) && !isGameOverScreenActive)
+        if ((Health <= 0 || isDead.Value) && !isGameOverScreenActive)
         {
-            isDead = true;
+            isDead.Value = true;
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
+        }
+
+         if (isGameWon.Value && !isGameOverScreenActive)
+        {
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
             GameOverScreen.sortingOrder = 99999;
         }
 
