@@ -56,7 +56,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2240749310
+  GlobalObjectIdHash: 4246153286
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -119,7 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isInLocker: 0
-  health: 100
   isDead: 0
   spawnTimer: 20
   shouldSpawnEntity: 0
@@ -140,6 +139,7 @@ MonoBehaviour:
   playerRightHandSlot: {fileID: 5388673718756160265}
   hasKey: 0
   ItemLibrary: {fileID: 11400000, guid: f54a843f1ab891847838977591a905a1, type: 2}
+  isItemEquipped: 0
   freeze: 0
   activeGrapple: 0
   inventoryCanvas: {fileID: 4988085219231443046, guid: 6dadbe1d3bbf76d4b975e7f4a219081b, type: 3}
@@ -147,6 +147,7 @@ MonoBehaviour:
   PlayerHUD: {fileID: 941007199689001503, guid: 75f9d82e2135efa4e8a4d103340530c4, type: 3}
   Health: 100
   Energy: 100
+  GameOverScreenPrefab: {fileID: 6020982136039824340, guid: 9133bed930dc72349a93f832099e9d7b, type: 3}
 --- !u!54 &2643502533287587449
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -91,6 +91,7 @@ public class RoomsGeneration : NetworkBehaviour
 
         // Update Room ID and visual label
         roomScript.RoomID = id + 1;
+        PlayerPrefs.SetInt("CurrentRoomID", roomScript.RoomID);
         var tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null)
         {

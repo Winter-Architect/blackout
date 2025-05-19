@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Support : NetworkBehaviour
@@ -33,6 +34,9 @@ public class Support : NetworkBehaviour
     
     private CursorLockMode cursorState;
 
+    public GameObject GameOverScreenPrefab;
+    private UIDocument GameOverScreen;
+    public bool isGameOverScreenActive = false;
     public override void OnNetworkSpawn()
     {
         supportHUD = GameObject.Find("SupportHUD");
@@ -78,7 +82,7 @@ public class Support : NetworkBehaviour
         cursorState = CursorLockMode.Locked;
 
         TutorialManager.Instance.StartTutorial("player2");
-        
+
 
     }
 
@@ -109,26 +113,55 @@ public class Support : NetworkBehaviour
     }
     private void Update()
     {
-        if (!IsOwner) return;
+        // Si le NetworkManager n'est plus actif, on ne fait rien
+        if (!IsOwner || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+            return;
 
         if (player1 is null)
-        {
             return;
-        }
 
-        if (current != null)
+        if ((player1.isDead || player1.Health <= 0) && !isGameOverScreenActive)
         {
-            SwitchCurrent();
-            if (current.Value.gameObject.GetComponent<NetworkObject>().IsOwnedByServer)
-            {
-                SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
-            }
-            current.Value.Control();
+            supportHUD?.SetActive(false);
+            var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
         }
 
-        // --- MODIFICATION ICI ---
-        // On vérifie si le terminal est ouvert via le script CameraHUD
+        // Vérification de la validité de current et de son NetworkObject
+        if (current != null && current.Value != null && current.Value.gameObject != null)
+        {
+            var netObj = current.Value.gameObject.GetComponent<NetworkObject>();
+            if (netObj != null && netObj.gameObject != null)
+            {
+                SwitchCurrent();
+                if (netObj.IsOwnedByServer)
+                {
+                    SwitchCurrentOwnerOfObjectServerRpc(netObj);
+                }
+                current.Value.Control();
+            }
+            else
+            {
+                current = null;
+            }
+        }
+        else
+        {
+            if (current != null)
+            {
+                current = null;
+            }
+        }
+
+        // Gestion du curseur
         if (supportHUDscript != null && supportHUDscript.isTermOpen)
+        {
+            cursorState = CursorLockMode.None;
+        }
+        else if (player1.isDead || player1.Health <= 0)
         {
             cursorState = CursorLockMode.None;
         }
@@ -138,7 +171,6 @@ public class Support : NetworkBehaviour
         }
         UnityEngine.Cursor.lockState = cursorState;
         UnityEngine.Cursor.visible = cursorState == CursorLockMode.None;
-        // --- FIN MODIFICATION ---
     }
 
     private void SwitchCurrent()
@@ -189,5 +221,21 @@ public class Support : NetworkBehaviour
                 networkObject.RemoveOwnership();
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        // Désactive ce script pour éviter toute exécution après destruction des objets
+        enabled = false;
     }
 }
