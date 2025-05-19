@@ -231,10 +231,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if ((Health <= 0 || isDead) && !isGameOverScreenActive)
         {
             isDead = true;
-            Instantiate(GameOverScreenPrefab);
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
-            GameOverScreen = GameOverScreenPrefab.GetComponent<UIDocument>();
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
         }
 
