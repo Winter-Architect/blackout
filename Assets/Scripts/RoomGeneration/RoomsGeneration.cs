@@ -27,6 +27,7 @@ public class RoomsGeneration : NetworkBehaviour
      private float totalWeight = 0;
      
     private System.Random random = new System.Random(0);
+     public NavMeshSurface navMeshSurface;
 
      public override void OnNetworkSpawn() {
         if (!IsServer)
@@ -74,6 +75,7 @@ public class RoomsGeneration : NetworkBehaviour
         }
 
         
+        BakeNavMesh();
     }
 
 
@@ -84,7 +86,7 @@ public class RoomsGeneration : NetworkBehaviour
             GenerateLastRoom(previousRoom);
             return; 
         }
-        if (GeneratedRooms.Count > 3) DeleteRoom();
+        if (GeneratedRooms.Count > 2) DeleteRoom();
         
 
         NetworkObject roomNetworkObject = GetRandomRoom(previousRoom.gameObject);
@@ -94,7 +96,6 @@ public class RoomsGeneration : NetworkBehaviour
 
         // Update Room ID and visual label
         roomScript.RoomID = id + 1;
-        PlayerPrefs.SetInt("CurrentRoomID", roomScript.RoomID);
         var tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null)
         {
@@ -113,7 +114,7 @@ public class RoomsGeneration : NetworkBehaviour
         Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
 
         // Fermer la porte de la salle précédente (si elle existe)
-        if (GeneratedRooms.Count > 3)
+        if (GeneratedRooms.Count > 2)
         {
             // Récupère la salle précédente (avant-dernière dans la queue)
             NetworkObject[] roomsArray = GeneratedRooms.ToArray();
@@ -284,6 +285,13 @@ public class RoomsGeneration : NetworkBehaviour
         return roomInstance;
     }
     
+    void BakeNavMesh()
+    {
+        if (navMeshSurface is not null)
+        {
+            navMeshSurface.BuildNavMesh();
+        }
+    }
 
  private void GenerateLastRoom(Room previousRoom) {
     if (!IsServer) return;
@@ -342,6 +350,8 @@ public class RoomsGeneration : NetworkBehaviour
     
     Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la dernière salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
     
+    // Mettre à jour le NavMesh
+    BakeNavMesh();
 }
     void DeleteRoom() {
         if (GeneratedRooms.Count <= 1) { // On garde toujours la salle de départ
