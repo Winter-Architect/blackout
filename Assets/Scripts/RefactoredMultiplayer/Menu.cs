@@ -17,6 +17,7 @@ public class Menu : MonoBehaviour
 
     [SerializeField] private AudioMixer masterMixer;
     [SerializeField] private UIDocument LobbyUI;
+    [SerializeField] private UIDocument DocumentUi;
     public UIDocument menuUI;
     public VisualElement ui;
     public VisualElement Buttons;
@@ -46,6 +47,7 @@ public class Menu : MonoBehaviour
     private Dictionary<string, Button> qualityButtons;
     private const string SELECTED_CLASS = "qualityButtonsSelected";
     private const string DEFAULT_CLASS = "qualityButtons";
+    public Button SeeDocumentsButton;
 
     public void Awake()
     {
@@ -72,6 +74,10 @@ public class Menu : MonoBehaviour
         playButton.clicked += OnPlaybutton;
         exitButton.clicked += OnExitClicked;
         settingsButton.clicked += OnSettingsClicked;
+        
+        
+        SeeDocumentsButton = ui.Q<Button>("SeeDocuments");
+        SeeDocumentsButton.clicked += OnSeeDocClicked;
         
         
         settingsPanel = ui.Q<VisualElement>("SettingsPanel");
@@ -184,6 +190,11 @@ public class Menu : MonoBehaviour
             }
         });
         
+    }
+
+    void OnSeeDocClicked() {
+        DocumentUi.sortingOrder = 99;
+        menuUI.sortingOrder = 2;
     }
 
     private void SetQuality(string selectedQuality, int qualityLevel)

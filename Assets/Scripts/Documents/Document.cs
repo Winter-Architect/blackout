@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class Document : MonoBehaviour
 {
@@ -20,13 +21,14 @@ public class Document : MonoBehaviour
     private List<int> collectedDocumentIds = new List<int>();
 
     public static Document Instance { get; private set; }
+    private Scene currentScene;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
             LoadCollectedDocuments();
         }
         else
@@ -35,16 +37,19 @@ public class Document : MonoBehaviour
         }
 
         VisualElement root = UIDocument.rootVisualElement;
-        
+
         ui = root.Q<VisualElement>("Container");
-        scrollView = ui.Q<ScrollView>("scrollDocs"); 
+        scrollView = ui.Q<ScrollView>("scrollDocs");
         ButtonTemplate = scrollView.Q<Button>("Template");
         ImageContainer = ui.Q<VisualElement>("Visu").Q<VisualElement>("Image");
         ImageName = ui.Q<VisualElement>("Visu").Q<Label>("Name");
         MenuButton = ui.Q<Button>("MenuButton");
+
+        currentScene = SceneManager.GetActiveScene();
     }
 
     void ExitView() {
+        if (currentScene.name != "StartMenu") SceneManager.LoadScene("StartMenu");
         UIDocument.sortingOrder = 0;
     }
 
@@ -64,6 +69,16 @@ public class Document : MonoBehaviour
             }
         }
     }
+
+    public void OpenDocumentUI()
+    {
+        Debug.Log("OpenDocumentUI");
+        UIDocument.enabled = true;
+        UIDocument.sortingOrder = 99;
+            Debug.Log("sortingOrder après set: " + UIDocument.sortingOrder);
+
+    }
+
     
     private void SaveCollectedDocuments()
     {
@@ -109,9 +124,8 @@ public class Document : MonoBehaviour
                 CreateButton(doc.Name, doc.Id, doc.Image);
             }
         }
-        Debug.Log("cc");
         MenuButton.clicked += ExitView;
-        UIDocument.sortingOrder = 0;
+        //UIDocument.sortingOrder = 0;
     }
 
 

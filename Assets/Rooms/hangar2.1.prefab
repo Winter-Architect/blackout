@@ -16845,11 +16845,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicClip: {fileID: 0}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
-  Weight: 0.5
+  Weight: 5
   Audio: {fileID: 0}
   lights: []
 --- !u!65 &7383927623065055189

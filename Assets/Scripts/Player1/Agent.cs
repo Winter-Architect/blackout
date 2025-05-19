@@ -88,6 +88,10 @@ public class Agent : NetworkBehaviour, IInteractor
     public int Health = 100;
     public int Energy = 25;
 
+    public GameObject GameOverScreenPrefab;
+    private UIDocument GameOverScreen;
+    public bool isGameOverScreenActive = false;
+
     public override void OnNetworkSpawn()
     {
 
@@ -106,9 +110,9 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.LogError("PlayerHUD not found in children of playerCamera.");
             return;
-        }
+        } else Debug.Log("PlayerHUD found in children of playerCamera.");
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
-
+        PlayerHUDui.style.display = DisplayStyle.Flex;
         PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
@@ -224,9 +228,14 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
-        if (Health == 0)
+        if ((Health <= 0 || isDead) && !isGameOverScreenActive)
         {
             isDead = true;
+            Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = GameOverScreenPrefab.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
         }
 
         
