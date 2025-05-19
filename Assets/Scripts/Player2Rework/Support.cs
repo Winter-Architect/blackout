@@ -134,7 +134,7 @@ public class Support : NetworkBehaviour
         if (current != null && current.Value != null && current.Value.gameObject != null)
         {
             var netObj = current.Value.gameObject.GetComponent<NetworkObject>();
-            if (netObj != null && netObj != null && netObj.gameObject != null)
+            if (netObj != null && netObj.gameObject != null)
             {
                 SwitchCurrent();
                 if (netObj.IsOwnedByServer)
