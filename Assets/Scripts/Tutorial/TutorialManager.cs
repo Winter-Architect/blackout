@@ -208,11 +208,23 @@ public class TutorialManager : MonoBehaviour
                     }
                     case 6:
                     {
-                        dialogBox.DisplayNextText();
-                        messageCounter++;
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
                         break;
                     }
                     case 7:
+                    {
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 8:
                     {
                         if (finisedOpeningdoorBox)
                         {
@@ -222,7 +234,7 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 8:
+                    case 9:
                     {
                         if (finisedOpeningdoor)
                         {
@@ -233,7 +245,7 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 9: // Attente 5 secondes puis suppression
+                    case 10: // Attente 5 secondes puis suppression
                     {
                         PlayerPrefs.SetInt("TutorialDone_player1", 1);
                         if (waitingToDestroy)
@@ -373,9 +385,10 @@ public class TutorialManager : MonoBehaviour
             dialogBox.EnqueueMessage("Welcome to Blackout", "> click to continue"); // Pas d'action
             dialogBox.EnqueueMessage("Use Z, Q, S, D or Arrow Keys to move around", "> move");
             dialogBox.EnqueueMessage("Press SpaceBar to jump", "> jump");
-            dialogBox.EnqueueMessage("Hold LeftShift to sprint", "> sprint"); // <-- Ajouté ici
+            dialogBox.EnqueueMessage("Hold LeftShift to sprint", "> sprint");
             dialogBox.EnqueueMessage("Try to pick up an object by going near it and pressing \"E\"", "> pick up an object");
             dialogBox.EnqueueMessage("Try to equip it with \"1\" and activate it with a left click!", "> Equip an object\n> Activate it");
+            dialogBox.EnqueueMessage("In the future, you will get other items! You can select the one you want by pressing <tab>!", "> Click to continue");
             dialogBox.EnqueueMessage("Now let's try to open that door!", "> click to continue");
             dialogBox.EnqueueMessage("See that gray box on the left of the door? Open it by pressing \"E\"!", "> Open the box!");
             dialogBox.EnqueueMessage("Now activate the top left switch! To navigate through the different switches use \"O\" or \"P\"! When you are selecting the correct switch, press \"E\"", "> Activate the top left switch!");

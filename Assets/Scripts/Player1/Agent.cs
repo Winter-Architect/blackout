@@ -114,8 +114,6 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             Debug.LogError("PlayerHUD not found in children of playerCamera.");
             return;
-        }
-        else Debug.Log("PlayerHUD found in children of playerCamera.");
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
         PlayerHUDui.style.display = DisplayStyle.Flex;
         PlayerHUDui.pickingMode = PickingMode.Ignore;
@@ -241,7 +239,6 @@ public class Agent : NetworkBehaviour, IInteractor
             cursorState = CursorLockMode.None;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
-        }
 
          if (isGameWon.Value && !isGameOverScreenActive)
         {
@@ -252,6 +249,7 @@ public class Agent : NetworkBehaviour, IInteractor
             GameOverScreen.rootVisualElement.Q<Label>("Score").text += nbOfDocumentCollected + " Document(s) collected";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
             GameOverScreen.sortingOrder = 99999;
+
         }
 
         

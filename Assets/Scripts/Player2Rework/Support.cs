@@ -120,6 +120,7 @@ public class Support : NetworkBehaviour
         if (player1 is null)
             return;
 
+
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
             supportHUD?.SetActive(false);
@@ -129,6 +130,7 @@ public class Support : NetworkBehaviour
             GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
         }
+
 
         if (player1.isGameWon.Value && !isGameOverScreenActive)
         {
@@ -174,6 +176,7 @@ public class Support : NetworkBehaviour
             cursorState = CursorLockMode.None;
         }
         else if (player1.isDead.Value || player1.Health <= 0 || player1.isGameWon.Value)
+
         {
             cursorState = CursorLockMode.None;
         }
