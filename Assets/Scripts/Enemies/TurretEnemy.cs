@@ -20,7 +20,7 @@ public class TurretEnemy : Enemy
     private Laser laser;
 
 
-    [SerializeField] private bool isRaycastLaser;
+    public bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
     
 

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -90,7 +91,7 @@ public class ZombZomb : Enemy
         {
             agent.updateRotation = true;
         }
-        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+        if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f || (!agent.pathPending && agent.remainingDistance < 0.3f))
         {
             _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
             _currentNode = _nodes[_currentNodeIndex];
@@ -216,5 +217,16 @@ public class ZombZomb : Enemy
         lastPlayerPositionVisited = true;
         timeElapsed = 0f;
         isInvestigating = false;
+    }
+    
+    public void InitializePath(List<Transform> nodes)
+    {
+        _nodes = new Transform[nodes.Count];
+        int i = 0;
+        foreach (var node in nodes)
+        {
+            _nodes[i] = node;
+            i++;
+        }
     }
 }
