@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.Services.Lobbies.Models;
 public class GameOverScreen : MonoBehaviour
 {
     public UIDocument uiDocument;
@@ -27,7 +28,8 @@ public class GameOverScreen : MonoBehaviour
         LobbyButton.clicked += OpenLobby;
         DocumentsButton.clicked += OpenDocuments;
 
-        scoreText.text = PlayerPrefs.GetInt("CurrentRoomID") + " Room(s) cleared";
+        scoreText.text = PlayerPrefs.GetInt("CurrentRoomID") - 1 + " Room(s) cleared\n";
+
     }
 
     private void OpenLobby()
