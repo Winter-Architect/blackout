@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
+
 
 namespace Blackout.Inventory
 {
@@ -15,6 +15,7 @@ namespace Blackout.Inventory
         public Image ItemSlot;
         private bool selected = false;
         public Sprite icon;
+        public Agent agent;
         [SerializeField] private int slotId;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,20 +37,22 @@ namespace Blackout.Inventory
 
         public void Selected() {
             selected = true;
+            agent.CallUnequipItemServerRpc();
             InventoryController.activeInventorySlotId = slotId;
+            Debug.Log("Selected" + slotId);
             InventoryController.selectedItemId = Id;
         }
 
         public void Deselected() {
             selected = false; 
             if (InventoryController.selectedItemId == Id)
-           InventoryController.selectedItemId = -1;
+                InventoryController.selectedItemId = -1;
         }
 
         public void HoverEnter() {
             anim.SetBool("Hover", true);
             itemText.text = itemName;
-        }
+        } 
 
         public void HoverExit() {
             anim.SetBool("Hover", false);

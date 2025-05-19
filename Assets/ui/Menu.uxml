@@ -1,29 +1,32 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/ui/Menu.uss?fileID=7433441132597879392&amp;guid=7968622725530fc4387929fc1f102aaa&amp;type=3#Menu" />
-    <engine:VisualElement name="Container" tabindex="1" style="flex-grow: 1; background-color: rgba(10, 9, 8, 0.96); justify-content: center; align-items: center; align-self: auto; align-content: auto; margin-top: 0; flex-direction: column; -unity-text-align: upper-center;">
+    <engine:VisualElement name="Container" tabindex="1" style="flex-grow: 1; background-color: rgb(10, 9, 8); justify-content: center; align-items: center; align-self: auto; align-content: auto; margin-top: 0; flex-direction: column; -unity-text-align: upper-center;">
+        <engine:Button name="SeeDocuments" style="position: absolute; height: 93px; width: 106px; top: auto; left: auto; background-image: url(&quot;project://database/Assets/ui/Sprites/DocumentLogo.png?fileID=2800000&amp;guid=ad6e2f45ce3e1c4428a9efec75be8da3&amp;type=3#DocumentLogo&quot;); background-color: rgb(255, 255, 255); bottom: 50px; right: 50px;" />
         <engine:Label text="BLACKOUT" name="Title" style="-unity-font-style: bold; color: rgb(198, 172, 143); font-size: 100px; margin-right: 20px; margin-left: 20px; margin-top: 5%;" />
-        <engine:VisualElement name="Buttons" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: none; visibility: visible;">
-            <engine:Button text="Button" name="Play" class="button" />
-            <engine:Button text="Button" name="Settings" class="button" />
-            <engine:Button text="Button" name="Exit" class="button" />
-        </engine:VisualElement>
-        <engine:VisualElement name="PlayPanel" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: none; visibility: visible;">
-            <engine:Button text="Button" name="Host" class="button" />
-            <engine:TextField label="Join with a code" placeholder-text="XXXXXX" name="Code" max-length="6" hide-placeholder-on-focus="false" enabled="true" class="code" style="flex-direction: column; width: 100%; height: 15%; -unity-font-style: bold; font-size: 30px; -unity-text-align: upper-center; color: rgb(198, 172, 143); background-color: rgb(34, 51, 59); border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; min-height: 15%; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; align-items: stretch; justify-content: center; align-self: center; align-content: flex-start;" />
-            <engine:Button text="Button" name="ExitPlayPanel" class="button" style="background-color: rgb(94, 80, 63);" />
-        </engine:VisualElement>
-        <engine:VisualElement name="SettingsPanel" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: flex; visibility: visible;">
-            <engine:SliderInt label="Volume" value="100" high-value="100" direction="Horizontal" show-input-field="false" fill="false" name="VolumeSlider" style="width: 100%; height: 10%; align-items: stretch; flex-direction: column; justify-content: center; align-self: center; -unity-font-style: bold; font-size: 50px; color: rgb(198, 172, 143);" />
-            <engine:VisualElement name="QualitySettings" style="flex-grow: 1; flex-direction: column; height: 25%; max-height: 15%; align-items: center; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                <engine:Label text="Quality" class="text" style="padding-bottom: 25px;" />
-                <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; height: auto; max-height: none; width: 125%; justify-content: space-evenly; align-items: center; align-self: center;">
-                    <engine:Button text="Low" name="LowQuality" class="qualityButtons" />
-                    <engine:Button text="Medium" name="MediumQuality" class="qualityButtons qualityButtonsSelected" />
-                    <engine:Button text="High" name="HighQuality" class="qualityButtons" />
-                </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 1;">
+            <engine:VisualElement name="Buttons" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: none; visibility: visible;">
+                <engine:Button text="Button" name="Play" class="button" />
+                <engine:Button text="Button" name="Settings" class="button" />
+                <engine:Button text="Button" name="Exit" class="button" />
             </engine:VisualElement>
-            <engine:Button text="Button" class="button" />
-            <engine:Button text="Exit" name="ExitSettingsPanel" class="button" style="background-color: rgb(94, 80, 63);" />
+            <engine:VisualElement name="PlayPanel" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: none; visibility: visible;">
+                <engine:Button text="Button" name="Host" class="button" />
+                <engine:TextField label="Join with a code" placeholder-text="XXXXXX" name="Code" max-length="6" hide-placeholder-on-focus="false" enabled="true" class="code" style="flex-direction: column; width: 100%; height: 15%; -unity-font-style: bold; font-size: 30px; -unity-text-align: upper-center; color: rgb(198, 172, 143); background-color: rgb(34, 51, 59); border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; min-height: 15%; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; align-items: stretch; justify-content: center; align-self: center; align-content: flex-start;" />
+                <engine:Button text="Button" name="ExitPlayPanel" class="button" style="background-color: rgb(94, 80, 63);" />
+            </engine:VisualElement>
+            <engine:VisualElement name="SettingsPanel" style="flex-grow: 1; -unity-text-align: upper-center; align-self: auto; align-items: center; justify-content: center; width: 447px; display: flex; visibility: visible;">
+                <engine:SliderInt label="Volume" value="100" high-value="100" direction="Horizontal" show-input-field="false" fill="false" name="VolumeSlider" style="width: 100%; height: 10%; align-items: stretch; flex-direction: column; justify-content: center; align-self: center; -unity-font-style: bold; font-size: 50px; color: rgb(198, 172, 143);" />
+                <engine:VisualElement name="QualitySettings" style="flex-grow: 1; flex-direction: column; height: 25%; max-height: 15%; align-items: center; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                    <engine:Label text="Quality" class="text" style="padding-bottom: 25px;" />
+                    <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; height: auto; max-height: none; width: 125%; justify-content: space-evenly; align-items: center; align-self: center;">
+                        <engine:Button text="Low" name="LowQuality" class="qualityButtons" />
+                        <engine:Button text="Medium" name="MediumQuality" class="qualityButtons qualityButtonsSelected" />
+                        <engine:Button text="High" name="HighQuality" class="qualityButtons" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:Button text="Button" class="button" />
+                <engine:Button text="Exit" name="ExitSettingsPanel" class="button" style="background-color: rgb(94, 80, 63);" />
+            </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

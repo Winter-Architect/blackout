@@ -6,30 +6,43 @@ public class CameraHUD : MonoBehaviour
     private UIDocument uIDocument;
     private VisualElement ui;
     private Button OpenTerminalButton;
-    private bool isTermOpen = false;
+    public bool isTermOpen = false;
 
     [SerializeField] private GameObject terminal;
+    private Terminal terminalscript;
 
     void Awake()
     {
-        uIDocument = GetComponent<UIDocument>();
+        uIDocument = terminal.gameObject.GetComponent<UIDocument>();
         ui = uIDocument.rootVisualElement;
+        terminalscript = terminal.gameObject.GetComponent<Terminal>();
     }
 
     void OnEnable()
     {
-        OpenTerminalButton = ui.Q<Button>("OpenTerminal");
+       try {
+         OpenTerminalButton = ui.Q<Button>("OpenTerminal");
         OpenTerminalButton.clicked += OpenTerminal;
+       } catch {}
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T)) OpenTerminal();
+        if (!isTermOpen) if (Input.GetKeyDown(KeyCode.T)) OpenTerminal();
+        terminalscript.isOpen = isTermOpen;
     }
 
     void OpenTerminal()
     {
-        terminal.gameObject.SetActive(!isTermOpen);
-        isTermOpen = !isTermOpen;
+        bool willBeOpen = !isTermOpen;
+        terminal.gameObject.SetActive(willBeOpen);
+        isTermOpen = willBeOpen;
+    }
+
+    // Ajoute cette méthode pour fermer explicitement le terminal depuis l'extérieur
+    public void CloseTerminal()
+    {
+        terminal.gameObject.SetActive(false);
+        isTermOpen = false;
     }
 }

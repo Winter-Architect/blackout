@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class Support : NetworkBehaviour
 {
@@ -27,9 +29,24 @@ public class Support : NetworkBehaviour
 
     private LinkedListNode<Controllable> current;
     public event Action OnControllablesChanged;
+    private GameObject supportHUD;
+    private CameraHUD supportHUDscript;
+    
+    private CursorLockMode cursorState;
 
+    public GameObject GameOverScreenPrefab;
+    private UIDocument GameOverScreen;
+    public bool isGameOverScreenActive = false;
     public override void OnNetworkSpawn()
     {
+        supportHUD = GameObject.Find("SupportHUD");
+        if (supportHUD != null)
+        {
+            UIDocument ui = supportHUD.GetComponent<UIDocument>();
+            supportHUDscript = supportHUD.gameObject.GetComponent<CameraHUD>();
+            ui.enabled = IsOwner;
+        }
+
         if (!IsOwner) return;
 
         //var foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
@@ -44,9 +61,9 @@ public class Support : NetworkBehaviour
 
         player1 = FindFirstObjectByType<Agent>();
 
-        foreach(var room in foundRooms)
+        foreach (var room in foundRooms)
         {
-            if(room.ContainsPlayer(player1))
+            if (room.ContainsPlayer(player1))
             {
                 currentRoom = room;
                 break;
@@ -55,18 +72,27 @@ public class Support : NetworkBehaviour
 
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
-        Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         if (current != null)
         {
             SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
         }
+
+        cursorState = CursorLockMode.Locked;
+
+        TutorialManager.Instance.StartTutorial("player2");
+
+
     }
 
     public void RecheckForRoom(){
         if(!IsOwner){
             return;
         }
+
+        
+        supportHUD.SetActive(IsOwner);
         foreach(var room in foundRooms)
         {
             if(room.ContainsPlayer(player1))
@@ -76,32 +102,90 @@ public class Support : NetworkBehaviour
             }
         }
 
+        if (current == null) return;
         current.Value.StopControlling();
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
+        if (current == null) return;
         Debug.Log(current.Value.gameObject.name);
         SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
 
     }
     private void Update()
     {
-        if (!IsOwner) return;
-
-        if(player1 is null){
+        // Si le NetworkManager n'est plus actif, on ne fait rien
+        if (!IsOwner || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
             return;
-        }
 
-        if (current != null)
+        if (player1 is null)
+            return;
+
+
+        if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
-            SwitchCurrent();
-            if(current.Value.gameObject.GetComponent<NetworkObject>().IsOwnedByServer){
-                SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
-            }
-            current.Value.Control();
+            supportHUD?.SetActive(false);
+            var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
         }
 
 
+        if (player1.isGameWon.Value && !isGameOverScreenActive)
+        {
+            supportHUD?.SetActive(false);
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+           // GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
+            GameOverScreen.sortingOrder = 99999;
+        }
 
+        // Vérification de la validité de current et de son NetworkObject
+        if (current != null && current.Value != null && current.Value.gameObject != null)
+        {
+            var netObj = current.Value.gameObject.GetComponent<NetworkObject>();
+            if (netObj != null && netObj.gameObject != null)
+            {
+                SwitchCurrent();
+                if (netObj.IsOwnedByServer)
+                {
+                    SwitchCurrentOwnerOfObjectServerRpc(netObj);
+                }
+                current.Value.Control();
+            }
+            else
+            {
+                current = null;
+            }
+        }
+        else
+        {
+            if (current != null)
+            {
+                current = null;
+            }
+        }
+
+        // Gestion du curseur
+        if (supportHUDscript != null && supportHUDscript.isTermOpen)
+        {
+            cursorState = CursorLockMode.None;
+        }
+        else if (player1.isDead.Value || player1.Health <= 0 || player1.isGameWon.Value)
+
+        {
+            cursorState = CursorLockMode.None;
+        }
+        else
+        {
+            cursorState = CursorLockMode.Locked;
+        }
+        UnityEngine.Cursor.lockState = cursorState;
+        UnityEngine.Cursor.visible = cursorState == CursorLockMode.None;
     }
 
     private void SwitchCurrent()
@@ -152,5 +236,21 @@ public class Support : NetworkBehaviour
                 networkObject.RemoveOwnership();
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        // Désactive ce script pour éviter toute exécution après destruction des objets
+        enabled = false;
     }
 }

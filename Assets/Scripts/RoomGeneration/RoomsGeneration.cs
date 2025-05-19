@@ -2,6 +2,9 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
+using Unity.Netcode.Components;
+using System.Collections.Generic;
 
 public class RoomsGeneration : NetworkBehaviour
 {
@@ -10,6 +13,7 @@ public class RoomsGeneration : NetworkBehaviour
     public int numberOfRooms = 20; // Nombre total de salles à générer
 
     public GameObject DoorPrefab;
+    [SerializeField] public Queue<NetworkObject> GeneratedRooms = new Queue<NetworkObject>() ;
 
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
@@ -46,8 +50,14 @@ public class RoomsGeneration : NetworkBehaviour
         for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
         {
             NetworkObject room = roomPrefabs.roomPrefabs[i];
-            Debug.Log($"[Generation de salles] Salle {i} : {room.name}");
+            Debug.Log($"[Generation de salles] Salle {i} : {room.name} ajoutée");
             Room roomScript2 = room.GetComponent<Room>();
+
+            if (roomScript2.GetComponent<RoomTrigger>() == null)
+        {
+            roomScript2.gameObject.AddComponent<RoomTrigger>();
+        }
+
             totalWeight += roomScript2.Weight;
         }
 
@@ -56,96 +66,76 @@ public class RoomsGeneration : NetworkBehaviour
             Debug.LogError("[Generation de salles] La salle de départ n'a pas été initialisée (ou nom != StartingRoom) !");
             return;
         }
-        for (int i = 0; i < numberOfRooms; i++)
-        {
-           currRoom = GenerateRoom(currRoom, i);
-        }
 
-        if (endRoom != null)
-        {
-            GameObject roomObject = Instantiate(endRoom.gameObject);
-            NetworkObject roomNetworkObject = roomObject.GetComponent<NetworkObject>();
-            if (roomNetworkObject != null && !roomNetworkObject.IsSpawned)
-            {
-                roomNetworkObject.Spawn();
-            }
-            
-            Transform entryPoint = roomObject.transform.Find("Entry");
-            Transform lastRoomExit = currRoom.transform.Find("Exit");
+       // GeneratedRooms.Enqueue(currRoom.GetComponent<NetworkObject>());
 
-            if (entryPoint == null || lastRoomExit == null)
-            {
-                Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
-                return;
-            }
-
-            float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
-            roomObject.transform.Rotate(Vector3.up, angleDifference);
-
-            Vector3 offset = entryPoint.position - roomObject.transform.position;
-            roomObject.transform.position = lastRoomExit.position - offset;
-
-            entryPoint.GetComponent<BoxCollider>().enabled = false;
-        } else Debug.LogWarning("[Generation de salles] La salle de fin n'a pas été initialisée !");
         
         BakeNavMesh();
     }
 
 
-     Room GenerateRoom(Room PreviousRoom, int id)
+    public void GenerateRoom(Room previousRoom, int id)
     {
-        NetworkObject roomNetworkObject = GetRandomRoom(PreviousRoom.gameObject);
+        if (!IsServer) return;
+        if (numberOfRooms <= 0) {
+            GenerateLastRoom(previousRoom);
+            return; 
+        }
+        if (GeneratedRooms.Count > 3) DeleteRoom();
+        
+
+        NetworkObject roomNetworkObject = GetRandomRoom(previousRoom.gameObject);
+        if (roomNetworkObject == null) return;
+
         Room roomScript = roomNetworkObject.GetComponent<Room>();
 
-        Transform entryPoint = roomScript.transform.Find("Entry");
-        Transform exitPoint = roomScript.transform.Find("Exit");
-
-        if (entryPoint == null || exitPoint == null)
-        {
-            Debug.LogError($"[Generation de salles] La salle {roomScript.name} ne contient pas d'Entry ou d'Exit !");
-            return null;
-        }
-
-        Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
-
-       
-        if (lastRoomExit != null)
-        {
-            float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
-            
-            roomScript.transform.Rotate(Vector3.up, angleDifference);
-
-            entryPoint = roomScript.transform.Find("Entry"); 
-
-            Vector3 offset = entryPoint.position - roomScript.transform.position;
-            roomScript.transform.position = lastRoomExit.position - offset;
-        }
-
-        entryPoint.GetComponent<BoxCollider>().enabled = false;
-        exitPoint.GetComponent<BoxCollider>().enabled = false;
-
-        roomScript.RoomID = id+1;
-
-        TextMeshProUGUI tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
+        // Update Room ID and visual label
+        roomScript.RoomID = id + 1;
+        PlayerPrefs.SetInt("CurrentRoomID", roomScript.RoomID);
+        var tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null)
         {
-            tmp.text = roomScript.RoomID < 9 ? "0" + (roomScript.RoomID + 1).ToString() : (roomScript.RoomID + 1).ToString();
-
-        } else
-        {
-            Debug.LogWarning("TextMeshProUGUI non trouvé dans les enfants de 'room'");
+            tmp.text = roomScript.RoomID < 9 ? "0" + (roomScript.RoomID + 1).ToString()
+                                            : (roomScript.RoomID + 1).ToString();
         }
-        
-        BakeNavMesh();
 
-        return roomScript;
+        // Disable colliders on entry/exit
+        var entry = roomScript.transform.Find("Entry");
+        var exit = roomScript.transform.Find("Exit");
+        if (entry) entry.GetComponent<BoxCollider>().enabled = false;
+        if (exit) exit.GetComponent<BoxCollider>().enabled = false;
+
+        numberOfRooms--;
+
+        Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
+
+        // Fermer la porte de la salle précédente (si elle existe)
+        if (GeneratedRooms.Count > 3)
+        {
+            // Récupère la salle précédente (avant-dernière dans la queue)
+            NetworkObject[] roomsArray = GeneratedRooms.ToArray();
+            NetworkObject previousRoomObject = roomsArray[0];
+            Debug.Log(previousRoomObject.name);
+            if (previousRoomObject != null)
+            {
+                Door door = previousRoomObject.GetComponentInChildren<Door>();
+                if (door != null)
+                {
+                    door.CloseDoor();
+                }
+            }
+        }
+
+        BakeNavMesh();
     }
 
-    NetworkObject GetRandomRoom(GameObject PreviousRoom) {
 
+    NetworkObject GetRandomRoom(GameObject PreviousRoom)
+    {
         Room roomScript = null;
-        NetworkObject selectedRoomPrefab = null;        
+        NetworkObject selectedRoomPrefab = null;
 
+        // Pick random weighted prefab
         float randomWeight = (float)(random.NextDouble() * totalWeight);
         float currentWeight = 0;
         for (int i = 0; i < roomPrefabs.roomPrefabs.Length; i++)
@@ -154,55 +144,69 @@ public class RoomsGeneration : NetworkBehaviour
             Room tempScript = roomPrefab.GetComponent<Room>();
 
             currentWeight += tempScript.Weight;
-             if (currentWeight >= randomWeight) {
+            if (currentWeight >= randomWeight)
+            {
                 selectedRoomPrefab = roomPrefab;
                 roomScript = tempScript;
                 break;
             }
         }
 
-
-        if (selectedRoomPrefab == null) {
-            Debug.LogError("[Generation de salles] Aucune salle n'a été trouvée !");
+        // Retry if selection failed or not suitable
+        if (selectedRoomPrefab == null || roomScript == null)
+        {
+            Debug.LogWarning("[Generation de salles] Retry: Aucun prefab valide.");
             return GetRandomRoom(PreviousRoom);
         }
 
-         if (roomScript == null)
-        {
-            Debug.LogError($"[Generation de salles] La salle {selectedRoomPrefab.name} ne contient pas de script Room !");
-            return null;
-        }
-        
-        
-        string direction = roomScript.isTurningLeft ? "left" : roomScript.isTurningRight ? "right" : null;
+        string direction = roomScript.isTurningLeft ? "left" :
+                        roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
-           
-        if (
-           direction != null && direction == LastRoomDirection ||
-           PreviousRoom.name == selectedRoomPrefab.name ||
-           isStairs && lastRoomIsStairs
-        ) 
-                return GetRandomRoom(PreviousRoom);
 
-        if (selectedRoomPrefab == null)
+        if ((direction != null && direction == LastRoomDirection) ||
+            PreviousRoom.name == selectedRoomPrefab.name ||
+            (isStairs && lastRoomIsStairs))
         {
-            Debug.LogError("[Generation de salles] Le prefab sélectionné est null !");
+            return GetRandomRoom(PreviousRoom);
+        }
+
+        // ✅ Instantiate but don't spawn yet
+        NetworkObject roomInstance = Instantiate(selectedRoomPrefab);
+
+        // ✅ Get Entry/Exit and position/rotate before Spawn()
+        Transform entryPoint = roomInstance.transform.Find("Entry");
+        Transform lastRoomExit = PreviousRoom.transform.Find("Exit");
+
+        if (entryPoint == null || lastRoomExit == null)
+        {
+            Debug.LogError("[Generation de salles] Missing Entry or Exit transform.");
+            Destroy(roomInstance.gameObject);
             return null;
         }
 
-        NetworkObject room = Instantiate(selectedRoomPrefab);
-        var instanceNetworkObject = room.GetComponent<NetworkObject>();
-        if (instanceNetworkObject != null && !instanceNetworkObject.IsSpawned)
-        {
-            instanceNetworkObject.Spawn();
-        } else Debug.LogWarning($"[Generation de salles] NetworkObject non trouvé ou déjà spawn dans la salle générée ! Nom : {room.name}");
+        // Apply rotation to match Exit-Entry alignment
+        float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
+        roomInstance.transform.Rotate(Vector3.up, angleDifference);
+
+        // Update entryPoint reference (rotation changed)
+        entryPoint = roomInstance.transform.Find("Entry");
+
+        // Align position
+        Vector3 offset = entryPoint.position - roomInstance.transform.position;
+        roomInstance.transform.position = lastRoomExit.position - offset;
+
+        // ✅ Only now — spawn the networked object
+        roomInstance.Spawn();
 
         
-        if (direction != null) {
+        GeneratedRooms.Enqueue(roomInstance);
+
+        // Sync state
+        if (direction != null)
             LastRoomDirection = direction;
-        }
         lastRoomIsStairs = isStairs;
-         return room;
+
+        return roomInstance;
     }
     
     void BakeNavMesh()
@@ -211,5 +215,84 @@ public class RoomsGeneration : NetworkBehaviour
         {
             navMeshSurface.BuildNavMesh();
         }
+    }
+
+ private void GenerateLastRoom(Room previousRoom) {
+    if (!IsServer) return;
+    if (GeneratedRooms.Count > 2) DeleteRoom();
+    
+    if (endRoom == null) {
+        Debug.LogError("[Generation de salles] La salle de fin n'a pas été initialisée !");
+        return;
+    }
+    
+    // Instantier mais ne pas spawner encore
+    NetworkObject roomInstance = Instantiate(endRoom.GetComponent<NetworkObject>());
+    Room roomScript = roomInstance.GetComponent<Room>();
+    
+    // Mettre à jour l'ID de la salle et le label visuel
+    roomScript.RoomID = previousRoom.RoomID + 1;
+    var tmp = roomScript.GetComponentInChildren<TextMeshProUGUI>();
+    if (tmp != null)
+    {
+        tmp.text = roomScript.RoomID < 9 ? "0" + (roomScript.RoomID + 1).ToString()
+                                        : (roomScript.RoomID + 1).ToString();
+    }
+    
+    // Récupérer les points d'entrée/sortie et positionner/tourner avant Spawn()
+    Transform entryPoint = roomInstance.transform.Find("Entry");
+    Transform lastRoomExit = previousRoom.transform.Find("Exit");
+
+    if (entryPoint == null || lastRoomExit == null)
+    {
+        Debug.LogError("[Generation de salles] La salle de fin ne contient pas d'Entry ou la salle précédente ne contient pas d'Exit !");
+        Destroy(roomInstance.gameObject);
+        return;
+    }
+
+    // Appliquer la rotation pour aligner l'entrée avec la sortie précédente
+    float angleDifference = lastRoomExit.eulerAngles.y - entryPoint.eulerAngles.y;
+    roomInstance.transform.Rotate(Vector3.up, angleDifference);
+
+    // Mettre à jour la référence entryPoint (la rotation a changé)
+    entryPoint = roomInstance.transform.Find("Entry");
+    
+    // Aligner la position
+    Vector3 offset = entryPoint.position - roomInstance.transform.position;
+    roomInstance.transform.position = lastRoomExit.position - offset;
+    
+    // Désactiver les colliders sur l'entrée/sortie
+    if (entryPoint) entryPoint.GetComponent<BoxCollider>().enabled = false;
+    var exitPoint = roomInstance.transform.Find("Exit");
+    if (exitPoint) exitPoint.GetComponent<BoxCollider>().enabled = false;
+    
+    // Spawn APRÈS positionnement
+    roomInstance.Spawn();
+    
+    // Ajouter à la file des salles générées
+    GeneratedRooms.Enqueue(roomInstance);
+    
+    Debug.Log($"[{(IsServer ? "SERVER" : "CLIENT")}] Génération de la dernière salle {roomScript.RoomID}, Position: {roomScript.transform.position}");
+    
+    // Mettre à jour le NavMesh
+    BakeNavMesh();
+}
+    void DeleteRoom() {
+        if (GeneratedRooms.Count <= 1) { // On garde toujours la salle de départ
+            Debug.LogWarning("Aucune salle à retirer (hors salle de départ) !");
+            return;
+        }
+        // On saute la salle de départ
+        var room = GeneratedRooms.Dequeue();
+        if (room == null) {
+            Debug.LogWarning("Room null !");
+            return;
+        }
+        if (!room.IsSpawned) {
+            Debug.LogWarning($"Room {room.gameObject.name} n'est pas spawn, impossible de despawn.");
+            return;
+        }
+        room.Despawn(true);
+        Debug.LogWarning($"Removed {room.gameObject.name}");
     }
 }

@@ -11,6 +11,7 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private AudioMixer masterMixer;
     [SerializeField] private UIDocument LobbyUI;
+    [SerializeField] private UIDocument DocumentUi;
     
     public UIDocument UIDocument;
     
@@ -32,6 +33,7 @@ public class MenuController : MonoBehaviour
 
     public VisualElement settingsPanel;
     public Button exitSettingsButton;
+    public Button SeeDocumentsButton;
 
     private string[] codesTests = new[] { "1234", "1111" }; // liste temporaire à remplacer avec une liste des codes actifs pour rejoindre les parties en cours
     
@@ -64,7 +66,9 @@ public class MenuController : MonoBehaviour
         playButton.clicked += OnPlaybutton;
         exitButton.clicked += OnExitClicked;
         settingsButton.clicked += OnSettingsClicked;
-        
+
+        SeeDocumentsButton = ui.Q<Button>("SeeDocuments");
+        SeeDocumentsButton.clicked += OnSeeDocClicked;
         
         /* Settings */
         settingsPanel = ui.Q<VisualElement>("SettingsPanel");
@@ -143,34 +147,14 @@ public class MenuController : MonoBehaviour
                     StartCoroutine(RevertTextAfterDelay(3f, ""));
                     Debug.Log(e.Data);
                 }
-                // if (codesTests.Contains(text))
-                // {
-                //     codeField.maxLength = 20;
-                //     codeField.isReadOnly = true;
-                //     codeField.value = "loading ...";
-                //     codeField.style.color = new StyleColor(new Color32(144, 190, 109, 255));
-                    
-                //     // var transport = NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>();
-                //     // transport.ConnectionData.Address = text;
-                //     // transport.ConnectionData.Port = 7777;
-
-                //     // NetworkManager.Singleton.StartClient();
-                    
-                //     JoinGame(text);
-                //     Debug.Log("code valide");
-                // }
-                // else
-                // {
-                //     codeField.maxLength = 50;
-                //     codeField.isReadOnly = true;
-                //     codeField.value = "this code does not exist";
-                //     codeField.style.color = new StyleColor(new Color32(230, 57, 70, 255));
-                //     Debug.Log("code invalide");
-                //     StartCoroutine(RevertTextAfterDelay(3f, ""));
-                // }
             }
         });
         
+    }
+
+    void OnSeeDocClicked() {
+        DocumentUi.sortingOrder = 99;
+        UIDocument.sortingOrder = 2;
     }
 
     private void SetQuality(string selectedQuality, int qualityLevel)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Blackout.Inventory;
 using Unity.Netcode;
+using Unity.Networking.Transport.Error;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,13 +14,14 @@ public class Agent : NetworkBehaviour, IInteractor
     public bool isInLocker;
 
     
-    public bool isDead;
+    public NetworkVariable<bool> isDead = new NetworkVariable<bool>(false);
     
     public float spawnTimer = 20f;
     public bool shouldSpawnEntity = false;
     
     public bool canGrapple;
-
+    public int batteryCount = 5;
+    
     private SphereCollider myCheckTrigger;
     [SerializeField] private float interactionRange;
 
@@ -60,7 +62,7 @@ public class Agent : NetworkBehaviour, IInteractor
     [SerializeField] private ItemLibrary ItemLibrary;
 
     private static Item[] inventory = new Item[6];
-    private bool isItemEquipped = false;
+    public bool isItemEquipped = false;
     private int activeInventorySlot = 0;
 
     private GameObject currentlyEquippedItem;
@@ -74,6 +76,7 @@ public class Agent : NetworkBehaviour, IInteractor
     public GameObject inventoryCanvas;
     private InventoryController invController;
 
+
     
 
     // For Health and energy bars
@@ -85,19 +88,26 @@ public class Agent : NetworkBehaviour, IInteractor
     public VisualElement EnergyBar;
     public int Health = 100;
     public int Energy = 25;
-    
+
+    public GameObject GameOverScreenPrefab;
+    private UIDocument GameOverScreen;
+    public bool isGameOverScreenActive = false;
+
+    public NetworkVariable<bool> isGameWon = new NetworkVariable<bool>(false);
+    public static int nbOfDocumentCollected = 0;
+
     public override void OnNetworkSpawn()
     {
-       
+
         myCheckTrigger = gameObject.AddComponent<SphereCollider>();
         myCheckTrigger.isTrigger = true;
         myCheckTrigger.radius = interactionRange;
 
-        if(!IsOwner)
+        if (!IsOwner)
         {
             playerCamera.gameObject.SetActive(false);
             return;
-        }  
+        }
 
         PlayerHUD = playerCamera.GetComponentInChildren<UIDocument>();
         if (PlayerHUD == null)
@@ -106,21 +116,26 @@ public class Agent : NetworkBehaviour, IInteractor
             return;
         }
         PlayerHUDui = PlayerHUD.rootVisualElement.Q<VisualElement>("Container");
+        PlayerHUDui.style.display = DisplayStyle.Flex;
+        PlayerHUDui.pickingMode = PickingMode.Ignore;
         BarsContainer = PlayerHUDui.Q<VisualElement>("BarsContainer");
         HealthBar = BarsContainer.Q<VisualElement>("HealthBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
         EnergyBar = BarsContainer.Q<VisualElement>("EnergyBar").Q<VisualElement>("BarBG").Q<VisualElement>("BarFill");
-    
+
 
         playerRigidbody = GetComponent<Rigidbody>();
         cursorState = CursorLockMode.Locked;
         invController = InventoryController.Instance.GetComponent<InventoryController>();
 
+
+        TutorialManager.Instance.StartTutorial("player1");
     }
 
     public static void AddItemToAgentInventory(Item item)
     {
         for(int i = 0; i < inventory.Length; i++)
         {
+            if (inventory[i] == item) return;
             if(inventory[i] == null)
             {
                 inventory[i] = item;
@@ -129,25 +144,33 @@ public class Agent : NetworkBehaviour, IInteractor
         }
     }
 
-    private void EquipItem()
+// Removed commented-out implementation of EquipItem to improve code readability and maintainability.
+   private void EquipItem()
+{
+    Debug.Log("EquipItem " + InventoryController.activeInventorySlotId);
+
+    // Déséquipe l'objet actuel si besoin
+    if (isItemEquipped)
     {
-        Debug.Log("EquipItem " + activeInventorySlot);
-        isItemEquipped = !isItemEquipped;
-        
-        if(isItemEquipped)
-        {
-            if (activeInventorySlot >= inventory.Length || inventory[activeInventorySlot] == null)
-        {
-            Debug.LogWarning("Item not found, update ItemManager from editor");
-            return;
-        }
-            CallEquipItemServerRpc(inventory[activeInventorySlot].Id);
-        }
-        else
-        {
-            CallUnequipItemServerRpc();
-        }
+        CallUnequipItemServerRpc();
+        isItemEquipped = false;
+        return;
     }
+
+    // Récupère l'objet à équiper depuis l'InventoryController
+    Item itemToEquip = invController.GetItemInSlot(InventoryController.activeInventorySlotId);
+
+    if (itemToEquip == null)
+    {
+        Debug.LogWarning("Aucun objet à équiper dans ce slot.");
+        return;
+    }
+
+    Debug.Log(itemToEquip.Name);
+    Debug.Log("slot " + InventoryController.activeInventorySlotId);
+    CallEquipItemServerRpc(itemToEquip.Id);
+    isItemEquipped = true;
+}
 
     [ServerRpc]
     private void CallEquipItemServerRpc(int prefabId)
@@ -169,11 +192,15 @@ public class Agent : NetworkBehaviour, IInteractor
         {
             flashlight.followTarget = playerRightHandSlot.transform;
         }
+        else if (item.TryGetComponent<Keycard>(out var keycard))
+        {
+            keycard.followTarget = playerRightHandSlot.transform;
+        }
         currentlyEquippedItem = item;
     }
 
     [ServerRpc]
-    private void CallUnequipItemServerRpc()
+    public void CallUnequipItemServerRpc()
     {
         UnEquipItemLocalClientRpc();
     }
@@ -183,9 +210,8 @@ public class Agent : NetworkBehaviour, IInteractor
         Destroy(currentlyEquippedItem);
         
         currentlyEquippedItem = null;
-
+        isItemEquipped = false;
     }
-
 
     [ServerRpc]
     private void CallDestroyCollectibleServerRpc()
@@ -206,13 +232,29 @@ public class Agent : NetworkBehaviour, IInteractor
 
     void Update()
     {
-        if (Health == 0)
+        if ((Health <= 0 || isDead.Value) && !isGameOverScreenActive)
         {
-            isDead = true;
+            isDead.Value = true;
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.sortingOrder = 99999;
+        }
+        
+         if (isGameWon.Value && !isGameOverScreenActive)
+        {
+            var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
+            isGameOverScreenActive = true;
+            cursorState = CursorLockMode.None;
+            GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text += nbOfDocumentCollected + " Document(s) collected";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
+            GameOverScreen.sortingOrder = 99999;
+
         }
 
-        HealthBar.style.width = Length.Percent(Health);
-        EnergyBar.style.width = Length.Percent(Energy);
+        
         // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
@@ -229,7 +271,10 @@ public class Agent : NetworkBehaviour, IInteractor
             spawnTimer = 120f;
         }
         
-        UnityEngine.Cursor.lockState = cursorState; 
+        if (!KeyPad.IsAnyKeyPadOpen)
+        {
+            UnityEngine.Cursor.lockState = cursorState;
+        }
         activeInventorySlot = InventoryController.activeInventorySlotId;
         SwitchCurrentInteractable();
         CheckAirborne();
@@ -237,6 +282,10 @@ public class Agent : NetworkBehaviour, IInteractor
         if(!IsOwner){
             return;
         }
+
+        HealthBar.style.width = Length.Percent(Health);
+        EnergyBar.style.width = Length.Percent(Energy);
+        
         CheckIfCanGrapple();
         shiftPressed = Input.GetKey(KeyCode.LeftShift);
         xInput = Input.GetAxisRaw("Horizontal");
@@ -335,12 +384,17 @@ public class Agent : NetworkBehaviour, IInteractor
     private void SwitchCurrentInteractable()
 
     {
-        if(Input.GetKeyDown(KeyCode.O))
+        if (currentSelectedInteractable == null)
+        {
+           // Debug.LogWarning("currentSelectInteractble null");
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
         {
             currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
             currentSelectedInteractable = currentSelectedInteractable.Next ?? currentSelectedInteractable.List.First;
         }
-        else if(Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.P))
         {
             currentSelectedInteractable.Value.gameObject.GetComponent<Outline>().OutlineColor = Color.white;
             currentSelectedInteractable = currentSelectedInteractable.Previous ?? currentSelectedInteractable.List.Last;
@@ -519,6 +573,12 @@ public class Agent : NetworkBehaviour, IInteractor
         public void InteractWith(CollectableItem item)
         {
             Debug.Log("collected");
+            if (item.item.Name == "Document")
+            {
+                Debug.Log("itemName");
+                DocumentManager.Instance.CollectDocument(item.item.Id);
+                nbOfDocumentCollected++;
+            }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
         }

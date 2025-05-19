@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2928891749172452025}
   - component: {fileID: 941007199689001503}
-  - component: {fileID: 8696828780234514639}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -40,7 +39,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8303243591920336953}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -52,18 +51,3 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
---- !u!114 &8696828780234514639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8303243591920336953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41f0e0ece1fcd92409df1ae083848dd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UIDocument: {fileID: 941007199689001503}
-  HealthBarValue: 100
-  EnergyBarValue: 100

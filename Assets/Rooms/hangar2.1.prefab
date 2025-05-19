@@ -16819,6 +16819,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5312573372543685527}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5393121557630326508}
   m_SourcePrefab: {fileID: 100100000, guid: cfbd655bdab16c942821a3743ea6bcfe, type: 3}
 --- !u!4 &1573821958528498504 stripped
 Transform:
@@ -16842,11 +16845,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicClip: {fileID: 0}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
-  Weight: 0.5
+  Weight: 5
   Audio: {fileID: 0}
   lights: []
 --- !u!65 &7383927623065055189
@@ -16894,7 +16898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1351407945
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -16907,6 +16911,19 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &5393121557630326508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205785350905569778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa6b29652b27842b5d1c9a5be10d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1001 &1328224945796632537
 PrefabInstance:
   m_ObjectHideFlags: 0
