@@ -14,7 +14,9 @@ public class RoomsGeneration : NetworkBehaviour
     public Rooms roomPrefabs;
     public Room endRoom;    
     public GameObject zombPrefab;
-    public GameObject turretPrefab;
+    public GameObject turretPrefab;   
+    public GameObject spikeyPrefab;
+    public GameObject slimePrefab;
     public int numberOfRooms = 20; // Nombre total de salles à générer
     
     public GameObject DoorPrefab;
@@ -135,13 +137,21 @@ public class RoomsGeneration : NetworkBehaviour
         var allTransforms = room.GetComponentsInChildren<Transform>(true);
     
         var zombPaths = allTransforms
-            .Where(t => t.name.StartsWith("ZombNodes"))
+            .Where(t => t.name.StartsWith("ZombNode"))
             .ToList();
 
         var turretPositions = allTransforms
-            .Where(t => t.name.StartsWith("TurretNodes"))
+            .Where(t => t.name.StartsWith("TurretNode"))
+            .ToList();        
+        
+        var spikeyPositions = allTransforms
+            .Where(t => t.name.StartsWith("SpikeyNode"))
             .ToList();
 
+        var slimePositions = allTransforms
+            .Where(t => t.name.StartsWith("SlimeNode"))
+            .ToList();
+        
         foreach (var zombPathRoot in zombPaths)
         {
             List<Transform> path = new List<Transform>();
@@ -173,6 +183,24 @@ public class RoomsGeneration : NetworkBehaviour
             TurretEnemy turret = turretObj.GetComponent<TurretEnemy>();
             turretObj.GetComponent<NavMeshAgent>().Warp(turretNode.position);
             turret.isRaycastLaser = (turretNode.GetChild(0).name == "isLaser");
+        }
+        
+        foreach (var spikeyNode in spikeyPositions)
+        {
+            GameObject spikeyObj = Instantiate(spikeyPrefab, spikeyNode.position, spikeyNode.rotation);
+            var spikeyNetworkObj = spikeyObj.GetComponent<NetworkObject>();
+            if (spikeyNetworkObj != null) spikeyNetworkObj.Spawn();
+            SpikeyEnemy spikey = spikeyObj.GetComponent<SpikeyEnemy>();
+            spikeyObj.GetComponent<NavMeshAgent>().Warp(spikeyNode.position);
+            spikey.Initialized(spikeyNode.GetChild(0));
+        }
+        
+        foreach (var slimeNode in slimePositions)
+        {
+            GameObject spikeyObj = Instantiate(slimePrefab, slimeNode.position, slimeNode.rotation);
+            var slimeNetworkObj = spikeyObj.GetComponent<NetworkObject>();
+            if (slimeNetworkObj != null) slimeNetworkObj.Spawn();
+            spikeyObj.GetComponent<NavMeshAgent>().Warp(slimeNode.position);
         }
     }
 
