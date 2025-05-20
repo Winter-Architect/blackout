@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/ui/Menu.uss?fileID=7433441132597879392&amp;guid=7968622725530fc4387929fc1f102aaa&amp;type=3#Menu" />
     <engine:VisualElement name="Container" style="flex-grow: 1; background-color: rgb(10, 9, 8); -unity-text-align: upper-center; padding-top: 50px; padding-right: 50px; padding-bottom: 50px; padding-left: 50px; align-self: auto; align-items: center;">
-        <engine:Label text="You DIE!" name="Text" style="color: rgb(255, 255, 255); -unity-text-align: upper-center; -unity-font-style: bold; font-size: 100px; margin-top: 12%; margin-bottom: 2%;" />
+        <engine:Label text="You DIED!" name="Text" style="color: rgb(255, 255, 255); -unity-text-align: upper-center; -unity-font-style: bold; font-size: 100px; margin-top: 12%; margin-bottom: 2%;" />
         <engine:Label text="5 Room Completed!" name="Score" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 30px; margin-bottom: 13%;" />
         <engine:Button text="Lobby" name="Lobby" class="button" style="width: 50%;" />
         <engine:Button text="Documents" name="Documents" class="button" style="width: 45%; height: 5%; max-height: 1%;" />

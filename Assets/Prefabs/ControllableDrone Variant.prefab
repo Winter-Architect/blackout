@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.016999975
       objectReference: {fileID: 0}
+    - target: {fileID: 1830176913941477735, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2162566803731667111, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.013
@@ -80,6 +84,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6396829697518539556, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7101085267713016903, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
       propertyPath: rotationSpeed
       value: 80
@@ -107,6 +115,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4020687876088682575, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
     - {fileID: 351366031930109959, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
+    - {fileID: 6396829697518539556, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
+    - {fileID: 4279080749858098861, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
+    - {fileID: 8122170604172774824, guid: 2379bc57fabe68a438804dd3650de555, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -164,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2993225713
+  GlobalObjectIdHash: 949354016
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1

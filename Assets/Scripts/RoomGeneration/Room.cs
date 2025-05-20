@@ -44,11 +44,16 @@ public class Room : NetworkBehaviour
         List<Controllable> res = new List<Controllable>();
         Bounds myBounds = GetComponent<Collider>().bounds;
 
-        foreach(Controllable ctrl in controllables)
+        foreach (Controllable ctrl in controllables)
         {
-            if(myBounds.Contains(ctrl.transform.position)){
+            if (myBounds.Contains(ctrl.transform.position))
+            {
                 Debug.Log($"found {ctrl.gameObject.name}");
                 res.Add(ctrl);
+            }
+            else
+            {
+                Debug.Log($"not found {ctrl.gameObject.name}");
             }
         }
         return res;
@@ -99,6 +104,7 @@ public class Room : NetworkBehaviour
             var Player2 = FindFirstObjectByType<Support>();
             if(Player2 is not null)
             {
+                Debug.LogWarning("Player2 is not null, rechecking for room");
                 Player2.RecheckForRoom();
             }
             if (Audio != null && !Audio.isPlaying)

@@ -67,8 +67,6 @@ public class RoomsGeneration : NetworkBehaviour
             return;
         }
 
-       // GeneratedRooms.Enqueue(currRoom.GetComponent<NetworkObject>());
-
         
         BakeNavMesh();
     }

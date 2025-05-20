@@ -57,6 +57,7 @@ public class Support : NetworkBehaviour
 
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
 
+
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
 
         player1 = FindFirstObjectByType<Agent>();
@@ -69,7 +70,11 @@ public class Support : NetworkBehaviour
                 break;
             }
         }
-
+        if (currentRoom == null)
+        {
+            Debug.Log("No room found for the player.");
+            return;
+        }               
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -97,32 +102,45 @@ public class Support : NetworkBehaviour
         if(!IsOwner){
             return;
         }
-
+        Debug.LogWarning("Rechecking for room");
         
         supportHUD.SetActive(IsOwner);
 
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
 
-        foreach(var room in foundRooms)
+
+        Debug.LogWarning($"Found {foundRooms.Length} rooms");
+        
+        foreach (var room in foundRooms)
         {
-            if(room.ContainsPlayer(player1))
+            if (room.ContainsPlayer(player1))
             {
                 currentRoom = room;
                 break;
             }
         }
 
+        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name); 
+        if (currentRoom == null)
+        {
+            Debug.Log("No room found for the player.");
+            return;
+        }
+        Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
+        Debug.LogWarning(foundControllables.Length + " controllables found");
+        Debug.LogWarning("controllable count " + Controllables?.Count); 
+        if (Controllables.Count > 0) current = Controllables.First;
+        else current = null;
         if (current == null) return;
         current.Value.StopControlling();
-        Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
-        current = Controllables.First;
-        if (current == null) return;
         Debug.Log(current.Value.gameObject.name);
         SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
 
     }
     private void Update()
     {
+        
+
         // Si le NetworkManager n'est plus actif, on ne fait rien
         if (!IsOwner || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
             return;
@@ -131,6 +149,7 @@ public class Support : NetworkBehaviour
             return;
 
 
+        foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
             supportHUD?.SetActive(false);
