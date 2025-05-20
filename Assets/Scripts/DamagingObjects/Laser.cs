@@ -35,7 +35,6 @@ public class Laser : NetworkBehaviour
         {
             return;
         }
-        Debug.Log("Triggering with: " + other.gameObject.name + " | ID: " + other.gameObject.GetInstanceID());
 
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable is not null)

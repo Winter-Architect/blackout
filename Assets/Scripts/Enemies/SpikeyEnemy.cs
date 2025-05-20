@@ -42,7 +42,12 @@ public class SpikeyEnemy : Enemy
         isReturningToCeiling = false;
 
         timeElapsed = 0;
-        timeAmbushCheck = 1f;
+        timeAmbushCheck = 1.5f;
+        
+        rb.mass = 1000f;
+
+        timeElapsed = 0;
+        timeAmbushCheck = 1.5f;
     }
 
     void Start()
@@ -63,6 +68,7 @@ public class SpikeyEnemy : Enemy
     {
         if (ceilingPosition != null)
         {
+;
             transform.position = ceilingPosition.position;
             if (agent != null && agent.isActiveAndEnabled)
             {
@@ -150,20 +156,20 @@ public class SpikeyEnemy : Enemy
         {
             player = fieldOfView.Target;
         }
-        
     }
 
     public override void RunAway()
     {
         agent.speed = 4f;
-
+        timeElapsed = 0;
+        timeAmbushCheck = 1.5f;
+        
         if (isAttacking)
         {
             return;
         }
-
         agent.SetDestination(ceilingPosition.position);
-        
+            
         float distanceToCeiling = Vector3.Distance(transform.position, ceilingPosition.position);
         
         if (distanceToCeiling < ceilingReturnDistance)
@@ -179,7 +185,7 @@ public class SpikeyEnemy : Enemy
             agent.Warp(ceilingPosition.position);
             isReturningToCeiling = false;
         }
-        GoNavmesh();
+        
     }
 
     private void SetNextDest()
@@ -250,7 +256,7 @@ public class SpikeyEnemy : Enemy
         
         yield return new WaitForSeconds(0.3f);
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(transform.position, out hit, 3f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(transform.position, out hit, 10f, NavMesh.AllAreas))
         {
             transform.position = hit.position;
             
@@ -289,9 +295,10 @@ public class SpikeyEnemy : Enemy
 
     void OnCollisionEnter(Collision collision)
     {
-        if (Time.deltaTime - lastAttackTime < attackCooldown) return;
+        if (Time.time - lastAttackTime < attackCooldown) return;
 
-        rb.isKinematic = true;
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = false;
 
         if (collision.gameObject.CompareTag("Player") && isAttacking)
         {
@@ -299,12 +306,13 @@ public class SpikeyEnemy : Enemy
             if (damageable != null)
             {
                 damageable.TakeDamage(10, 0);
-                lastAttackTime = Time.deltaTime;
+                lastAttackTime = Time.time;
             }
         }
 
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
         isAttacking = false;
-        rb.isKinematic = false;
     }
     
     bool CanReachDestination(Vector3 destination)
