@@ -11,7 +11,7 @@ public class RottenSlime : Enemy
     private bool hasAmbushed;
     private bool isAttacking;
     private Rigidbody rb;
-    private GameObject player;
+    private PlayerNetwork player;
 
     [SerializeField] private float jumpForce = 30f;
     [SerializeField] private LayerMask groundLayer;
@@ -54,9 +54,7 @@ public class RottenSlime : Enemy
     {
         if (!agent.isOnNavMesh)
         {
-            GoNavmesh();
-            if (!agent.isOnNavMesh)
-                StartCoroutine(ReturnToNavMesh());
+            StartCoroutine(ReturnToNavMesh());
         }
         else
         {
@@ -85,8 +83,10 @@ public class RottenSlime : Enemy
 
     public override void Ambush()
     {
-        if (player != null)
+        if (PlayerNetwork.LocalPlayer != null)
         {
+            player = PlayerNetwork.LocalPlayer;
+        
             RaycastHit playerGroundHit;
             float playerGroundCheckDistance = 1.0f;
         
@@ -107,12 +107,13 @@ public class RottenSlime : Enemy
                     }
                 }
             }
+
         }
         else
         {
-            if (fieldOfView.Spotted && fieldOfView.Target)
+            if (fieldOfView.Spotted && fieldOfView.Target != null)
             {
-                player = fieldOfView.Target;
+                player = fieldOfView.Target.GetComponent<PlayerNetwork>();
             }
         }
     }
@@ -247,11 +248,5 @@ public class RottenSlime : Enemy
                 damageable.TakeDamage(20, 0);
             }
         }
-    }
-    
-    public void Initialized()
-    {
-        if (agent != null && agent.isOnNavMesh)
-            agent.Warp(transform.position);
     }
 }

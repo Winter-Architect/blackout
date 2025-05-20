@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,8 +21,7 @@ public class ZombZomb : Enemy
 
     private bool isHeard;
     
-    private bool _isWaitingForNextNode;
-
+    
     void Awake()
     {
         fieldOfView = gameObject.GetComponent<FieldOfView>();
@@ -38,9 +35,6 @@ public class ZombZomb : Enemy
         lastPlayerPositionArray = new []{transform.position};
         lastPlayerPositionVisited = true;
         
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.constraints = RigidbodyConstraints.FreezeAll;
         
         lookAroundTime = 6.12f;
         timeElapsed = 0f;
@@ -48,9 +42,9 @@ public class ZombZomb : Enemy
         rotationSpeed = 30f;
 
         isHeard = false;
-        _isWaitingForNextNode = false;
-            
+        
         stateMachine = new StateMachine();
+        
     }
 
     void Start()
@@ -96,17 +90,15 @@ public class ZombZomb : Enemy
         {
             agent.updateRotation = true;
         }
-        if (!agent.pathPending && agent.remainingDistance < 0.3f && !_isWaitingForNextNode)
+        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
         {
-            StartCoroutine(NewDest());
+            _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
+            _currentNode = _nodes[_currentNodeIndex];
         }
-
-        GoNavmesh();
+        agent.destination = _currentNode.transform.position;
         Listen();
     }
-
-
-
+    
     public override void HuntDown()
     {
         if (!target)
@@ -136,19 +128,12 @@ public class ZombZomb : Enemy
         }
         else if (!lastPlayerPositionVisited)
         {
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(lastPlayerPositionArray[0], out hit, 2.0f, NavMesh.AllAreas))
-            {
-                lastPlayerPositionArray[0] = hit.position;
-            }
             agent.destination = lastPlayerPositionArray[0];
-            
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
                 lastPlayerPositionVisited = true;
             }
         }
-        GoNavmesh();
         Listen();
     }
 
@@ -186,7 +171,6 @@ public class ZombZomb : Enemy
                 SetEndInvestigateDatas();
             }
         }
-        GoNavmesh();
         Listen();
     }
 
@@ -233,28 +217,4 @@ public class ZombZomb : Enemy
         timeElapsed = 0f;
         isInvestigating = false;
     }
-    
-    public void InitializePath(List<Transform> nodes)
-    {
-        _nodes = new Transform[nodes.Count];
-        int i = 0;
-        foreach (var node in nodes)
-        {
-            _nodes[i] = node;
-            i++;
-        }
-    }
-    
-    IEnumerator NewDest()
-    {
-        _isWaitingForNextNode = true;
-        yield return new WaitForSeconds(1f);
-    
-        _currentNodeIndex = (_currentNodeIndex + 1) % _nodes.Length;
-        _currentNode = _nodes[_currentNodeIndex];
-        agent.destination = _currentNode.position;
-
-        _isWaitingForNextNode = false;
-    }
-    
 }

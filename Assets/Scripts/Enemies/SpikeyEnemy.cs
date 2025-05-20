@@ -17,9 +17,7 @@ public class SpikeyEnemy : Enemy
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform ceilingPosition;
     [SerializeField] private float ceilingReturnDistance = 1f;
-    private float lastAttackTime = -Mathf.Infinity;
-    private float attackCooldown = 4.5f;
-    
+
     private float timeElapsed;
     private float timeAmbushCheck;
 
@@ -42,12 +40,7 @@ public class SpikeyEnemy : Enemy
         isReturningToCeiling = false;
 
         timeElapsed = 0;
-        timeAmbushCheck = 1.5f;
-        
-        rb.mass = 1000f;
-
-        timeElapsed = 0;
-        timeAmbushCheck = 1.5f;
+        timeAmbushCheck = 1f;
     }
 
     void Start()
@@ -68,7 +61,6 @@ public class SpikeyEnemy : Enemy
     {
         if (ceilingPosition != null)
         {
-;
             transform.position = ceilingPosition.position;
             if (agent != null && agent.isActiveAndEnabled)
             {
@@ -121,7 +113,6 @@ public class SpikeyEnemy : Enemy
                 timeElapsed = 0;
             }
         }
-        GoNavmesh();
     }
 
     public override void Attack()
@@ -156,20 +147,20 @@ public class SpikeyEnemy : Enemy
         {
             player = fieldOfView.Target;
         }
+        
     }
 
     public override void RunAway()
     {
         agent.speed = 4f;
-        timeElapsed = 0;
-        timeAmbushCheck = 1.5f;
-        
+
         if (isAttacking)
         {
             return;
         }
+
         agent.SetDestination(ceilingPosition.position);
-            
+        
         float distanceToCeiling = Vector3.Distance(transform.position, ceilingPosition.position);
         
         if (distanceToCeiling < ceilingReturnDistance)
@@ -185,7 +176,6 @@ public class SpikeyEnemy : Enemy
             agent.Warp(ceilingPosition.position);
             isReturningToCeiling = false;
         }
-        
     }
 
     private void SetNextDest()
@@ -256,7 +246,7 @@ public class SpikeyEnemy : Enemy
         
         yield return new WaitForSeconds(0.3f);
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(transform.position, out hit, 10f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(transform.position, out hit, 3f, NavMesh.AllAreas))
         {
             transform.position = hit.position;
             
@@ -295,24 +285,17 @@ public class SpikeyEnemy : Enemy
 
     void OnCollisionEnter(Collision collision)
     {
-        if (Time.time - lastAttackTime < attackCooldown) return;
-
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = false;
-
+        rb.isKinematic = true;
         if (collision.gameObject.CompareTag("Player") && isAttacking)
         {
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(10, 0);
-                lastAttackTime = Time.time;
+                damageable.TakeDamage(20, 0);
             }
         }
-
-        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-
         isAttacking = false;
+        rb.isKinematic = false;
     }
     
     bool CanReachDestination(Vector3 destination)
@@ -329,8 +312,4 @@ public class SpikeyEnemy : Enemy
         return false;
     }
 
-    public void Initialized(Transform ceilingPos)
-    {
-        ceilingPosition = ceilingPos;   
-    }
 }

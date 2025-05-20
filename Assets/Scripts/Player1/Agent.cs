@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class Agent : NetworkBehaviour, IInteractor, IDamageable
+public class Agent : NetworkBehaviour, IInteractor
 {
 
     private AgentInteractionHandler handler = new AgentInteractionHandler();
@@ -86,7 +86,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     public VisualElement BarsContainer;
     public VisualElement HealthBar;
     public VisualElement EnergyBar;
-    public float Health = 100;
+    public int Health = 100;
     public int Energy = 25;
 
     public GameObject GameOverScreenPrefab;
@@ -207,10 +207,6 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     [ClientRpc]
     private void UnEquipItemLocalClientRpc()
     {
-        if (currentlyEquippedItem.TryGetComponent<Flashlight>(out var flashlight))
-        {
-            flashlight.TurnOff();
-        }
         Destroy(currentlyEquippedItem);
         
         currentlyEquippedItem = null;
@@ -593,15 +589,5 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
         }
 
 
-    }
-
-    public void TakeDamage(float dmg, float knockback)
-    {
-        Health -= dmg;
-    }
-
-    public void GetDestroyed()
-    {
-        throw new System.NotImplementedException();
     }
 }
