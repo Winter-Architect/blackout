@@ -37,8 +37,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.35753128, z: -0, w: 0.9339012}
   m_LocalPosition: {x: -43.8, y: -6.90001, z: -66.2}
-  m_LocalScale: {x: 2.9092453, y: 2.9092453, z: 2.9092453}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4557744946276400009}
   m_Father: {fileID: 0}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4193701018
+  GlobalObjectIdHash: 2694694104
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -306,7 +306,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 55013f6aa29ac9e4cae8e4bd719b69e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -338,7 +338,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.07692337
         inSlope: 0
         outSlope: 0
         tangentMode: 0

@@ -1,3 +1,4 @@
+﻿
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ public class RottenSlime : Enemy
     private bool hasAmbushed;
     private bool isAttacking;
     private Rigidbody rb;
-    private PlayerNetwork player;
+    private GameObject player;
 
     [SerializeField] private float jumpForce = 30f;
     [SerializeField] private LayerMask groundLayer;
@@ -54,7 +55,9 @@ public class RottenSlime : Enemy
     {
         if (!agent.isOnNavMesh)
         {
-            StartCoroutine(ReturnToNavMesh());
+            GoNavmesh();
+            if (!agent.isOnNavMesh)
+                StartCoroutine(ReturnToNavMesh());
         }
         else
         {
@@ -83,10 +86,8 @@ public class RottenSlime : Enemy
 
     public override void Ambush()
     {
-        if (PlayerNetwork.LocalPlayer != null)
+        if (player != null)
         {
-            player = PlayerNetwork.LocalPlayer;
-        
             RaycastHit playerGroundHit;
             float playerGroundCheckDistance = 1.0f;
         
@@ -107,13 +108,12 @@ public class RottenSlime : Enemy
                     }
                 }
             }
-
         }
         else
         {
-            if (fieldOfView.Spotted && fieldOfView.Target != null)
+            if (fieldOfView.Spotted && fieldOfView.Target)
             {
-                player = fieldOfView.Target.GetComponent<PlayerNetwork>();
+                player = fieldOfView.Target;
             }
         }
     }
@@ -248,5 +248,11 @@ public class RottenSlime : Enemy
                 damageable.TakeDamage(20, 0);
             }
         }
+    }
+    
+    public void Initialized()
+    {
+        if (agent != null && agent.isOnNavMesh)
+            agent.Warp(transform.position);
     }
 }

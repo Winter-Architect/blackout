@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class Agent : NetworkBehaviour, IInteractor
+public class Agent : NetworkBehaviour, IInteractor, IDamageable
 {
 
     private AgentInteractionHandler handler = new AgentInteractionHandler();
@@ -86,7 +86,7 @@ public class Agent : NetworkBehaviour, IInteractor
     public VisualElement BarsContainer;
     public VisualElement HealthBar;
     public VisualElement EnergyBar;
-    public int Health = 100;
+    public float Health = 100;
     public int Energy = 25;
 
     public GameObject GameOverScreenPrefab;
@@ -561,6 +561,17 @@ public class Agent : NetworkBehaviour, IInteractor
     private void SetVelocity(){
         enableMovementOnNextTouch = true;
         playerRigidbody.linearVelocity = velocityToSet;
+    }
+    
+    
+    public void TakeDamage(float dmg, float knockback)
+    {
+        Health -= dmg;
+    }
+
+    public void GetDestroyed()
+    {
+        throw new System.NotImplementedException();
     }
 
     public class AgentInteractionHandler : IInteractionHandler
