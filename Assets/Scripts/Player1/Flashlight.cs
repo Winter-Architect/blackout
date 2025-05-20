@@ -28,9 +28,8 @@ public class Flashlight : MonoBehaviour, IActionItem
             flashlight.transform.SetParent(agent.playerCamera);
             flashlight.transform.localPosition = Vector3.zero;
             flashlight.transform.localRotation = Quaternion.identity;
-            flashlight.intensity *= 1.1f;
             flashlight.spotAngle = 30f;
-            flashlight.range = 28f;
+            flashlight.range = 16f;
         } if (flashlight == null) return;
         
         flashlight.enabled = !flashlight.enabled;

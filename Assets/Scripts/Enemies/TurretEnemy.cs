@@ -81,6 +81,7 @@ public class TurretEnemy : Enemy
             timeElapsed = 0;
             isInvestigating = false;
         }
+        GoNavmesh();
     }
 
     public override void Attack()
@@ -125,13 +126,7 @@ public class TurretEnemy : Enemy
             {
                 laserNetworkObject.Spawn();
             }
-
-            Laser laserScript = laserInstance.GetComponent<Laser>();
-            if (laserScript is not null)
-            {
-                laserScript.Initialize(40, 0, 25f, 4f);
-            }
-
+            
             FireLaserClientRpc(transform.position, transform.rotation);
         }
         else
@@ -160,7 +155,7 @@ public class TurretEnemy : Enemy
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.TakeDamage(0.05f, 0);
+                    damageable.TakeDamage(0.1f, 0);
                 }
             }
         }
@@ -186,7 +181,7 @@ public class TurretEnemy : Enemy
         Laser laserScript = laserInstance.GetComponent<Laser>();
         if (laserScript is not null)
         {
-            laserScript.Initialize(40, 0, 25f, 4f);
+            laserScript.Initialize(25, 0, 25f, 4f);
         }
     }
     
