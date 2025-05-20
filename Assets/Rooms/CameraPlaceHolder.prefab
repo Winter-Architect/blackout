@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7070560840302637908}
+  - component: {fileID: 3929508117021392596}
   m_Layer: 0
   m_Name: CameraPlaceHolder
   m_TagString: Controllables
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 4245495100990529366}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3929508117021392596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756696210069904929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f778066b791adc3459724a91831969f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyPrefab: {fileID: 7078815346239715473, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
 --- !u!1 &5113244625298382623
 GameObject:
   m_ObjectHideFlags: 0

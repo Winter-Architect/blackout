@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Room : MonoBehaviour
+public class Room : NetworkBehaviour
 {
     public AudioClip musicClip;
     
@@ -16,7 +16,7 @@ public class Room : MonoBehaviour
     public float Weight;
     public AudioSource Audio; // Reference to AudioSource
     public List<Light> lights;
-    
+
     /*
     private void Start()
     {
@@ -26,6 +26,19 @@ public class Room : MonoBehaviour
         }
     }
     */
+
+    public override void OnNetworkSpawn()
+    {
+        if(!IsServer) return;
+        
+        var placeHolders = gameObject.GetComponentsInChildren<NetObjectPlaceHolder>();
+        foreach(var item in placeHolders)
+        {
+            item.Spawn();
+            Debug.Log(item.name);
+        }
+    }
+
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
         List<Controllable> res = new List<Controllable>();

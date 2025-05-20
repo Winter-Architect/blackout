@@ -86,6 +86,13 @@ public class Support : NetworkBehaviour
 
     }
 
+    public void UpdateFoundRooms()
+    {
+        foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
+    }
+
+
+
     public void RecheckForRoom(){
         if(!IsOwner){
             return;
@@ -93,6 +100,9 @@ public class Support : NetworkBehaviour
 
         
         supportHUD.SetActive(IsOwner);
+
+        foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
+
         foreach(var room in foundRooms)
         {
             if(room.ContainsPlayer(player1))
