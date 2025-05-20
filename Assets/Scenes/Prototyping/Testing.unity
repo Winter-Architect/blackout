@@ -35914,7 +35914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  roomPrefabs: {fileID: 11400000, guid: 1d200d8520696ed47ae52fc23efeedee, type: 2}
+  roomPrefabs: {fileID: 11400000, guid: 26488a8a880bfa84eb319a1c133d0a41, type: 2}
   endRoom: {fileID: -2568011686715992916, guid: 7397c4535d0b94446a82a941f5cddfd4, type: 3}
   numberOfRooms: 15
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
@@ -89826,7 +89826,6 @@ GameObject:
   - component: {fileID: 1850907419}
   - component: {fileID: 1850907418}
   - component: {fileID: 1850907420}
-  - component: {fileID: 1850907421}
   m_Layer: 0
   m_Name: PlayerSpawner
   m_TagString: Untagged
@@ -89905,21 +89904,6 @@ MonoBehaviour:
   agentButton: {fileID: 29559297}
   supportButton: {fileID: 1775987234}
   spectatorButton: {fileID: 1265601062}
---- !u!114 &1850907421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850907416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d6e9b338a6f0040b603fba3e8ec740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  controllableCamera: {fileID: 7078815346239715473, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
-  placesToSpawn: []
 --- !u!64 &1851430986
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -94510,7 +94494,6 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 678d989a2b57f864d8dbe06125fa0b77, type: 2}
-      - {fileID: 11400000, guid: 931315baf42d8dd4d953379f40104d02, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
