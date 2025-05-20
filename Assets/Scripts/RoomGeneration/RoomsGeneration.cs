@@ -130,7 +130,20 @@ public class RoomsGeneration : NetworkBehaviour
             }
         }
 
+        BuildNavmeshLinks(roomScript);
         SpawnEnemies(roomScript);
+    }
+
+    private void BuildNavmeshLinks(Room room)
+    {
+        NavMeshLink[] navmeshLinks = room.GetComponentsInChildren<NavMeshLink>(true);
+        foreach (NavMeshLink navMesh in navmeshLinks)
+        {
+            Debug.Log("Found Navmesh");
+            navMesh.enabled = true;
+            navMesh.gameObject.SetActive(true);
+        }
+        
     }
 
     public void SpawnEnemies(Room room)

@@ -21,14 +21,6 @@ public class RoomTrigger : NetworkBehaviour
             {
                 generator.GenerateRoom(currentRoom, currentRoom.RoomID);
             }
-
-            NavMeshLink[] navmeshLinks = GetComponentsInChildren<NavMeshLink>(true);
-            foreach (NavMeshLink navMesh in navmeshLinks)
-            {
-                Debug.Log("Found Navmesh");
-                navMesh.enabled = true;
-                navMesh.gameObject.SetActive(true);
-            }
         }
     }
 }

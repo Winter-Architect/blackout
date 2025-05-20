@@ -130,7 +130,13 @@ public class ZombZomb : Enemy
         }
         else if (!lastPlayerPositionVisited)
         {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(lastPlayerPositionArray[0], out hit, 2.0f, NavMesh.AllAreas))
+            {
+                lastPlayerPositionArray[0] = hit.position;
+            }
             agent.destination = lastPlayerPositionArray[0];
+            
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
                 lastPlayerPositionVisited = true;
