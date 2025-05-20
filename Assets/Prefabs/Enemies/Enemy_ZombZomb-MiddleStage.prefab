@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 8721857469420322266}
   - component: {fileID: 5803333616182099307}
   m_Layer: 0
-  m_Name: ZombZomb-MiddleStage
+  m_Name: Enemy_ZombZomb-MiddleStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,8 +37,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 52.6, y: -6.77, z: -54.3}
-  m_LocalScale: {x: 2.0314293, y: 2.0314293, z: 2.0314293}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  range: 5.5
+  range: 3
   playerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -191,7 +191,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5000021
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

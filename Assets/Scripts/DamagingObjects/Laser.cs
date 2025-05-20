@@ -35,7 +35,7 @@ public class Laser : NetworkBehaviour
         {
             return;
         }
-        
+
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable is not null)
         {
