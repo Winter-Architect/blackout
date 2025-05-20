@@ -17,7 +17,9 @@ public class SpikeyEnemy : Enemy
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform ceilingPosition;
     [SerializeField] private float ceilingReturnDistance = 1f;
-
+    private float lastAttackTime = -Mathf.Infinity;
+    private float attackCooldown = 4.5f;
+    
     private float timeElapsed;
     private float timeAmbushCheck;
 
@@ -113,6 +115,7 @@ public class SpikeyEnemy : Enemy
                 timeElapsed = 0;
             }
         }
+        GoNavmesh();
     }
 
     public override void Attack()
@@ -176,6 +179,7 @@ public class SpikeyEnemy : Enemy
             agent.Warp(ceilingPosition.position);
             isReturningToCeiling = false;
         }
+        GoNavmesh();
     }
 
     private void SetNextDest()
@@ -285,15 +289,20 @@ public class SpikeyEnemy : Enemy
 
     void OnCollisionEnter(Collision collision)
     {
+        if (Time.deltaTime - lastAttackTime < attackCooldown) return;
+
         rb.isKinematic = true;
+
         if (collision.gameObject.CompareTag("Player") && isAttacking)
         {
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(20, 0);
+                damageable.TakeDamage(10, 0);
+                lastAttackTime = Time.deltaTime;
             }
         }
+
         isAttacking = false;
         rb.isKinematic = false;
     }
@@ -314,6 +323,6 @@ public class SpikeyEnemy : Enemy
 
     public void Initialized(Transform ceilingPos)
     {
-        ceilingPosition = ceilingPos;
+        ceilingPosition = ceilingPos;   
     }
 }

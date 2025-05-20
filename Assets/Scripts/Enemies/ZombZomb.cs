@@ -38,6 +38,8 @@ public class ZombZomb : Enemy
         lastPlayerPositionArray = new []{transform.position};
         lastPlayerPositionVisited = true;
         
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
         
         lookAroundTime = 6.12f;
         timeElapsed = 0f;
@@ -48,7 +50,6 @@ public class ZombZomb : Enemy
         _isWaitingForNextNode = false;
             
         stateMachine = new StateMachine();
-        
     }
 
     void Start()
@@ -98,9 +99,13 @@ public class ZombZomb : Enemy
         {
             StartCoroutine(NewDest());
         }
+
+        GoNavmesh();
         Listen();
     }
-    
+
+
+
     public override void HuntDown()
     {
         if (!target)
@@ -142,6 +147,7 @@ public class ZombZomb : Enemy
                 lastPlayerPositionVisited = true;
             }
         }
+        GoNavmesh();
         Listen();
     }
 
@@ -179,6 +185,7 @@ public class ZombZomb : Enemy
                 SetEndInvestigateDatas();
             }
         }
+        GoNavmesh();
         Listen();
     }
 
@@ -248,4 +255,5 @@ public class ZombZomb : Enemy
 
         _isWaitingForNextNode = false;
     }
+    
 }

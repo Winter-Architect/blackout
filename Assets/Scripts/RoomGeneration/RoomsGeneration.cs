@@ -185,6 +185,8 @@ public class RoomsGeneration : NetworkBehaviour
             var zombNetworkObj = zombObj.GetComponent<NetworkObject>();
             if (zombNetworkObj != null) zombNetworkObj.Spawn();
             ZombZomb zomb = zombObj.GetComponent<ZombZomb>();
+            NavMeshHit hitBis;
+            if (NavMesh.SamplePosition(path[0].position, out hitBis, 2.0f, NavMesh.AllAreas)) path[0].position = hitBis.position;
             zombObj.GetComponent<NavMeshAgent>().Warp(path[0].position);
             zomb.InitializePath(path.OrderBy(t => t.name).ToList());
             
@@ -196,6 +198,8 @@ public class RoomsGeneration : NetworkBehaviour
             var turretNetworkObj = turretObj.GetComponent<NetworkObject>();
             if (turretNetworkObj != null) turretNetworkObj.Spawn();
             TurretEnemy turret = turretObj.GetComponent<TurretEnemy>();
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(turretNode.position, out hit, 2.0f, NavMesh.AllAreas)) turretNode.position = hit.position;
             turretObj.GetComponent<NavMeshAgent>().Warp(turretNode.position);
             turret.isRaycastLaser = (turretNode.GetChild(0).name == "isLaser");
         }
@@ -207,15 +211,21 @@ public class RoomsGeneration : NetworkBehaviour
             if (spikeyNetworkObj != null) spikeyNetworkObj.Spawn();
             SpikeyEnemy spikey = spikeyObj.GetComponent<SpikeyEnemy>();
             spikeyObj.GetComponent<NavMeshAgent>().Warp(spikeyNode.position);
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spikeyNode.position, out hit, 2.0f, NavMesh.AllAreas)) spikeyNode.position = hit.position;
             spikey.Initialized(spikeyNode.GetChild(0));
         }
         
         foreach (var slimeNode in slimePositions)
         {
-            GameObject spikeyObj = Instantiate(slimePrefab, slimeNode.position, slimeNode.rotation);
-            var slimeNetworkObj = spikeyObj.GetComponent<NetworkObject>();
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(slimeNode.position, out hit, 2.0f, NavMesh.AllAreas)) slimeNode.position = hit.position;
+            GameObject slimeObj = Instantiate(slimePrefab, slimeNode.position, slimeNode.rotation);
+            var slimeNetworkObj = slimeObj.GetComponent<NetworkObject>();
             if (slimeNetworkObj != null) slimeNetworkObj.Spawn();
-            spikeyObj.GetComponent<NavMeshAgent>().Warp(slimeNode.position);
+            slimeObj.GetComponent<NavMeshAgent>().Warp(slimeNode.position);
+            RottenSlime slime = slimeObj.GetComponent<RottenSlime>();
+            slime.Initialized();
         }
     }
 
