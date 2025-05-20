@@ -17,7 +17,7 @@ public class SplitCodeRandomizer : MonoBehaviour
 
         for (int i = 0; i < digits; i++)
         {
-            int value = Random.Range(0, 9);
+            int value = UnityEngine.Random.Range(0, 10);
             code += value.ToString();
         }
 
