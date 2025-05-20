@@ -33,7 +33,7 @@ public class KeyPad : MonoBehaviour
     {
         for (int i = 0; i < Digits; i++)
         {
-            int value = UnityEngine.Random.Range(0, 9);
+            int value = UnityEngine.Random.Range(0, 10);
             CODE += value.ToString();
         }
 
