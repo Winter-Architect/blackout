@@ -13,7 +13,7 @@ public class SensorDetector : NetworkBehaviour
     private Agent agent;
     private bool detected = false;
     private float detectionRange;
-    private const float BASE_SPEED = 3f;
+    private float BASE_SPEED = 3f;
 
     public bool Detected
     {
@@ -24,9 +24,13 @@ public class SensorDetector : NetworkBehaviour
 
     [SerializeField] public float range;
 
-    public bool IsRunning => agent.currentSpeed > BASE_SPEED; // player.isRunning
-    public bool IsWalking => Mathf.Approximately(agent.currentSpeed, BASE_SPEED); // player.isWalking
-    public bool IsSneaking => agent.currentSpeed < BASE_SPEED; // player.isSneaking
+    public bool IsRunning => isRunning; // player.isRunning
+    public bool IsWalking => isWalking; // player.isWalking
+    public bool IsSneaking => isSneaking; // player.isSneaking
+
+    private bool isRunning; // player.isRunning
+    private bool isWalking; // player.isWalking
+    private bool isSneaking; // player.isSneaking
     
     
     [SerializeField] private LayerMask playerMask;
@@ -34,12 +38,18 @@ public class SensorDetector : NetworkBehaviour
     private void Awake()
     {
         instances[gameObject] = this;
+        isWalking = true;
     }
 
 
     public SensorDetector()
     {
         if (!IsClient) return;
+
+        isRunning = false;
+        isSneaking = false;
+        isWalking = true;
+        
         _target = null;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -90,7 +100,9 @@ public class SensorDetector : NetworkBehaviour
             detected = false;
         }*/
         
-        detected = Vector3.Distance(transform.position, _target.transform.position) < detectionRange;
+        if (Vector3.Distance(transform.position, _target.transform.position) < detectionRange)
+            detected = true;
+        else detected = false;
         
     }
 }

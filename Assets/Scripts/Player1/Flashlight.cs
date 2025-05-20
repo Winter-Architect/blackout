@@ -1,38 +1,21 @@
 using UnityEngine;
 
-public class Flashlight : MonoBehaviour, IActionItem
+public class Flashlight : MonoBehaviour , IActionItem
 {
-    public Transform followTarget;
+    public Transform followTarget; // à assigner lors de l'équipement
     public Vector3 rotationOffset = new Vector3(30, 50, 30);
-
     private Agent agent;
-    private float energyTimer = 0f;
-    private Light flashlight;
-
-    void Awake()
-    {
-        flashlight = GetComponentInChildren<Light>();
-
-        if (flashlight == null)
-        {
-            Debug.LogWarning("No Light component found in children.");
-        }
-    }
+    private float energyTimer = 0f; // Ajout du timer
 
     public void PrimaryAction(Agent agent)
     {
-        this.agent = agent;
-
-        if (flashlight != null && agent.playerCamera != null && flashlight.transform.parent != agent.playerCamera)
+        var light = gameObject.GetComponentInChildren<Light>();
+        if (light == null)
         {
-            flashlight.transform.SetParent(agent.playerCamera);
-            flashlight.transform.localPosition = Vector3.zero;
-            flashlight.transform.localRotation = Quaternion.identity;
-            flashlight.spotAngle = 30f;
-            flashlight.range = 16f;
-        } if (flashlight == null) return;
-        
-        flashlight.enabled = !flashlight.enabled;
+            Debug.LogWarning("No light component found in children.");
+            return;
+        }  
+        light.enabled = !light.enabled;
     }
 
     void Update()
@@ -46,14 +29,10 @@ public class Flashlight : MonoBehaviour, IActionItem
                 return;
             }
         }
+        if (agent.Energy <= 0) return;
 
-        if (agent.Energy <= 0)
-        {
-            if (flashlight != null) TurnOff();
-            return;
-        }
-
-        if (flashlight != null && flashlight.enabled)
+        var light = gameObject.GetComponentInChildren<Light>();
+        if (light != null && light.enabled)
         {
             energyTimer += Time.deltaTime;
             if (energyTimer >= 1f)
@@ -64,7 +43,7 @@ public class Flashlight : MonoBehaviour, IActionItem
         }
         else
         {
-            energyTimer = 0f;
+            energyTimer = 0f; 
         }
 
         if (followTarget != null)
@@ -72,11 +51,5 @@ public class Flashlight : MonoBehaviour, IActionItem
             transform.position = followTarget.position;
             transform.rotation = followTarget.rotation * Quaternion.Euler(rotationOffset);
         }
-
-    }
-    
-    public void TurnOff()
-    {
-        if (flashlight != null) flashlight.enabled = false;
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 

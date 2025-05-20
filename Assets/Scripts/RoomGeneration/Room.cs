@@ -59,36 +59,6 @@ public class Room : NetworkBehaviour
         return res;
     }
 
-    public List<Enemy> GetEnemiesWithin(Enemy[] enemies)
-    {
-        List<Enemy> res = new List<Enemy>();
-        Bounds myBounds = GetComponent<Collider>().bounds;
-
-        foreach(Enemy enemy in enemies)
-        {
-            if(myBounds.Contains(enemy.transform.position)){
-                Debug.Log($"found {enemy.gameObject.name}");
-                res.Add(enemy);
-            }
-        }
-        return res;
-    }
-
-    public List<Transform> GetSpawnPoints(string prefix)
-    {
-        List<Transform> spawnPoints = new List<Transform>();
-
-        foreach (Transform child in GetComponentsInChildren<Transform>(true))
-        {
-            if (child.name.StartsWith(prefix))
-            {
-                spawnPoints.Add(child);
-            }
-        }
-
-        return spawnPoints;
-    }
-    
     public bool ContainsPlayer(Agent Player)
     {
         try {
