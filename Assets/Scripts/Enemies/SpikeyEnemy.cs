@@ -312,4 +312,8 @@ public class SpikeyEnemy : Enemy
         return false;
     }
 
+    public void Initialized(Transform ceilingPos)
+    {
+        ceilingPosition = ceilingPos;
+    }
 }
