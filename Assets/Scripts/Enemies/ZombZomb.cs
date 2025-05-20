@@ -40,6 +40,7 @@ public class ZombZomb : Enemy
         
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
         
         lookAroundTime = 6.12f;
         timeElapsed = 0f;
