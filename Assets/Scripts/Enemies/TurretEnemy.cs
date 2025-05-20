@@ -20,7 +20,7 @@ public class TurretEnemy : Enemy
     private Laser laser;
 
 
-    [SerializeField] private bool isRaycastLaser;
+    public bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
     
 
@@ -38,7 +38,8 @@ public class TurretEnemy : Enemy
         rotationSpeed = 60;
 
         laserLine = GetComponent<LineRenderer>();
-
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
     
     void Start()
@@ -81,6 +82,7 @@ public class TurretEnemy : Enemy
             timeElapsed = 0;
             isInvestigating = false;
         }
+        GoNavmesh();
     }
 
     public override void Attack()
@@ -118,20 +120,6 @@ public class TurretEnemy : Enemy
     {
         if (IsServer)
         {
-            Transform laserInstance = Instantiate(laserPrefab, transform.position, transform.rotation);
-
-            NetworkObject laserNetworkObject = laserInstance.GetComponent<NetworkObject>();
-            if (laserNetworkObject is not null)
-            {
-                laserNetworkObject.Spawn();
-            }
-
-            Laser laserScript = laserInstance.GetComponent<Laser>();
-            if (laserScript is not null)
-            {
-                laserScript.Initialize(40, 0, 25f, 4f);
-            }
-
             FireLaserClientRpc(transform.position, transform.rotation);
         }
         else
@@ -186,7 +174,7 @@ public class TurretEnemy : Enemy
         Laser laserScript = laserInstance.GetComponent<Laser>();
         if (laserScript is not null)
         {
-            laserScript.Initialize(40, 0, 25f, 4f);
+            laserScript.Initialize(12.5f, 0, 25f, 4f);
         }
     }
     

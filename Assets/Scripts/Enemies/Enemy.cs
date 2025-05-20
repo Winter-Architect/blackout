@@ -83,8 +83,22 @@ public abstract class Enemy : NetworkBehaviour, IDamageable
         this.hp -= dmg;
     }
 
+    protected void GoNavmesh()
+    {
+        if (!agent.isOnNavMesh)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(transform.position, out hit, 2.0f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+            }
+        }
+    }
+    
     public void GetDestroyed()
     {
         Destroy(gameObject);
     }
+    
+
 }
