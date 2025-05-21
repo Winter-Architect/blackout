@@ -19832,7 +19832,6 @@ GameObject:
   - component: {fileID: 1165812664367040461}
   - component: {fileID: 2247791198481936337}
   - component: {fileID: 8427348416233358400}
-  - component: {fileID: 2106522804879033925}
   - component: {fileID: 7146744146845771150}
   - component: {fileID: 9104743590292851886}
   m_Layer: 0
@@ -19938,31 +19937,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &2106522804879033925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4810189392518426036}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1988420092
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &7146744146845771150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19975,7 +19949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
   Animator: {fileID: 1165812664367040461}
   PlayerTag: Player
   OpenCloseAnnimBoolName: DoorOpen
@@ -23742,6 +23715,8 @@ GameObject:
   - component: {fileID: -5535798088809239666}
   - component: {fileID: -6702549558785601363}
   - component: {fileID: 2696129495552050377}
+  - component: {fileID: 625166406876288095}
+  - component: {fileID: 6383416496315280391}
   m_Layer: 0
   m_Name: MirrorRoom1
   m_TagString: Untagged
@@ -23995,8 +23970,38 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 132.32, y: 63.83, z: 147.33}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &625166406876288095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536821500114308863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4004099980425607178}
+--- !u!114 &6383416496315280391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536821500114308863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 1165812664367040461}
 --- !u!1 &5574207279403706049
 GameObject:
   m_ObjectHideFlags: 0
@@ -30231,7 +30236,6 @@ GameObject:
   - component: {fileID: 4004099980425607178}
   - component: {fileID: 3202492841299107415}
   - component: {fileID: 3831806925501109343}
-  - component: {fileID: 4536473826788803811}
   - component: {fileID: 8242590023597152265}
   - component: {fileID: 8282913014164180923}
   m_Layer: 0
@@ -30337,31 +30341,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &4536473826788803811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7071289012348209735}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1988420092
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &8242590023597152265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30374,7 +30353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
   Animator: {fileID: 4004099980425607178}
   PlayerTag: Player
   OpenCloseAnnimBoolName: DoorOpen
@@ -37221,7 +37199,7 @@ Transform:
   m_GameObject: {fileID: 8964313202599300670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -167.02}
+  m_LocalPosition: {x: 0, y: 0, z: -167.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

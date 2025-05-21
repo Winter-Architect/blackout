@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Door : NetworkBehaviour
+public class Door : MonoBehaviour
 {
     public Animator Animator;
     public string PlayerTag;

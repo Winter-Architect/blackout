@@ -6108,6 +6108,8 @@ GameObject:
   - component: {fileID: -6823713564013691697}
   - component: {fileID: 1646349698824485993}
   - component: {fileID: 6888647630925734810}
+  - component: {fileID: 1113277290620030653}
+  - component: {fileID: 9064624048638529869}
   m_Layer: 0
   m_Name: TurretRoom1
   m_TagString: Untagged
@@ -6332,8 +6334,38 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 129.5, y: 64.69, z: 171.26}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1113277290620030653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574038217998007080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6506926782307734156}
+--- !u!114 &9064624048638529869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574038217998007080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4371259187110691188}
 --- !u!1 &2577442899123724394
 GameObject:
   m_ObjectHideFlags: 0
@@ -24616,6 +24648,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6506926782307734156 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4004099980425607178, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+  m_PrefabInstance: {fileID: 7916295537547487878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8178934301176488301
 PrefabInstance:
   m_ObjectHideFlags: 0

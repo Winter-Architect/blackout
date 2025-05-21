@@ -2669,6 +2669,7 @@ GameObject:
   - component: {fileID: -7213172306370323078}
   - component: {fileID: -6944970955824893817}
   - component: {fileID: 329994201289647076}
+  - component: {fileID: 4897067290287978488}
   m_Layer: 0
   m_Name: SlimeRoom
   m_TagString: Untagged
@@ -2802,7 +2803,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 43.49, y: 34.86, z: 82.26}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-6944970955824893817
 MonoBehaviour:
@@ -2838,6 +2839,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &4897067290287978488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969559575681254513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4833225832976204517}
 --- !u!1 &3123439124019509144
 GameObject:
   m_ObjectHideFlags: 0
@@ -9803,5 +9819,10 @@ PrefabInstance:
 --- !u!4 &2156073816670890514 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7595764186929631485, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+  m_PrefabInstance: {fileID: 8395407887511550703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4833225832976204517 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4004099980425607178, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
   m_PrefabInstance: {fileID: 8395407887511550703}
   m_PrefabAsset: {fileID: 0}

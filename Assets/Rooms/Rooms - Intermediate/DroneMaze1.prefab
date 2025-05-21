@@ -8714,6 +8714,7 @@ GameObject:
   - component: {fileID: 5016208860043604675}
   - component: {fileID: 6880442349902451567}
   - component: {fileID: -1347638565375838338}
+  - component: {fileID: 1160837163330113921}
   m_Layer: 0
   m_Name: DroneMaze1
   m_TagString: Untagged
@@ -8923,7 +8924,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 128.19, y: 56.7, z: 166.87}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6880442349902451567
 MonoBehaviour:
@@ -8959,6 +8960,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &1160837163330113921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010411112418323171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6421816793867715110}
 --- !u!1 &4103880143550920903
 GameObject:
   m_ObjectHideFlags: 0
@@ -22352,3 +22368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6421816793867715110 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4004099980425607178, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+  m_PrefabInstance: {fileID: 7966740121124157996}
+  m_PrefabAsset: {fileID: 0}
