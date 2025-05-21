@@ -22,7 +22,7 @@ public class TurretEnemy : Enemy
 
     public bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
-    [SerializeField] private bool isIdle;
+    public bool isIdle;
     
 
     void Awake()
@@ -150,7 +150,7 @@ public class TurretEnemy : Enemy
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.TakeDamage(0.05f, 0);
+                    damageable.TakeDamage(0.07f, 0);
                 }
             }
         }
