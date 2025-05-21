@@ -66,7 +66,8 @@ public class ZombZomb : Enemy
         At(huntDownState, patrolState, new FuncPredicate(()=>!fieldOfView.Spotted && lastPlayerPositionVisited));
         At(huntDownState, investigateState, new FuncPredicate(()=>!fieldOfView.Spotted && !isHeard && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)));
         At(investigateState, patrolState, new FuncPredicate(()=>!isInvestigating));
-        At(investigateState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted || isHeard));
+        At(patrolState, huntDownState, new FuncPredicate(() => isHeard));
+        At(investigateState, huntDownState, new FuncPredicate(()=>fieldOfView.Spotted && isHeard));
         
         stateMachine.SetState(patrolState);
     }
@@ -119,11 +120,7 @@ public class ZombZomb : Enemy
         }
 
         if (isHeard)
-        {
-            lastPlayerPositionArray[0] = target.transform.position;
-            lastPlayerPositionVisited = false;
             timeElapsedHearing = 0;
-        }
         
         if (fieldOfView.Spotted || isHeard)
         {
@@ -198,7 +195,7 @@ public class ZombZomb : Enemy
             {
                 target = sensorDetector.Target;
             }
-            if (timeElapsedHearing<1.5f)
+            if (timeElapsedHearing<2f)
             {
                 timeElapsedHearing += Time.deltaTime;
             }
