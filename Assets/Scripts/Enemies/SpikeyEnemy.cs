@@ -13,7 +13,7 @@ public class SpikeyEnemy : Enemy
     private GameObject player;
     private bool isAttacking = false;
 
-    [SerializeField] private float attackForce = 10f;
+    [SerializeField] private float attackForce = 30f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform ceilingPosition;
     [SerializeField] private float ceilingReturnDistance = 1f;
@@ -25,8 +25,14 @@ public class SpikeyEnemy : Enemy
 
     private bool ambush = false;
     
-    
+    private Vector3 lastPositionCheck;
+    private float lastPositionCheckTime;
+    private float movementCheckInterval = 1f;
+    private float minimumMovementThreshold = 0.2f;
+    private bool isStuck = false;
 
+    
+    
     void Awake()
     {
         fieldOfView = GetComponent<FieldOfView>();
@@ -37,17 +43,15 @@ public class SpikeyEnemy : Enemy
         agent = GetComponent<NavMeshAgent>();
 
         walkpointSet = false;
-        range = 8;
+        range = 3;
         rb.useGravity = false;
         isReturningToCeiling = false;
 
         timeElapsed = 0;
         timeAmbushCheck = 1.5f;
         
-        //rb.mass = 1000f;
-
-        timeElapsed = 0;
-        timeAmbushCheck = 1.5f;
+        lastPositionCheck = transform.position;
+        lastPositionCheckTime = Time.time;
     }
 
     void Start()
@@ -68,10 +72,10 @@ public class SpikeyEnemy : Enemy
     {
         if (ceilingPosition != null)
         {
-;
             transform.position = ceilingPosition.position;
             if (agent != null && agent.isActiveAndEnabled)
             {
+                isReturningToCeiling = false;
                 agent.Warp(ceilingPosition.position);
             }
         }
@@ -79,8 +83,10 @@ public class SpikeyEnemy : Enemy
     }
     public override void Patrol()
     {
-        agent.speed = 3f;
-
+        Debug.Log("PATROL");
+        CheckMovement();
+        agent.speed = 1f;
+        
         if (!walkpointSet)
         {
             SetNextDest();
@@ -89,12 +95,10 @@ public class SpikeyEnemy : Enemy
         {
             agent.SetDestination(dest);
         }
-        if (Vector3.Distance(transform.position, dest) < 2)
-        {
+        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
             walkpointSet = false;
-        }
-        
-        if (fieldOfView.Spotted && !isAttacking && !isReturningToCeiling)
+
+        if (fieldOfView.Spotted)
         {
 
             if (player == null)
@@ -123,26 +127,16 @@ public class SpikeyEnemy : Enemy
         }
         GoNavmesh();
     }
-
-    public override void Attack()
-    {
-        if (agent.isOnNavMesh && !isAttacking)
-        {
-            agent.destination = sensorDetector.Target.transform.position;
-        }
-    }
-
+    
     public override void Ambush()
     {
+        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+            walkpointSet = false;
+        CheckMovement();
         if (player != null)
         {
-            
-            RaycastHit hit;
-            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-        
-
+            Debug.Log("AMBUSH");
             SpikeAttack();
-
             timeElapsed = 0;
             ambush = false;
         }
@@ -154,6 +148,11 @@ public class SpikeyEnemy : Enemy
 
     public override void RunAway()
     {
+        CheckMovement();
+        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+            walkpointSet = false;
+        Debug.Log("RUN AWAY");
+
         agent.speed = 4f;
         timeElapsed = 0;
         timeAmbushCheck = 1.5f;
@@ -202,12 +201,15 @@ public class SpikeyEnemy : Enemy
         if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
             walkpointSet = true;
+            isStuck = false;
         }
     }
 
     private void SpikeAttack()
     {
-        
+        CheckMovement();
+        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+            walkpointSet = false;
         isAttacking = true;
         agent.enabled = false;
         rb.useGravity = true;
@@ -229,6 +231,9 @@ public class SpikeyEnemy : Enemy
 
     IEnumerator ReturnToCeilingAfterAttack()
     {
+        CheckMovement();
+        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+            walkpointSet = false;
         rb.isKinematic = false;
         rb.useGravity = false;
         
@@ -323,8 +328,25 @@ public class SpikeyEnemy : Enemy
         return false;
     }
 
+    private void CheckMovement()
+    {
+        if (Time.time - lastPositionCheckTime >= movementCheckInterval)
+        {
+            float distanceMoved = Vector3.Distance(transform.position, lastPositionCheck);
+
+            if (distanceMoved < minimumMovementThreshold)
+            {
+                isStuck = true;
+            }
+
+            lastPositionCheck = transform.position;
+            lastPositionCheckTime = Time.time;
+        }
+    }
     public void Initialized(Transform ceilingPos)
     {
         ceilingPosition = ceilingPos;   
     }
+    
+    
 }
