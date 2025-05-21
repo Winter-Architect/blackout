@@ -102,7 +102,7 @@ public class Room : NetworkBehaviour
         if(col.gameObject.tag == "Player")
         {
             var Player2 = FindFirstObjectByType<Support>();
-            if(Player2 is not null)
+            if (Player2 is not null)
             {
                 Debug.LogWarning("Player2 is not null, rechecking for room");
                 Player2.RecheckForRoom();

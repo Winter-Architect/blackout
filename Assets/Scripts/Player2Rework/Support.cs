@@ -37,6 +37,12 @@ public class Support : NetworkBehaviour
     public GameObject GameOverScreenPrefab;
     private UIDocument GameOverScreen;
     public bool isGameOverScreenActive = false;
+    
+    
+    [SerializeField] private UIDocument loadingUIGameObject;
+    private UIDocument loadingUI;
+     private Label LoadingText;
+
     public override void OnNetworkSpawn()
     {
         supportHUD = GameObject.Find("SupportHUD");
@@ -74,7 +80,7 @@ public class Support : NetworkBehaviour
         {
             Debug.Log("No room found for the player.");
             return;
-        }               
+        }
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         current = Controllables.First;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -89,6 +95,8 @@ public class Support : NetworkBehaviour
         TutorialManager.Instance.StartTutorial("player2");
 
 
+
+
     }
 
     public void UpdateFoundRooms()
@@ -96,21 +104,28 @@ public class Support : NetworkBehaviour
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
     }
 
+    private System.Collections.IEnumerator ChangeTextAfterDelay(string text)
+    {
+        yield return new WaitForSeconds(3f); // 3 secondes
+        LoadingText.text = text;
+    }
 
 
-    public void RecheckForRoom(){
-        if(!IsOwner){
+    public void RecheckForRoom()
+    {
+        if (!IsOwner)
+        {
             return;
         }
         Debug.LogWarning("Rechecking for room");
-        
+
         supportHUD.SetActive(IsOwner);
 
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
 
 
         Debug.LogWarning($"Found {foundRooms.Length} rooms");
-        
+
         foreach (var room in foundRooms)
         {
             if (room.ContainsPlayer(player1))
@@ -120,7 +135,7 @@ public class Support : NetworkBehaviour
             }
         }
 
-        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name); 
+        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name);
         if (currentRoom == null)
         {
             Debug.Log("No room found for the player.");
@@ -128,7 +143,7 @@ public class Support : NetworkBehaviour
         }
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
         Debug.LogWarning(foundControllables.Length + " controllables found");
-        Debug.LogWarning("controllable count " + Controllables?.Count); 
+        Debug.LogWarning("controllable count " + Controllables?.Count);
         if (Controllables.Count > 0) current = Controllables.First;
         else current = null;
         if (current == null) return;
@@ -148,6 +163,23 @@ public class Support : NetworkBehaviour
         if (player1 is null)
             return;
 
+        if (currentRoom == null)
+        {
+            RecheckForRoom();
+            if (loadingUI == null)
+            {
+                loadingUI = Instantiate(loadingUIGameObject);
+            }
+            loadingUI.enabled = true;
+            if (LoadingText == null) LoadingText = loadingUI.rootVisualElement.Q<Label>("Text");
+            StartCoroutine(ChangeTextAfterDelay("Waiting for the agent to entre the facility..."));
+            StartCoroutine(ChangeTextAfterDelay("Hacking in progress..."));
+        }
+        else
+        {
+            if (loadingUI != null) 
+            Destroy(loadingUI);
+        }
 
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)

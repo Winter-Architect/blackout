@@ -10,6 +10,7 @@ public class Lobby : NetworkBehaviour
     [SerializeField] private GameObject menuUI;
     [SerializeField] private List<VisualElement> playerDisplays = new List<VisualElement>(); 
     [SerializeField] private List<VisualElement> readyCheckDisplays = new List<VisualElement>();
+    [SerializeField] private UIDocument loadingUI; // Ajoute ce champ
 
     public Button readyButton;
     public Button startButton;
@@ -139,6 +140,11 @@ public class Lobby : NetworkBehaviour
 
         if(CanStart())
         {
+            // Affiche l'écran de chargement
+            if (loadingUI != null)
+            {
+                loadingUI.enabled = true;
+            }
             NetworkManager.Singleton.SceneManager.LoadScene("PlayScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
         else
