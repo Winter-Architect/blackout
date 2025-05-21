@@ -6,24 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="6851ebdb-52c5-4664-be20-d266b8789818" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.blackout/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.blackout/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/FinalRoom.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/FinalRoom.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-Part40 1.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-Part40 1.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-Part40.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-Part40.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-back.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-back.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-down.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-down.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-forward.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-forward.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-left.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-left.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-right.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rooms/NavMesh-right.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/GoodRooms.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/GoodRooms.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Easy/BonusRoom.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Easy/BonusRoom.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Hard/MazeRoom2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Hard/MazeRoom2.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Hard/TurretRoom1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Hard/TurretRoom1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/DroneMaze1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/DroneMaze1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/MirrorRoom2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/MirrorRoom2.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/SlimeRoom.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/SlimeRoom.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/SpikeyRoom1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/Rooms - Intermediate/SpikeyRoom1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/connectedrooms.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/connectedrooms.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/hangar2.1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/hangar2.1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/simpleroomsecond.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/simpleroomsecond.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/turretroom.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/turretroom.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemies/RottenSlime.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemies/RottenSlime.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player1/Agent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player1/Agent.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +70,14 @@
   }
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../Build\Blackout.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="D:\WinterArchitect\Build" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.26f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\Eliot\Desktop\epita\blackout\blackout -debugCodeOptimization" />
