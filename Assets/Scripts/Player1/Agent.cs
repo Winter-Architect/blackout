@@ -168,6 +168,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
 
     Debug.Log(itemToEquip.Name);
     Debug.Log("slot " + InventoryController.activeInventorySlotId);
+    Debug.Log("id" + itemToEquip.Id);
     CallEquipItemServerRpc(itemToEquip.Id);
     isItemEquipped = true;
 }
