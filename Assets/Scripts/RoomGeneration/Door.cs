@@ -1,8 +1,9 @@
 using Unity.VisualScripting;
 using System.Collections; 
 using UnityEngine;
+using Unity.Netcode;
 
-public class Door : MonoBehaviour
+public class Door : NetworkBehaviour
 {
     public Animator Animator;
     public string PlayerTag;
@@ -17,30 +18,18 @@ public class Door : MonoBehaviour
     public Transform exitDoor;   // the other door across the room
     
     void OnTriggerEnter(Collider other)
-    {        
-        if (!doorOpen && other.CompareTag(PlayerTag) && Condition && CanBeOpen)
+    {
+        if (other.CompareTag(PlayerTag))
         {
-            Animator.SetBool(OpenCloseAnnimBoolName, true);
-
-            Agent agent = other.gameObject.GetComponent<Agent>();
-            if (agent.shouldSpawnEntity)
+            // On demande au serveur d'ouvrir la porte
+            var netObj = GetComponent<NetworkObject>();
+            if (netObj != null && netObj.IsSpawned)
             {
-                agent.spawnTimer = 120;
-
-                if (monsterPrefab != null && spawnPoint != null && exitDoor != null)
-                {
-                    GameObject spawnedMonster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
-                    StartCoroutine(MoveMonsterToExit(spawnedMonster)); // This should now work correctly!
-                }
+                RequestOpenDoorServerRpc(other.GetComponent<NetworkObject>().OwnerClientId);
             }
-
-            if (DoorAudio != null && !DoorAudio.isPlaying)
-            {
-                DoorAudio.Play();
-            }
-            doorOpen = true;
         }
     }
+
     private IEnumerator MoveMonsterToExit(GameObject monster)
     {
         float speed = 5f;  // Set the movement speed for the monster
@@ -66,5 +55,26 @@ public class Door : MonoBehaviour
     public void CloseDoor() {
         Animator.SetBool(OpenCloseAnnimBoolName, false);
         CanBeOpen = false;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RequestOpenDoorServerRpc(ulong playerId)
+    {
+        // Vérifie les conditions côté serveur
+        if (!doorOpen && Condition && CanBeOpen)
+        {
+            OpenDoorClientRpc();
+            doorOpen = true;
+        }
+    }
+
+    [ClientRpc]
+    private void OpenDoorClientRpc()
+    {
+        Animator.SetBool(OpenCloseAnnimBoolName, true);
+        if (DoorAudio != null && !DoorAudio.isPlaying)
+        {
+            DoorAudio.Play();
+        }
     }
 }

@@ -297,7 +297,15 @@ public class RoomsGeneration : NetworkBehaviour
         // ✅ Only now — spawn the networked object
         roomInstance.Spawn();
 
-        
+        foreach (var door in roomInstance.GetComponentsInChildren<Door>(true))
+        {
+            var netObj = door.GetComponent<NetworkObject>();
+            if (netObj != null && !netObj.IsSpawned)
+            {
+                netObj.Spawn();
+            }
+        }
+
         GeneratedRooms.Enqueue(roomInstance);
 
         // Sync state
