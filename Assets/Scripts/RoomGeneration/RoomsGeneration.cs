@@ -151,6 +151,7 @@ public class RoomsGeneration : NetworkBehaviour
         if (!IsServer) return;
         
         Debug.Log("In SpawnEnemies");
+        
         var allTransforms = room.GetComponentsInChildren<Transform>(true);
     
         var zombPaths = allTransforms
