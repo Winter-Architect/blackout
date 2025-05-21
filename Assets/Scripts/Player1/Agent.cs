@@ -66,6 +66,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     private int activeInventorySlot = 0;
 
     private GameObject currentlyEquippedItem;
+    public GameObject currentlyEquippedItemPublic;
 
     public bool freeze = false;
     private bool enableMovementOnNextTouch;
