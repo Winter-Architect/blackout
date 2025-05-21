@@ -13969,6 +13969,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartingRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 2367500590871158702, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2550972392
+      objectReference: {fileID: 0}
     - target: {fileID: 2408812550165800826, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_Convex
       value: 1
@@ -63198,6 +63202,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4536473826788803811, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1196401535
+      objectReference: {fileID: 0}
     - target: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_Name
       value: MediumDoor (4)
@@ -82099,6 +82107,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4536473826788803811, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3404669554
+      objectReference: {fileID: 0}
     - target: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_Name
       value: MediumDoor (3)
@@ -87768,6 +87780,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -274027735001904065, guid: d0b21490e871c9649b0c16b254723971, type: 3}
+--- !u!1 &2006202402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2006202404}
+  - component: {fileID: 2006202403}
+  m_Layer: 0
+  m_Name: Debbug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2006202403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006202402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cf8c18d5939d74f8cab64c76b86029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2006202404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006202402}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
+  m_LocalPosition: {x: 0.018782496, y: 0.21467337, z: 5.972603}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &2006269218
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -91747,3 +91803,4 @@ SceneRoots:
   - {fileID: 1764334692}
   - {fileID: 1224786594}
   - {fileID: 690730078}
+  - {fileID: 2006202404}

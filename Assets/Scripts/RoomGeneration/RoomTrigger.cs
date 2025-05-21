@@ -8,17 +8,20 @@ public class RoomTrigger : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("trigger entered " + other.name + " " + triggered);
         if (triggered || !IsServer) return;
         if (other.CompareTag("Player"))
         {
-            Debug.Log("trigger");
+            Debug.Log("trigger player entered");
             triggered = true;
             var generator = FindFirstObjectByType<RoomsGeneration>();
             var currentRoom = GetComponent<Room>();
 
             if (generator != null && currentRoom != null)
             {
+                Debug.Log("staring room generation");
                 generator.GenerateRoom(currentRoom, currentRoom.RoomID);
+                Debug.Log("room generated");
             }
             NavMeshLink[] navmeshLinks = GetComponentsInChildren<NavMeshLink>(true);
             foreach (NavMeshLink navMesh in navmeshLinks)

@@ -35979,12 +35979,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  roomPrefabs: {fileID: 11400000, guid: 1d200d8520696ed47ae52fc23efeedee, type: 2}
+  roomPrefabs: {fileID: 11400000, guid: 5ec59b993e44a074a998396fa8eaa7b6, type: 2}
   endRoom: {fileID: -2568011686715992916, guid: 7397c4535d0b94446a82a941f5cddfd4, type: 3}
-  zombPrefab: {fileID: 0}
-  turretPrefab: {fileID: 0}
-  spikeyPrefab: {fileID: 0}
-  slimePrefab: {fileID: 0}
+  zombPrefab: {fileID: 2277200124935229616, guid: c1177f10f5468f8438147069eeda115e, type: 3}
+  turretPrefab: {fileID: 6702179412296539626, guid: 7995b635f3ca9b04ca21d5535884b1e9, type: 3}
+  spikeyPrefab: {fileID: 3755375981868785136, guid: af42fb587f4a4ca45bffebd4f8dc6866, type: 3}
+  slimePrefab: {fileID: 4139352930482335137, guid: 376ac0b5323eba840a464353abb7e9e5, type: 3}
   numberOfRooms: 15
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
 --- !u!4 &1216017597 stripped
@@ -87136,6 +87136,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3920247121284977296, guid: d0b21490e871c9649b0c16b254723971, type: 3}
+--- !u!1 &1771958019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1771958021}
+  - component: {fileID: 1771958020}
+  m_Layer: 0
+  m_Name: Debbug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1771958020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771958019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cf8c18d5939d74f8cab64c76b86029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1771958021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771958019}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
+  m_LocalPosition: {x: 0.018782496, y: 0.21467337, z: 5.972603}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1772349334
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -98969,4 +99013,5 @@ SceneRoots:
   - {fileID: 1216783801}
   - {fileID: 677603239}
   - {fileID: 1188679157}
+  - {fileID: 1771958021}
   - {fileID: 31429633}

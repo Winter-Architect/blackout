@@ -566,13 +566,58 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4414798947119242301}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5323584090594568561}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3241326932408430438}
   m_SourcePrefab: {fileID: 100100000, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
 --- !u!4 &1304621056461539001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
   m_PrefabInstance: {fileID: 1553821642715554130}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1824276006678223875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e2c70381b25a6b448a4e1dfe640f75b3, type: 3}
+  m_PrefabInstance: {fileID: 1553821642715554130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-5323584090594568561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824276006678223875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa6b29652b27842b5d1c9a5be10d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &3241326932408430438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824276006678223875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76153856e92950468bb79c7af395863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  musicClip: {fileID: 0}
+  RoomID: 0
+  isTurningLeft: 0
+  isTurningRight: 0
+  isStairs: 0
+  Weight: 1
+  Audio: {fileID: 0}
+  lights: []
 --- !u!1001 &2274345560192188525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1009,7 +1054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8670918813529005088, guid: 2c53b5f7dcb5e994abc3abc7ec47f7dc, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1592402952
+      value: 2717180742
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

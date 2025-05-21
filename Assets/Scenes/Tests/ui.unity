@@ -353,7 +353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1183890668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,7 +385,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389e649b58efacc46a5ea9f6403ef069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CODE: 123
+  Split: 0
+  Digits: 0
+  tmp1: {fileID: 0}
+  tmp2: {fileID: 0}
+  tmp3: {fileID: 0}
+  tmp4: {fileID: 0}
+  tmp5: {fileID: 0}
   UIDocument: {fileID: 1183890668}
   door: {fileID: 0}
 --- !u!4 &1183890670
@@ -420,7 +426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1200964403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1966879651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,6 +922,10 @@ PrefabInstance:
     - target: {fileID: 9107266642453957525, guid: 7d80529510b35084392c7e62d918546e, type: 3}
       propertyPath: m_Name
       value: GameOverMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 9107266642453957525, guid: 7d80529510b35084392c7e62d918546e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

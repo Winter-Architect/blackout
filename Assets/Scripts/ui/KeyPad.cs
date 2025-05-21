@@ -139,6 +139,7 @@ public class KeyPad : MonoBehaviour
 
     private void ClickedNumber(int num)
     {
+        Debug.Log("clicked number " + num);
         if (code.Length + 1 > CODE_LENGHT_LIMIT) return;
         code += num.ToString();
         
