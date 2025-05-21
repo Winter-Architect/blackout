@@ -36089,6 +36089,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1216017608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216017592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 1937211382}
 --- !u!64 &1216751950
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -92770,6 +92785,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5168337271952121095, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -2873184337001929096, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3349539858
@@ -92946,6 +92965,7 @@ PrefabInstance:
     - {fileID: 1334968126095835038, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     - {fileID: 4199572843246564600, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     - {fileID: 5194009614443095864, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+    - {fileID: 2367500590871158702, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7840034052896231228, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
     - {fileID: 6086154495386652454, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
@@ -93009,6 +93029,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1216017601}
+    - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1216017608}
     - targetCorrespondingSourceObject: {fileID: 8938946191519830282, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1772886202}
@@ -93016,6 +93039,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2061326026}
   m_SourcePrefab: {fileID: 100100000, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+--- !u!95 &1937211382 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3008031133147800391, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+  m_PrefabInstance: {fileID: 1937211381}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &1937662438
 MeshCollider:
   m_ObjectHideFlags: 0

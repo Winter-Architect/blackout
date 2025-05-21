@@ -19,13 +19,13 @@ public class Door : NetworkBehaviour
     
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Merde");
         if (other.CompareTag(PlayerTag))
         {
-            // On demande au serveur d'ouvrir la porte
-            var netObj = GetComponent<NetworkObject>();
-            if (netObj != null && netObj.IsSpawned)
+            if (!doorOpen && Condition && CanBeOpen)
             {
-                RequestOpenDoorServerRpc(other.GetComponent<NetworkObject>().OwnerClientId);
+                Animator.SetBool(OpenCloseAnnimBoolName, true);
+                doorOpen = true;
             }
         }
     }
