@@ -208,6 +208,10 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     [ClientRpc]
     private void UnEquipItemLocalClientRpc()
     {
+        if (currentlyEquippedItem.TryGetComponent<Flashlight>(out var flashlight))
+        {
+            flashlight.TurnOff();
+        }
         Destroy(currentlyEquippedItem);
         
         currentlyEquippedItem = null;

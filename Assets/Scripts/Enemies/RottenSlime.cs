@@ -35,6 +35,9 @@ public class RottenSlime : Enemy
         isAttacking = false;
         range = 6;
         rb.useGravity = false;
+        
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     void Start()
