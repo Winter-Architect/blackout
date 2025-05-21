@@ -584,6 +584,9 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     public class AgentInteractionHandler : IInteractionHandler
 
     {
+
+        private Agent agent;
+
         public void InteractWith(BaseInteractable item)
         {
             Debug.Log("tested");
@@ -600,7 +603,15 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             }
             if (item.item.Name == "Battery")
             {
-                
+                agent = FindFirstObjectByType<Agent>();
+                if (agent != null)
+                {
+                    agent.Energy += 25;
+                }
+                else
+                {
+                    Debug.LogError("Agent not found");
+                }
                 return;
             }
             InventoryController.Instance.AddItemToInventory(item.item);
