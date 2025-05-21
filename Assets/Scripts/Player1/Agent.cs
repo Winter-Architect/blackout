@@ -64,9 +64,9 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
     private static Item[] inventory = new Item[6];
     public bool isItemEquipped = false;
     private int activeInventorySlot = 0;
-
+    
     private GameObject currentlyEquippedItem;
-    public GameObject currentlyEquippedItemPublic;
+    public GameObject currentlyEquippedItempublic;
 
     public bool freeze = false;
     private bool enableMovementOnNextTouch;
@@ -169,7 +169,6 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
 
     Debug.Log(itemToEquip.Name);
     Debug.Log("slot " + InventoryController.activeInventorySlotId);
-    Debug.Log("id" + itemToEquip.Id);
     CallEquipItemServerRpc(itemToEquip.Id);
     isItemEquipped = true;
 }
@@ -335,6 +334,8 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             invController.toggleInventory();
 
         }
+
+        currentlyEquippedItempublic = currentlyEquippedItem;
     }
 
     void CheckIfCanGrapple()
