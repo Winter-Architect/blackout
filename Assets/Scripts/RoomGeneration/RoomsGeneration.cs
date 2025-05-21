@@ -148,6 +148,8 @@ public class RoomsGeneration : NetworkBehaviour
 
     public void SpawnEnemies(Room room)
     {
+        if (!IsServer) return;
+        
         Debug.Log("In SpawnEnemies");
         var allTransforms = room.GetComponentsInChildren<Transform>(true);
     
