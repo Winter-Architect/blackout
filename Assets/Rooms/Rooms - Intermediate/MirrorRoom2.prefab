@@ -9974,6 +9974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   Animator: {fileID: 1329643844423071298}
   PlayerTag: Player
   OpenCloseAnnimBoolName: DoorOpen
@@ -34453,6 +34454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1b9f3d57803454d906053341ece5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   Animator: {fileID: 5875830225199995774}
   PlayerTag: Player
   OpenCloseAnnimBoolName: DoorOpen
@@ -42489,7 +42491,7 @@ MonoBehaviour:
   isTurningLeft: 0
   isTurningRight: 0
   isStairs: 0
-  Weight: 180
+  Weight: 5
   Audio: {fileID: 0}
   lights: []
 --- !u!1 &8884961687903896880

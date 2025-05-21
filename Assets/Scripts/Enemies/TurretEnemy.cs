@@ -22,6 +22,7 @@ public class TurretEnemy : Enemy
 
     public bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
+    [SerializeField] private bool isIdle;
     
 
     void Awake()
@@ -64,7 +65,8 @@ public class TurretEnemy : Enemy
         laserLine.enabled = false;
         
         float rotationAmount = (rotationSpeed) * Time.deltaTime;
-        this.transform.Rotate(Vector3.up, rotationAmount);
+        if (!isIdle)
+            this.transform.Rotate(Vector3.up, rotationAmount);
     }
 
     public override void Investigate()
