@@ -202,6 +202,7 @@ public class RoomsGeneration : NetworkBehaviour
             if (NavMesh.SamplePosition(turretNode.position, out hit, 2.0f, NavMesh.AllAreas)) turretNode.position = hit.position;
             turretObj.GetComponent<NavMeshAgent>().Warp(turretNode.position);
             turret.isRaycastLaser = (turretNode.GetChild(0).name == "isLaser");
+            turret.isIdle = (turretNode.GetChild(0).name == "isLaser");
         }
         
         foreach (var spikeyNode in spikeyPositions)
