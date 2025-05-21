@@ -220,12 +220,12 @@ public class RoomsGeneration : NetworkBehaviour
         {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(slimeNode.position, out hit, 2.0f, NavMesh.AllAreas)) slimeNode.position = hit.position;
-            GameObject slimeObj = Instantiate(slimePrefab, slimeNode.position, slimeNode.rotation);
+            GameObject slimeObj = Instantiate(spikeyPrefab, slimeNode.position, slimeNode.rotation);
             var slimeNetworkObj = slimeObj.GetComponent<NetworkObject>();
             if (slimeNetworkObj != null) slimeNetworkObj.Spawn();
             slimeObj.GetComponent<NavMeshAgent>().Warp(slimeNode.position);
-            RottenSlime slime = slimeObj.GetComponent<RottenSlime>();
-            slime.Initialized();
+            SpikeyEnemy slime = slimeObj.GetComponent<SpikeyEnemy>();
+            slime.Initialized(slimeNode);
         }
     }
 
