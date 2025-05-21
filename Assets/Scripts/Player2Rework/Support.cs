@@ -37,6 +37,7 @@ public class Support : NetworkBehaviour
     public GameObject GameOverScreenPrefab;
     private UIDocument GameOverScreen;
     public bool isGameOverScreenActive = false;
+    private bool alreadystartedtuto = false;
     
     
     [SerializeField] private UIDocument loadingUIGameObject;
@@ -91,8 +92,6 @@ public class Support : NetworkBehaviour
         }
 
         cursorState = CursorLockMode.Locked;
-
-        TutorialManager.Instance.StartTutorial("player2");
 
 
 
@@ -177,8 +176,11 @@ public class Support : NetworkBehaviour
         }
         else
         {
-            if (loadingUI != null) 
-            Destroy(loadingUI);
+            if (loadingUI != null)
+                Destroy(loadingUI);
+            if (!alreadystartedtuto)
+                TutorialManager.Instance.StartTutorial("player2");
+            alreadystartedtuto = true;
         }
 
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);

@@ -182,11 +182,20 @@ public class TutorialManager : MonoBehaviour
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;
-                            startedPickingObject = true;
                         }
                         break;
                     }
                     case 4:
+                        {
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                            startedPickingObject = true;
+                        }
+                        break;
+                    }
+                    case 5:
                     {
                         if (finishedPickingObject)
                         {
@@ -196,22 +205,13 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 5:
+                    case 6:
                     {
                         if (finishedEquip && pressedLeftClick)
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;
                             startedOpeningDoorBox = true;
-                        }
-                        break;
-                    }
-                    case 6:
-                    {
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
-                        {
-                            dialogBox.DisplayNextText();
-                            messageCounter++;
                         }
                         break;
                     }
@@ -226,6 +226,15 @@ public class TutorialManager : MonoBehaviour
                     }
                     case 8:
                     {
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            dialogBox.DisplayNextText();
+                            messageCounter++;
+                        }
+                        break;
+                    }
+                    case 9:
+                    {
                         if (finisedOpeningdoorBox)
                         {
                             dialogBox.DisplayNextText();
@@ -234,7 +243,7 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 9:
+                    case 10:
                     {
                         if (finisedOpeningdoor)
                         {
@@ -245,7 +254,7 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     }
-                    case 10: // Attente 5 secondes puis suppression
+                    case 11: // Attente 5 secondes puis suppression
                     {
                         PlayerPrefs.SetInt("TutorialDone_player1", 1);
                         if (waitingToDestroy)
@@ -290,7 +299,7 @@ public class TutorialManager : MonoBehaviour
                     }
                     case 2: // Changement de caméra (clic droit)
                     {
-                        if (Input.GetKeyDown(KeyCode.Mouse1))
+                        if (Input.GetKeyDown(KeyCode.K))
                         {
                             dialogBox.DisplayNextText();
                             messageCounter++;
@@ -386,6 +395,7 @@ public class TutorialManager : MonoBehaviour
             dialogBox.EnqueueMessage("Use Z, Q, S, D or Arrow Keys to move around", "> move");
             dialogBox.EnqueueMessage("Press SpaceBar to jump", "> jump");
             dialogBox.EnqueueMessage("Hold LeftShift to sprint", "> sprint");
+            dialogBox.EnqueueMessage("Follow the green lights and enter the facility", "> follow the lights\n> press left click when you are in the facility");
             dialogBox.EnqueueMessage("Try to pick up an object by going near it and pressing \"E\"", "> pick up an object");
             dialogBox.EnqueueMessage("Try to equip it with \"1\" and activate it with a left click!", "> Equip an object\n> Activate it");
             dialogBox.EnqueueMessage("In the future, you will get other items! You can select the one you want by pressing <tab>!", "> Click to continue");
@@ -402,7 +412,7 @@ public class TutorialManager : MonoBehaviour
             DialogBox dialogBox = myDialogUI.GetComponent<DialogBox>();
             dialogBox.EnqueueMessage("Welcome to Blackout", "> Click to continue!");
             dialogBox.EnqueueMessage("You have successfully inflitrated the electronics system of the Site", "> Click to continue!");
-            dialogBox.EnqueueMessage("Control other Controllables with RightClick!", "> switch caméra");
+            dialogBox.EnqueueMessage("Control other Controllables with <K>!", "> switch caméra");
             dialogBox.EnqueueMessage("You've got access to the terminal of the facility! Press \"T\" to open it!", "> Open the terminal");
             dialogBox.EnqueueMessage("You have access to some commands! Send the command \"help\" to see all of them.", "> list all of the commands");
             dialogBox.EnqueueMessage("In some room, you have access to the map of the room with some details! Open the map with the button or by tapping (\"map\")", "> open the map");

@@ -13,12 +13,25 @@ public class DataController : MonoBehaviour
      userId = SystemInfo.deviceUniqueIdentifier;
         StartCoroutine(AddPlayerRequest(userId));
     }
+    // void OnDisable() {
+    //     UnityEngine.SceneManagement.SceneManager.sceneUnloaded -= OnSceneUnload;
+    //     if (userId == null) return;
+    //     StartCoroutine(RemovePlayerRequest(userId));
+    // }
+
+    // void OnSceneUnload(UnityEngine.SceneManagement.Scene scene) {
+    //     if (userId == null) return;
+    //     StartCoroutine(RemovePlayerRequest(userId));
+    // }
+
+    // void OnEnable() {
+    //     UnityEngine.SceneManagement.SceneManager.sceneUnloaded += OnSceneUnload;
+    // }
 
     void OnApplicationQuit() {
         if (userId == null) return;
-        StartCoroutine(RemovePlayerRequest(userId));
+        RemovePlayerRequestSync(userId);
     }
-
 
     IEnumerator AddPlayerRequest(string playerId)
     {
@@ -56,6 +69,32 @@ public class DataController : MonoBehaviour
             req.SetRequestHeader("Content-Type", "application/json"); // Indiquer que c'est du JSON
 
             yield return req.SendWebRequest();
+
+            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + req.error);
+            }
+            else
+            {
+                Debug.Log("Response: " + req.downloadHandler.text);
+            }
+        }
+    }
+
+    void RemovePlayerRequestSync(string playerId)
+    {
+        string jsonData = "{\"id\":\"" + playerId + "\"}";
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+
+        using (var req = new UnityEngine.Networking.UnityWebRequest(USER_URL, "DELETE"))
+        {
+            req.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            // Envoi synchrone (bloquant)
+            req.SendWebRequest();
+            while (!req.isDone) { } // Attend la fin
 
             if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
             {
