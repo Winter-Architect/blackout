@@ -44,7 +44,7 @@ public class SpikeyEnemy : Enemy
         timeElapsed = 0;
         timeAmbushCheck = 1.5f;
         
-        rb.mass = 1000f;
+        //rb.mass = 1000f;
 
         timeElapsed = 0;
         timeAmbushCheck = 1.5f;
@@ -140,14 +140,8 @@ public class SpikeyEnemy : Enemy
             RaycastHit hit;
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
         
-            if (Physics.Raycast(transform.position, directionToPlayer, out hit, Mathf.Infinity))
-            {
-                if (hit.collider.CompareTag("Player") || hit.collider.name == "Plane")
-                {
-                    SpikeAttack();
-                }
-                SpikeAttack();
-            }
+
+            SpikeAttack();
 
             timeElapsed = 0;
             ambush = false;

@@ -33,7 +33,7 @@ public class RottenSlime : Enemy
         walkpointSet = false;
         hasAmbushed = false;
         isAttacking = false;
-        range = 10;
+        range = 6;
         rb.useGravity = false;
     }
 
@@ -45,10 +45,10 @@ public class RottenSlime : Enemy
         var attackState = new EnemyAttackState(this, animator);
 
         At(ambushState, attackState, new FuncPredicate(() => hasAmbushed && !isAttacking));
-        At(attackState, patrolState, new FuncPredicate(() => !sensorDetector.Detected && agent.enabled));
-        At(patrolState, attackState, new FuncPredicate(() => fieldOfView.Spotted && sensorDetector.Detected));
+        At(attackState, patrolState, new FuncPredicate(() => !fieldOfView.Spotted && agent.enabled));
+        At(patrolState, attackState, new FuncPredicate(() => fieldOfView.Spotted));
         
-        stateMachine.SetState(ambushState);
+        stateMachine.SetState(patrolState);
     }
 
     public override void Patrol()
@@ -69,7 +69,7 @@ public class RottenSlime : Enemy
             {
                 agent.SetDestination(dest);
             }
-            if (Vector3.Distance(transform.position, dest) < 2)
+            if (Vector3.Distance(transform.position, dest) < 2 || !agent.hasPath)
             {
                 walkpointSet = false;
             }
@@ -78,9 +78,14 @@ public class RottenSlime : Enemy
 
     public override void Attack()
     {
-        if (player != null && agent.isOnNavMesh && !isAttacking)
+        if (player != null && agent.isOnNavMesh)
         {
-            agent.destination = player.transform.position;
+            walkpointSet = false;
+            agent.SetDestination(player.transform.position);
+        }
+        else
+        {
+            player = fieldOfView.Target;
         }
     }
 
