@@ -7,7 +7,7 @@ public class KeyPad : MonoBehaviour
     private string CODE = "";
     public bool Split; //Indicates whether the code should be written on a single piece of paper or not.
     public int Digits; //HAS TO BE EITHER 4 OR 5
-    private int CODE_LENGHT_LIMIT = 0;
+    private int CODE_LENGHT_LIMIT { get => CODE.Length; }
 
     public TextMeshProUGUI tmp1;
     public TextMeshProUGUI tmp2;
@@ -58,7 +58,6 @@ public class KeyPad : MonoBehaviour
     private void Awake()
     {
         ui = UIDocument.rootVisualElement.Q<VisualElement>("Container");
-        CODE_LENGHT_LIMIT = CODE.Length;
 
         // On ne désactive plus UIDocument ici
         ui.style.display = DisplayStyle.None;

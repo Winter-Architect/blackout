@@ -88,6 +88,20 @@ namespace Blackout.Inventory
             }
         }
 
+        public void RemoveItemFromInvByName(string name) {
+            foreach (var objec in inventory) {
+                if (objec.Value.Name == name) {
+                    inventory.Remove(objec.Key);
+                    selectedItemId = 0;
+
+                    freeSlots.Add(objec.Key);
+                    inventorySlots[objec.Key].icon = noImage;
+                    inventorySlots[objec.Key].itemName = "";
+                    break;
+                }
+            }
+        }   
+
         public Item GetItemInSlot(int slotId)
         {
             if (inventory.ContainsKey(slotId))

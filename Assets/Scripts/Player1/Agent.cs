@@ -596,6 +596,12 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
                 Debug.Log("itemName");
                 DocumentManager.Instance.CollectDocument(item.item.Id);
                 nbOfDocumentCollected++;
+                return;
+            }
+            if (item.item.Name == "Battery")
+            {
+                
+                return;
             }
             InventoryController.Instance.AddItemToInventory(item.item);
             Agent.AddItemToAgentInventory(item.item);
