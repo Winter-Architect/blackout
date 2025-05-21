@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6851ebdb-52c5-4664-be20-d266b8789818" name="Changes" comment="" />
+    <list default="true" id="6851ebdb-52c5-4664-be20-d266b8789818" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.blackout/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.blackout/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/bureau2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/bureau2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Rooms/hangar2.1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rooms/hangar2.1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Prototyping/Testing.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Prototyping/Testing.unity" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +31,13 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/77c95d4fdf1c463496f3c7ba3c00fe5111200/4a/bb2610a4/NavMeshAgent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Prefabs/HUD.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scenes/RefactoredMultiplayer/StartMenu.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scripts/Documents/Document.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scripts/Player1/Agent.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scripts/RefactoredMultiplayer/Menu.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scripts/RoomGeneration/RoomsGeneration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eliot/OneDrive/Bureau/epita/blackout/blackout/Assets/Scripts/ui/GameOverScreen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Configuration/NetworkPrefabs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Spawning/NetworkSpawnManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -44,7 +55,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;FreshNewBranchAi&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -55,7 +66,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Program Files\Unity Hub\6000.0.26f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.26f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\Eliot\Desktop\epita\blackout\blackout -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\Eliot\Desktop\epita\blackout\blackout" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -63,7 +74,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Program Files\Unity Hub\6000.0.26f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.26f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\Eliot\Desktop\epita\blackout\blackout -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\Eliot\Desktop\epita\blackout\blackout" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -75,6 +86,9 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
       <option name="selectedOptions">
         <list />
       </option>
@@ -85,6 +99,9 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
       <option name="selectedOptions">
         <list />
       </option>
@@ -111,8 +128,9 @@
       <workItem from="1747136101504" duration="399000" />
       <workItem from="1747304330543" duration="471000" />
       <workItem from="1747647380957" duration="1330000" />
-      <workItem from="1747753686786" duration="2136000" />
-      <workItem from="1747813880776" duration="8219000" />
+      <workItem from="1747753686786" duration="1483000" />
+      <workItem from="1747819407556" duration="78000" />
+      <workItem from="1747819942299" duration="393000" />
     </task>
     <task id="LOCAL-00001" summary="merge">
       <option name="closed" value="true" />
