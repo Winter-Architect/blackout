@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -43,7 +44,7 @@ public class SpikeyEnemy : Enemy
         agent = GetComponent<NavMeshAgent>();
 
         walkpointSet = false;
-        range = 3;
+        range = 2;
         rb.useGravity = false;
         isReturningToCeiling = false;
 
@@ -101,7 +102,7 @@ public class SpikeyEnemy : Enemy
         else if (Vector3.Distance(transform.position, dest) < 1)
             walkpointSet = false;
 
-        else if (fieldOfView.Spotted)
+        if (fieldOfView.Spotted)
         {
             if (player == null)
             {
@@ -131,10 +132,6 @@ public class SpikeyEnemy : Enemy
     
     public override void Ambush()
     {
-        GoNavmesh();
-        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
-            walkpointSet = false;
-        CheckMovement();
         if (player != null)
         {
             Debug.Log("AMBUSH");
@@ -186,39 +183,48 @@ public class SpikeyEnemy : Enemy
     
     private void SpikeAttack()
     {
-        CheckMovement();
-        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
-            walkpointSet = false;
         isAttacking = true;
         agent.enabled = false;
         rb.useGravity = true;
         rb.linearVelocity = Vector3.zero;
         
         if (player == null)
-        {
             player = fieldOfView.Target;
-        }
-        
-        Vector3 fakeOrigin = player.transform.position - Vector3.forward * 5f;
-        Vector3 jumpDir = (player.transform.position - fakeOrigin).normalized;
 
-        jumpDir += Vector3.up * 0.75f;
-        jumpDir = jumpDir.normalized;
+        Vector3 start = transform.position;
+        Vector3 end = player.transform.position;
 
-        rb.linearVelocity = jumpDir * attackForce;
-        
-        StartCoroutine(ReturnToCeilingAfterAttack());
+        float gravity = Physics.gravity.y; // Should be negative
+        float heightOffset = 2f;           // How high the jump goes
+        float heightDifference = end.y - start.y;
+
+        // Horizontal distance and direction
+        Vector3 displacementXZ = new Vector3(end.x - start.x, 0, end.z - start.z);
+        float distance = displacementXZ.magnitude;
+
+        float initialHeight = Mathf.Max(heightOffset, heightDifference + 1f); // Ensure clearance
+
+        // Compute time using height = 0.5 * g * t^2 → t = sqrt(2h / -g)
+        float timeToApex = Mathf.Sqrt(2 * initialHeight / -gravity);
+        float totalTime = timeToApex + Mathf.Sqrt(2 * (initialHeight - heightDifference) / -gravity);
+
+        // Calculate velocities
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * initialHeight);
+        Vector3 velocityXZ = displacementXZ / totalTime;
+
+        // Apply velocity
+        rb.linearVelocity = velocityXZ + velocityY;
+
     }
 
     IEnumerator ReturnToCeilingAfterAttack()
     {
-        CheckMovement();
-        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
-            walkpointSet = false;
-        rb.isKinematic = false;
-        rb.useGravity = false;
+        yield return new WaitForSeconds(2f);
         
         yield return new WaitForSeconds(0.3f);
+        
+        rb.isKinematic = false;
+        rb.useGravity = false;
         
         float groundCheckTimeout = 3f;
         float elapsed = 0f;
