@@ -112,7 +112,6 @@ public class Support : NetworkBehaviour
 
     public void RecheckForRoom()
     {
-        Debug.LogWarning("Rechecking for room");
         if (!IsOwner)
         {
             return;
@@ -136,7 +135,7 @@ public class Support : NetworkBehaviour
             }
         }
 
-        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name + "  within :" + currentRoom.GetControllablesWithin(foundControllables).Count);
+      
         if (currentRoom == null)
         {
             // Debug.Log("No room found for the player.");

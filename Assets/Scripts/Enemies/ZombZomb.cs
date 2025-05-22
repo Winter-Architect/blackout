@@ -79,6 +79,7 @@ public class ZombZomb : Enemy
 
     public override void Patrol()
     {
+        agent.speed = 2;
         if (!target)
         {
             if (fieldOfView.Target)
@@ -114,6 +115,7 @@ public class ZombZomb : Enemy
 
     public override void HuntDown()
     {
+        agent.speed = 3.5f;
         if (!target)
         {
             return;
