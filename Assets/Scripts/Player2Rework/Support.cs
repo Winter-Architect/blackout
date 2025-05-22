@@ -129,6 +129,7 @@ public class Support : NetworkBehaviour
         {
             if (room.ContainsPlayer(player1))
             {
+                Debug.LogWarning("Found room for player");
                 currentRoom = room;
                 break;
             }

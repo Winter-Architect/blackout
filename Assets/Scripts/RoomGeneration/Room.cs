@@ -56,8 +56,9 @@ public class Room : NetworkBehaviour
     {
         try {
             Bounds myBounds = GetComponent<Collider>().bounds;
-            Debug.Log($"Player position: {Player.transform.position}");
-            Debug.Log($"Room bounds: {myBounds}");
+            Debug.LogWarning($"Player position: {Player.transform.position}");
+            Debug.LogWarning($"Room bounds: {myBounds}");
+
             if (Audio != null && !Audio.isPlaying)
             {
                 Audio.Play();
@@ -74,6 +75,12 @@ public class Room : NetworkBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
+            var Player2 = FindFirstObjectByType<Support>();
+            if (Player2 is not null)
+            {
+                Debug.LogWarning("Player2 is not null, rechecking for room");
+                Player2.RecheckForRoom();
+            }
             foreach (Light lit in lights)
             {
                 lit.gameObject.SetActive(true);
