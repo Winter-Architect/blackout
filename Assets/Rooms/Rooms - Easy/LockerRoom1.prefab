@@ -6892,6 +6892,7 @@ GameObject:
   - component: {fileID: 3831806925501109343}
   - component: {fileID: 8242590023597152265}
   - component: {fileID: 7381712618123655023}
+  - component: {fileID: 67451027686697115}
   m_Layer: 0
   m_Name: MediumDoor
   m_TagString: Untagged
@@ -7113,6 +7114,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &67451027686697115
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7071289012348209735}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20.61, y: 11.14, z: 1.55}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7194740501930873002
 GameObject:
   m_ObjectHideFlags: 0
