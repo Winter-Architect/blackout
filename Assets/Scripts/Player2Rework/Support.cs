@@ -112,7 +112,6 @@ public class Support : NetworkBehaviour
 
     public void RecheckForRoom()
     {
-        Debug.LogWarning("Rechecking for room");
         if (!IsOwner)
         {
             return;

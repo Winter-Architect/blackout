@@ -88,6 +88,7 @@ public class RoomsGeneration : NetworkBehaviour
             GenerateLastRoom(previousRoom);
             return; 
         }
+        PlayerPrefs.SetInt("CurrentRoomID", id + 1);
         if (GeneratedRooms.Count > 3) DeleteRoom();
         
 

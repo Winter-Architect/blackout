@@ -245,6 +245,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             cursorState = CursorLockMode.None;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
+            
         }
         
          if (isGameWon.Value && !isGameOverScreenActive)

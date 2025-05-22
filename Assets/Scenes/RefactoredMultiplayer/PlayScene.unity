@@ -229,6 +229,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6907896726929548963, guid: d0b21490e871c9649b0c16b254723971, type: 3}
+--- !u!95 &2772153 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1022040522557389845, guid: 71d06a4ec505dbd49a48d57668712e4d, type: 3}
+  m_PrefabInstance: {fileID: 1709679636}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &3226675
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14273,6 +14278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: -1
       addedObject: {fileID: 465099114}
+    - targetCorrespondingSourceObject: {fileID: 2205785350905569778, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 465099117}
     - targetCorrespondingSourceObject: {fileID: 8938946191519830282, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       insertIndex: -1
       addedObject: {fileID: 465099101}
@@ -14546,7 +14554,7 @@ MonoBehaviour:
   turretPrefab: {fileID: 6702179412296539626, guid: 7995b635f3ca9b04ca21d5535884b1e9, type: 3}
   spikeyPrefab: {fileID: 3755375981868785136, guid: af42fb587f4a4ca45bffebd4f8dc6866, type: 3}
   slimePrefab: {fileID: 3407082170272607845, guid: fe84e1c96801e31409600bdecbe556fc, type: 3}
-  numberOfRooms: 15
+  numberOfRooms: 10
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
 --- !u!95 &465099105 stripped
 Animator:
@@ -14598,6 +14606,21 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 465099105}
+--- !u!114 &465099117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465099100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 2772153}
 --- !u!64 &465399924
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -78129,37 +78152,53 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6328137121739960190, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: interactionRange
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0097106
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0097106
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0097106
+      objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.102405965
+      value: -4.242
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.559
+      value: 1.05
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.1245623
+      value: 2.781
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70710576
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -78168,6 +78207,10 @@ PrefabInstance:
     - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192179492549024345, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7531163753162440931, guid: 5de7a943efe1d754ab63085c668967be, type: 3}
       propertyPath: m_Name

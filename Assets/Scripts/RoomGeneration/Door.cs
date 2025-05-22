@@ -24,6 +24,14 @@ public class Door : MonoBehaviour
             if (!doorOpen && Condition && CanBeOpen)
             {
                 Animator.SetBool(OpenCloseAnnimBoolName, true);
+                if (DoorAudio != null && !DoorAudio.isPlaying)
+                {
+                    DoorAudio.Play();
+                }
+                foreach (var doorCollider in gameObject.GetComponents<Collider>())
+                {
+                    doorCollider.enabled = false;
+                }
                 doorOpen = true;
             }
         }
