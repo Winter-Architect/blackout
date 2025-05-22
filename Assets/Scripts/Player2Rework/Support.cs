@@ -13,7 +13,7 @@ public class Support : NetworkBehaviour
     private Controllable[] foundControllables;
     private Room[] foundRooms;
 
-    private Room currentRoom;
+    public Room currentRoom;
 
     private Agent player1;
 

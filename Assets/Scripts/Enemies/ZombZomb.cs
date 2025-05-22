@@ -20,7 +20,9 @@ public class ZombZomb : Enemy
     private float timeElapsed;
     private GameObject target;
     [SerializeField] private float timeElapsedHearing;
-
+    private float lastDamageTime = -Mathf.Infinity;
+    private float damageCooldown = 0.33f;
+    
     private bool isHeard;
     
     private bool _isWaitingForNextNode;
@@ -253,5 +255,20 @@ public class ZombZomb : Enemy
 
         _isWaitingForNextNode = false;
     }
-    
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Time.time - lastDamageTime >= damageCooldown)
+            {
+                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(10, 0);
+                    lastDamageTime = Time.time;
+                }
+            }
+        }
+    }
 }

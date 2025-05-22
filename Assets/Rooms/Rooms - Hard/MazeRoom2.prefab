@@ -13739,6 +13739,7 @@ MonoBehaviour:
   Weight: 10
   Audio: {fileID: 0}
   lights: []
+  Map: {fileID: 0}
 --- !u!114 &-2137823809150477070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13767,7 +13768,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

@@ -24,7 +24,7 @@ public class SpikeyEnemy : Enemy
     private float timeAmbushCheck;
 
     private bool ambush = false;
-    
+    private bool home = false;
     private Vector3 lastPositionCheck;
     private float lastPositionCheckTime;
     private float movementCheckInterval = 1f;
@@ -49,6 +49,7 @@ public class SpikeyEnemy : Enemy
 
         timeElapsed = 0;
         timeAmbushCheck = 1.5f;
+        agent.speed = 1f;
         
         lastPositionCheck = transform.position;
         lastPositionCheckTime = Time.time;
@@ -68,39 +69,40 @@ public class SpikeyEnemy : Enemy
         MoveToInitialCeilingPosition();
     }
     
-    private void MoveToInitialCeilingPosition()
+    public void Initialized(Transform ceilingPos)
     {
-        if (ceilingPosition != null)
-        {
-            transform.position = ceilingPosition.position;
-            if (agent != null && agent.isActiveAndEnabled)
-            {
-                isReturningToCeiling = false;
-                agent.Warp(ceilingPosition.position);
-            }
-        }
-        
+        ceilingPosition = ceilingPos;
+        MoveToInitialCeilingPosition();
     }
+    
+
     public override void Patrol()
     {
+        GoNavmesh();
         Debug.Log("PATROL");
         CheckMovement();
-        agent.speed = 1f;
         
-        if (!walkpointSet)
+        if (!home)
         {
+            Debug.Log("------ -1 ------");
+            MoveToInitialCeilingPosition();
+        }
+        else if (!walkpointSet)
+        {
+            Debug.Log("------ 0 ------");
             SetNextDest();
         }
-        if (walkpointSet)
+        else if (walkpointSet)
         {
+            Debug.Log("------ 1 ------ Debug.Log(\"Is on Navmesh:\")" + agent.isOnNavMesh + agent.hasPath);
+            agent.enabled = true;
             agent.SetDestination(dest);
         }
-        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+        else if (Vector3.Distance(transform.position, dest) < 1)
             walkpointSet = false;
 
-        if (fieldOfView.Spotted)
+        else if (fieldOfView.Spotted)
         {
-
             if (player == null)
             {
                 player = fieldOfView.Target;
@@ -125,11 +127,11 @@ public class SpikeyEnemy : Enemy
                 timeElapsed = 0;
             }
         }
-        GoNavmesh();
     }
     
     public override void Ambush()
     {
+        GoNavmesh();
         if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
             walkpointSet = false;
         CheckMovement();
@@ -149,7 +151,8 @@ public class SpikeyEnemy : Enemy
     public override void RunAway()
     {
         CheckMovement();
-        if (Vector3.Distance(transform.position, dest) < 1 || agent.isStopped || isStuck)
+        GoNavmesh();
+        if (Vector3.Distance(transform.position, dest) < 1 || isStuck || agent.isStopped)
             walkpointSet = false;
         Debug.Log("RUN AWAY");
 
@@ -180,31 +183,7 @@ public class SpikeyEnemy : Enemy
         }
         
     }
-
-    private void SetNextDest()
-    {
-        float z = Random.Range(-range, range);
-        float x = Random.Range(-range, range);
-
-        Vector3 randomPoint = transform.position + new Vector3(x, 0, z);
-
-        while (!CanReachDestination(randomPoint))
-        {
-             z = Random.Range(-range, range);
-             x = Random.Range(-range, range);
-
-            randomPoint = transform.position + new Vector3(x, 0, z);
-        }
-
-        dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
-
-        if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
-        {
-            walkpointSet = true;
-            isStuck = false;
-        }
-    }
-
+    
     private void SpikeAttack()
     {
         CheckMovement();
@@ -220,11 +199,13 @@ public class SpikeyEnemy : Enemy
             player = fieldOfView.Target;
         }
         
-        Vector3 attackDirection = (player.transform.position - transform.position).normalized;
-        
-        attackDirection = attackDirection.normalized;
+        Vector3 fakeOrigin = player.transform.position - Vector3.forward * 5f;
+        Vector3 jumpDir = (player.transform.position - fakeOrigin).normalized;
 
-        rb.linearVelocity = attackDirection * attackForce;
+        jumpDir += Vector3.up * 0.75f;
+        jumpDir = jumpDir.normalized;
+
+        rb.linearVelocity = jumpDir * attackForce;
         
         StartCoroutine(ReturnToCeilingAfterAttack());
     }
@@ -343,10 +324,69 @@ public class SpikeyEnemy : Enemy
             lastPositionCheckTime = Time.time;
         }
     }
-    public void Initialized(Transform ceilingPos)
+    
+    private void MoveToInitialCeilingPosition()
     {
-        ceilingPosition = ceilingPos;   
+        if (ceilingPosition != null)
+        {
+            transform.position = ceilingPosition.position;
+            if (agent != null && agent.isActiveAndEnabled)
+            {
+                NavMeshHit navMeshHit;
+                if (NavMesh.SamplePosition(transform.position, out navMeshHit, 5f, NavMesh.AllAreas))
+                {
+                    agent.Warp(navMeshHit.position);
+                    isReturningToCeiling = false;
+                    home = true;
+                }
+
+                home = false;
+            }
+        }
+        
     }
+
+    private void SetNextDest()
+    {
+        float z = Random.Range(-range, range);
+        float x = Random.Range(-range, range);
+
+        Vector3 randomPoint = transform.position + new Vector3(x, 0, z);
+
+        while (!CanReachDestination(randomPoint))
+        {
+            z = Random.Range(-range, range);
+            x = Random.Range(-range, range);
+
+            randomPoint = transform.position + new Vector3(x, 0, z);
+        }
+
+        Debug.Log("Is on Navmesh:" + agent.isOnNavMesh);
+        dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+        NavMeshHit navMeshHit;
+        if (NavMesh.SamplePosition(dest, out navMeshHit, 3.0f, NavMesh.AllAreas))
+        {
+            Debug.Log("Is inside");
+
+            dest = navMeshHit.position; 
+            walkpointSet = true;
+
+        }
+        if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
+        {
+            Debug.Log("Is walkpointSet true:" + walkpointSet);
+            walkpointSet = true;
+            isStuck = false;
+        }
+    }
+
     
-    
+    protected new virtual void GoNavmesh()
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            agent.Warp(hit.position); 
+        }
+    }
 }
