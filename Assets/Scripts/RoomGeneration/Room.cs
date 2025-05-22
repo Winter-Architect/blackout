@@ -56,6 +56,8 @@ public class Room : NetworkBehaviour
     {
         try {
             Bounds myBounds = GetComponent<Collider>().bounds;
+            Debug.Log($"Player position: {Player.transform.position}");
+            Debug.Log($"Room bounds: {myBounds}");
             if (Audio != null && !Audio.isPlaying)
             {
                 Audio.Play();
