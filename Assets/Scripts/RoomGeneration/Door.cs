@@ -19,7 +19,6 @@ public class Door : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Merde");
         if (other.CompareTag(PlayerTag))
         {
             if (!doorOpen && Condition && CanBeOpen)

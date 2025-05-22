@@ -112,18 +112,19 @@ public class Support : NetworkBehaviour
 
     public void RecheckForRoom()
     {
+        Debug.LogWarning("Rechecking for room");
         if (!IsOwner)
         {
             return;
         }
-        Debug.LogWarning("Rechecking for room");
+        // Debug.LogWarning("Rechecking for room");
 
         supportHUD.SetActive(IsOwner);
 
         foundRooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
 
 
-        Debug.LogWarning($"Found {foundRooms.Length} rooms");
+        // Debug.LogWarning($"Found {foundRooms.Length} rooms");
 
         foreach (var room in foundRooms)
         {
@@ -135,20 +136,22 @@ public class Support : NetworkBehaviour
             }
         }
 
-        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name);
+        Debug.LogWarning("Current room: " + currentRoom?.gameObject.name + "  within :" + currentRoom.GetControllablesWithin(foundControllables).Count);
         if (currentRoom == null)
         {
-            Debug.Log("No room found for the player.");
+            // Debug.Log("No room found for the player.");
             return;
         }
         Controllables = new LinkedList<Controllable>(currentRoom.GetControllablesWithin(foundControllables));
-        Debug.LogWarning(foundControllables.Length + " controllables found");
-        Debug.LogWarning("controllable count " + Controllables?.Count);
+        // Debug.LogWarning(foundControllables.Length + " controllables found");
+        // Debug.LogWarning("controllable count " + Controllables?.Count);
         if (Controllables.Count > 0) current = Controllables.First;
-        else current = null;
+        else {
+            // Debug.LogWarning("No controllables found in the room");
+            current = null;}
         if (current == null) return;
         current.Value.StopControlling();
-        Debug.Log(current.Value.gameObject.name);
+        // Debug.Log(current.Value.gameObject.name);
         SwitchCurrentOwnerOfObjectServerRpc(current.Value.gameObject.GetComponent<NetworkObject>());
 
     }

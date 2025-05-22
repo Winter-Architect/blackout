@@ -28,25 +28,26 @@ public class Room : NetworkBehaviour
         foreach (var item in placeHolders)
         {
             item.Spawn();
-            Debug.Log(item.name);
         }
     }
+
+
 
     public List<Controllable> GetControllablesWithin(Controllable[] controllables)
     {
         List<Controllable> res = new List<Controllable>();
         Bounds myBounds = GetComponent<Collider>().bounds;
-
+        Debug.LogWarning("Controllables length: " + controllables.Length);
         foreach (Controllable ctrl in controllables)
         {
             if (myBounds.Contains(ctrl.transform.position))
             {
-                Debug.Log($"found {ctrl.gameObject.name}");
+                // Debug.Log($"found {ctrl.gameObject.name}");
                 res.Add(ctrl);
             }
             else
             {
-                Debug.Log($"not found {ctrl.gameObject.name}");
+                // Debug.Log($"not found {ctrl.gameObject.name}");
             }
         }
         return res;
@@ -56,8 +57,8 @@ public class Room : NetworkBehaviour
     {
         try {
             Bounds myBounds = GetComponent<Collider>().bounds;
-            Debug.LogWarning($"Player position: {Player.transform.position}");
-            Debug.LogWarning($"Room bounds: {myBounds}");
+            // Debug.LogWarning($"Player position: {Player.transform.position}");
+            // Debug.LogWarning($"Room bounds: {myBounds}");
 
             if (Audio != null && !Audio.isPlaying)
             {
@@ -78,7 +79,7 @@ public class Room : NetworkBehaviour
             var Player2 = FindFirstObjectByType<Support>();
             if (Player2 is not null)
             {
-                Debug.LogWarning("Player2 is not null, rechecking for room");
+                // Debug.LogWarning("Player2 is not null, rechecking for room");
                 Player2.RecheckForRoom();
             }
             foreach (Light lit in lights)
@@ -95,28 +96,10 @@ public class Room : NetworkBehaviour
                 }
 
                 playerAudio.clip = musicClip;
-                playerAudio.Play();
-            }
-        }
-    }
-    void OnTriggerExit(Collider col)
-    {
-        if(col.gameObject.tag == "Player")
-        {
-            // var Player2 = FindFirstObjectByType<Support>();
-            // if (Player2 is not null)
-            // {
-            //     Debug.LogWarning("Player2 is not null, rechecking for room");
-            //     Player2.RecheckForRoom();
-            // }
-            if (Audio != null && !Audio.isPlaying)
-            {
-                Audio.Stop();
-                
-            }
-            foreach (Light lit in lights)
-            {
-                lit.gameObject.SetActive(false);
+                foreach (Light lit in lights)
+                {
+                    lit.gameObject.SetActive(false);
+                }
             }
         }
     }

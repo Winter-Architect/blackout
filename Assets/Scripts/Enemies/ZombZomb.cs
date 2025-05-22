@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +25,9 @@ public class ZombZomb : Enemy
     private bool isHeard;
     
     private bool _isWaitingForNextNode;
+
+    [SerializeField] private Animator ZombAnimator;
+
 
     void Awake()
     {
@@ -73,8 +75,8 @@ public class ZombZomb : Enemy
         
         stateMachine.SetState(patrolState);
     }
-    
-    
+
+
     public override void Patrol()
     {
         if (!target)
@@ -89,12 +91,12 @@ public class ZombZomb : Enemy
                 target = sensorDetector.Target;
             }
         }
-        
+
         if (isInvestigating)
         {
             SetEndInvestigateDatas();
         }
-        
+
         if (agent.updateRotation == false)
         {
             agent.updateRotation = true;
@@ -123,7 +125,7 @@ public class ZombZomb : Enemy
 
         if (isHeard)
             timeElapsedHearing = 0;
-        
+
         if (fieldOfView.Spotted || isHeard)
         {
             if (lastPlayerPositionVisited)
@@ -141,7 +143,7 @@ public class ZombZomb : Enemy
                 lastPlayerPositionArray[0] = hit.position;
             }
             agent.destination = lastPlayerPositionArray[0];
-            
+
             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
                 lastPlayerPositionVisited = true;
@@ -158,18 +160,18 @@ public class ZombZomb : Enemy
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         agent.updateRotation = false;
-        
+
         if (agent.isStopped)
         {
-            if (timeElapsed<=2.6f)
+            if (timeElapsed <= 2.6f)
             {
                 float rotationAmount = rotationSpeed * Time.deltaTime;
                 this.transform.Rotate(Vector3.up, -rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
-            else if (timeElapsed<=3.6f)
+            else if (timeElapsed <= 3.6f)
             {
-                float rotationAmount = (rotationSpeed+35) * Time.deltaTime;
+                float rotationAmount = (rotationSpeed + 35) * Time.deltaTime;
                 this.transform.Rotate(Vector3.up, rotationAmount);
                 timeElapsed += Time.deltaTime;
             }
@@ -271,4 +273,6 @@ public class ZombZomb : Enemy
             }
         }
     }
+
+
 }

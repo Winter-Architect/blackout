@@ -620,7 +620,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
 
         public void InteractWith(InteractableButton button)
         {
-            Debug.Log("Clicked 22");
+            // Debug.Log("Clicked 22");
         }
 
 
