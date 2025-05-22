@@ -8,7 +8,8 @@ public class RottenSlime : Enemy
 {
     private Vector3 dest;
     private bool walkpointSet;
-    private int range;
+    private float rangeX;
+    private float rangeZ;
     private bool hasAmbushed;
     private bool isAttacking;
     private Rigidbody rb;
@@ -35,7 +36,8 @@ public class RottenSlime : Enemy
         walkpointSet = false;
         hasAmbushed = false;
         isAttacking = false;
-        range = 6;
+        rangeX = 1f;
+        rangeZ = 6f;
         rb.useGravity = false;
         
         rb.isKinematic = true;
@@ -60,6 +62,7 @@ public class RottenSlime : Enemy
     {
         if (!agent.isOnNavMesh)
         {
+            Debug.Log("not on navmesh");
             GoNavmesh();
             if (!agent.isOnNavMesh)
                 StartCoroutine(ReturnToNavMesh());
@@ -68,14 +71,18 @@ public class RottenSlime : Enemy
         {
             if (!walkpointSet)
             {
+                Debug.Log("-------- 0 --------");
                 SetNextDest();
             }
             if (walkpointSet)
             {
+                Debug.Log("-------- 1 --------");
+
                 agent.SetDestination(dest);
             }
-            if (Vector3.Distance(transform.position, dest) < 2 || !agent.hasPath)
+            if (Vector3.Distance(transform.position, dest) < 1 || !agent.hasPath)
             {
+                Debug.Log("-------- 2 --------");
                 walkpointSet = false;
             }
         }
@@ -130,21 +137,21 @@ public class RottenSlime : Enemy
 
     private void SetNextDest()
     {
-        float z = Random.Range(-range, range);
-        float x = Random.Range(-range, range);
+        float z = Random.Range(-rangeZ, rangeZ);
+        float x = Random.Range(-rangeX, rangeX);
 
         Vector3 randomPoint = transform.position + new Vector3(x, 0, z);
 
         while (!CanReachDestination(randomPoint))
         {
-            z = Random.Range(-range, range);
-            x = Random.Range(-range, range);
+            z = Random.Range(-rangeZ, rangeZ);
+            x = Random.Range(-rangeX, rangeX);
 
             randomPoint = transform.position + new Vector3(x, 0, z);
         }
 
         dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
-
+        walkpointSet = true;
         if (Physics.Raycast(dest, Vector3.down, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
             walkpointSet = true;
