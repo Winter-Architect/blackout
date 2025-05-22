@@ -1,3 +1,4 @@
+using System;
 using Unity.AI.Navigation;
 using UnityEngine;
 using TMPro;
@@ -18,6 +19,7 @@ public class RoomsGeneration : NetworkBehaviour
     public GameObject spikeyPrefab;
     public GameObject slimePrefab;
     public int numberOfRooms = 20; // Nombre total de salles à générer
+    private Room previousPreviousRoom;
     
     public GameObject DoorPrefab;
     [SerializeField] public Queue<NetworkObject> GeneratedRooms = new Queue<NetworkObject>() ;
@@ -130,8 +132,41 @@ public class RoomsGeneration : NetworkBehaviour
             }
         }
 
+
+
         BuildNavmeshLinks(roomScript);
         SpawnEnemies(roomScript);
+        try
+        {
+            DeSpawnAll(GeneratedRooms.ToArray()[1].GetComponent<Room>());
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+    }
+
+    public void DeSpawnAll(Room room)
+    {
+        NavMeshAgent[] navMeshAgents = room.GetComponentsInChildren<NavMeshAgent>(true);
+        foreach (NavMeshAgent navMesh in navMeshAgents)
+        {
+            Debug.Log("delete Agent");
+            NetworkObject netObj = navMesh.GetComponentInParent<NetworkObject>();
+            netObj.Despawn();
+        }
+        NavMeshSurface[] navMeshSurf = room.GetComponentsInChildren<NavMeshSurface>(true);
+        foreach (NavMeshSurface navMesh in navMeshSurf)
+        {
+            //navMesh.RemoveData();
+        }
+        NavMeshLink[] navmeshLinks = room.GetComponentsInChildren<NavMeshLink>(true);
+        foreach (NavMeshLink navMesh in navmeshLinks)
+        {
+            Debug.Log("delete Links");
+            navMesh.enabled = false;
+            navMesh.gameObject.SetActive(false);
+        }
     }
 
     private void BuildNavmeshLinks(Room room)
@@ -183,6 +218,7 @@ public class RoomsGeneration : NetworkBehaviour
 
             GameObject zombObj = Instantiate(zombPrefab, path[0].position, Quaternion.identity);
             var zombNetworkObj = zombObj.GetComponent<NetworkObject>();
+            zombNetworkObj.transform.SetParent(room.transform);
             if (zombNetworkObj != null) zombNetworkObj.Spawn();
             ZombZomb zomb = zombObj.GetComponent<ZombZomb>();
             NavMeshHit hitBis;
@@ -197,6 +233,7 @@ public class RoomsGeneration : NetworkBehaviour
             GameObject turretObj = Instantiate(turretPrefab, turretNode.position, turretNode.rotation);
             var turretNetworkObj = turretObj.GetComponent<NetworkObject>();
             if (turretNetworkObj != null) turretNetworkObj.Spawn();
+            turretNetworkObj.transform.SetParent(room.transform);
             TurretEnemy turret = turretObj.GetComponent<TurretEnemy>();
             NavMeshHit hit;
             if (NavMesh.SamplePosition(turretNode.position, out hit, 2.0f, NavMesh.AllAreas)) turretNode.position = hit.position;
@@ -210,6 +247,7 @@ public class RoomsGeneration : NetworkBehaviour
             GameObject spikeyObj = Instantiate(spikeyPrefab, spikeyNode.position, spikeyNode.rotation);
             var spikeyNetworkObj = spikeyObj.GetComponent<NetworkObject>();
             if (spikeyNetworkObj != null) spikeyNetworkObj.Spawn();
+            spikeyNetworkObj.transform.SetParent(room.transform);
             SpikeyEnemy spikey = spikeyObj.GetComponent<SpikeyEnemy>();
             spikeyObj.GetComponent<NavMeshAgent>().Warp(spikeyNode.position);
             NavMeshHit hit;
@@ -224,6 +262,7 @@ public class RoomsGeneration : NetworkBehaviour
             GameObject slimeObj = Instantiate(slimePrefab, slimeNode.position, slimeNode.rotation);
             var slimeNetworkObj = slimeObj.GetComponent<NetworkObject>();
             if (slimeNetworkObj != null) slimeNetworkObj.Spawn();
+            slimeNetworkObj.transform.SetParent(room.transform);
             slimeObj.GetComponent<NavMeshAgent>().Warp(slimeNode.position);
             RottenSlime slime = slimeObj.GetComponent<RottenSlime>();
             slime.Initialized();
@@ -391,6 +430,7 @@ public class RoomsGeneration : NetworkBehaviour
             Debug.LogWarning($"Room {room.gameObject.name} n'est pas spawn, impossible de despawn.");
             return;
         }
+        DeSpawnAll(room.GetComponent<Room>());
         room.Despawn(true);
         Debug.LogWarning($"Removed {room.gameObject.name}");
     }

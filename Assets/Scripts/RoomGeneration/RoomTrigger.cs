@@ -1,6 +1,7 @@
 using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RoomTrigger : NetworkBehaviour
 {
@@ -32,6 +33,21 @@ public class RoomTrigger : NetworkBehaviour
                 navMesh.gameObject.SetActive(false);
                 navMesh.gameObject.SetActive(true);
             }
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("trigger entered " + other.name + " " + triggered);
+        if (triggered || !IsServer) return;
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("trigger player entered");
+            triggered = true;
+            var generator = FindFirstObjectByType<RoomsGeneration>();
+            var currentRoom = GetComponent<Room>();
+
+            generator.DeSpawnAll(currentRoom);
         }
     }
 }
