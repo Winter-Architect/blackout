@@ -5,6 +5,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+#nullable enable
+
 public class Room : NetworkBehaviour
 {
     public AudioClip musicClip;
@@ -16,23 +18,14 @@ public class Room : NetworkBehaviour
     public float Weight;
     public AudioSource Audio; // Reference to AudioSource
     public List<Light> lights;
-
-    /*
-    private void Start()
-    {
-        foreach (Light lit in lights)
-        {
-            lit.gameObject.SetActive(false);
-        }
-    }
-    */
+    public Sprite? Map;
 
     public override void OnNetworkSpawn()
     {
-        if(!IsServer) return;
-        
+        if (!IsServer) return;
+
         var placeHolders = gameObject.GetComponentsInChildren<NetObjectPlaceHolder>();
-        foreach(var item in placeHolders)
+        foreach (var item in placeHolders)
         {
             item.Spawn();
             Debug.Log(item.name);

@@ -25,7 +25,6 @@ public class KeyPad : MonoBehaviour
     public Label inputLabel;
 
     private string code;
-    private bool inside = false;
     public static bool IsAnyKeyPadOpen = false; 
     public Door door;
 
@@ -85,10 +84,16 @@ public class KeyPad : MonoBehaviour
 
     public void Update()
     {
+            // if (!CompareTag("Player")) // ou autre condition pour reconnaître l'agent
+            // {
+            //     Destroy(this);
+            //     return;
+            // }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ui.style.display = DisplayStyle.None;
-            IsAnyKeyPadOpen = false; 
+            IsAnyKeyPadOpen = false;
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             UnityEngine.Cursor.visible = false;
         }
@@ -112,26 +117,25 @@ public class KeyPad : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // On vérifie que c'est bien l'agent (joueur 1) qui entre
+        if (other.CompareTag("Player") && other.GetComponent<Agent>() != null)
         {
             Debug.Log("player entrer");
-            ui.style.display = DisplayStyle.Flex; // Affiche l'UI
+            ui.style.display = DisplayStyle.Flex;
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
-            inside = true;
             IsAnyKeyPadOpen = true;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<Agent>() != null)
         {
             Debug.Log("player exit");
-            ui.style.display = DisplayStyle.None; // Cache l'UI
+            ui.style.display = DisplayStyle.None;
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             UnityEngine.Cursor.visible = false;
-            inside = false;
             IsAnyKeyPadOpen = false;
         }
     }
