@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: codepad
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 59d2ae125493c9c429c22c18c7f2b62d, type: 3}
+      propertyPath: m_TagString
+      value: KeyPad
+      objectReference: {fileID: 0}
     - target: {fileID: 1273097602874632127, guid: 59d2ae125493c9c429c22c18c7f2b62d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -202,7 +206,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389e649b58efacc46a5ea9f6403ef069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CODE: 
+  Split: 0
+  Digits: 0
+  tmp1: {fileID: 0}
+  tmp2: {fileID: 0}
+  tmp3: {fileID: 0}
+  tmp4: {fileID: 0}
+  tmp5: {fileID: 0}
   UIDocument: {fileID: -1612550997369756547}
   door: {fileID: 0}
 --- !u!114 &-1612550997369756547

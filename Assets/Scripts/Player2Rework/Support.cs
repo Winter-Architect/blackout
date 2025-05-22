@@ -155,13 +155,22 @@ public class Support : NetworkBehaviour
     private void Update()
     {
         
-
         // Si le NetworkManager n'est plus actif, on ne fait rien
         if (!IsOwner || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
             return;
 
         if (player1 is null)
             return;
+
+        var keyPads = GameObject.FindGameObjectsWithTag("KeyPad");
+        foreach (var keyPad in keyPads)
+        {
+            var uiDocument = keyPad.GetComponent<UIDocument>();
+            if (uiDocument != null)
+            {
+                Destroy(uiDocument);
+            }
+        }
 
         if (currentRoom == null)
         {
