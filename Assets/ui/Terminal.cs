@@ -23,8 +23,15 @@ public class Terminal : MonoBehaviour
     public bool isMapOpen = false;
     public bool isOpen = false;
     public bool helpButtonClicked = false;
+    private Sprite mapSprite;
     // Nouvelle liste pour sauvegarder les messages
     public List<string> messageHistory = new List<string>();
+    private Support support;
+    private void Start()
+    {
+        support = FindFirstObjectByType<Support>();
+        
+    }
 
     void Awake() 
     {
@@ -70,10 +77,15 @@ public class Terminal : MonoBehaviour
         }
         RestoreMessageHistory();
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return)) ExecuteCommand();
+        
+        if (support != null)
+        {
+            mapSprite = support.currentRoom.Map;
+        }
     }
 
     void ExecuteCommand() {
@@ -128,12 +140,20 @@ public class Terminal : MonoBehaviour
 
     void DisplayMap() {
         AddMessageToTerminal("map", true);
-        if (isMapOpen) {
+        if (!isMapOpen && mapSprite == null)
+        {
+            AddMessageToTerminal("No map found for this room");
+            return;
+        }
+        if (isMapOpen)
+        {
             MapContainer.style.display = DisplayStyle.None;
             ScrollContainer.style.display = DisplayStyle.Flex;
             isMapOpen = false;
             OpenMapButton.text = "Open Map";
-        } else {
+        }
+        else
+        {
             MapContainer.style.display = DisplayStyle.Flex;
             ScrollContainer.style.display = DisplayStyle.None;
             isMapOpen = true;

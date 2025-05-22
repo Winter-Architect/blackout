@@ -119,7 +119,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isInLocker: 0
-  isDead: 0
+  isDead:
+    m_InternalValue: 0
   spawnTimer: 20
   shouldSpawnEntity: 0
   canGrapple: 0
@@ -140,6 +141,7 @@ MonoBehaviour:
   hasKey: 0
   ItemLibrary: {fileID: 11400000, guid: f54a843f1ab891847838977591a905a1, type: 2}
   isItemEquipped: 0
+  currentlyEquippedItempublic: {fileID: 0}
   freeze: 0
   activeGrapple: 0
   inventoryCanvas: {fileID: 4988085219231443046, guid: 6dadbe1d3bbf76d4b975e7f4a219081b, type: 3}
@@ -148,6 +150,9 @@ MonoBehaviour:
   Health: 100
   Energy: 100
   GameOverScreenPrefab: {fileID: 6020982136039824340, guid: 9133bed930dc72349a93f832099e9d7b, type: 3}
+  isGameOverScreenActive: 0
+  isGameWon:
+    m_InternalValue: 0
 --- !u!54 &2643502533287587449
 Rigidbody:
   m_ObjectHideFlags: 0
