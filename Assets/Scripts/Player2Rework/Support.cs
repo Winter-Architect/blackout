@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blackout.Inventory;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,7 +62,6 @@ public class Support : NetworkBehaviour
         //current = Controllables.First;
 
         Destroy(GameObject.FindGameObjectWithTag("Inventory"));
-
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
 
 
@@ -129,7 +129,7 @@ public class Support : NetworkBehaviour
         {
             if (room.ContainsPlayer(player1))
             {
-                Debug.LogWarning("Found room for player");
+                
                 currentRoom = room;
                 break;
             }
