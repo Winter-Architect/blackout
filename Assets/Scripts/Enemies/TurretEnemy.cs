@@ -23,8 +23,15 @@ public class TurretEnemy : Enemy
     public bool isRaycastLaser;
     [SerializeField] private Transform laserPrefab;
     public bool isIdle;
+    private Quaternion targetRotation;
+    private float currentAngle;
+    private float currentRotation;
+    private bool rotatingRight;
     
-
+    private float baseRotationY;  // new: to store the initial Y rotation
+    private float minRotation;
+    private float maxRotation;
+    
     void Awake()
     {
         fieldOfView = gameObject.GetComponent<FieldOfView>();
@@ -36,11 +43,17 @@ public class TurretEnemy : Enemy
         timeElapsed = 0;
 
         delayFire = 1.5f;
-        rotationSpeed = 60;
+        rotationSpeed = 40;
+        
+        baseRotationY = transform.rotation.eulerAngles.y;
 
+        currentAngle = baseRotationY;
+        rotatingRight = true;
+        
         laserLine = GetComponent<LineRenderer>();
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeAll;
+        isIdle = true;
     }
     
     void Start()
@@ -64,9 +77,36 @@ public class TurretEnemy : Enemy
         timeElapseBetweenFire = 0;
         laserLine.enabled = false;
         
-        float rotationAmount = (rotationSpeed) * Time.deltaTime;
-        if (!isIdle)
-            this.transform.Rotate(Vector3.up, rotationAmount);
+        float rotationAmount = rotationSpeed * Time.deltaTime;
+
+        if (isIdle) minRotation = baseRotationY - 45f;
+        else
+            minRotation = baseRotationY - 90f;
+        
+        if (isIdle) maxRotation = baseRotationY + 45f;
+        else
+            maxRotation = baseRotationY + 90f;
+
+        if (rotatingRight)
+        {
+            currentAngle += rotationAmount;
+            if (currentAngle >= maxRotation)
+            {
+                currentAngle = maxRotation;
+                rotatingRight = false;
+            }
+        }
+        else
+        {
+            currentAngle -= rotationAmount;
+            if (currentAngle <= minRotation)
+            {
+                currentAngle = minRotation;
+                rotatingRight = true;
+            }
+        }
+
+        transform.rotation = Quaternion.Euler(0f, currentAngle, 0f);
     }
 
     public override void Investigate()
