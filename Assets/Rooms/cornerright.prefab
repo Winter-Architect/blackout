@@ -20,6 +20,14 @@ PrefabInstance:
       propertyPath: DoorCondition
       value: 
       objectReference: {fileID: 3970764682815672016}
+    - target: {fileID: 3519030506249296501, guid: a76c2c13f883d164c9475f35448f2436, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: f66de2ce025badf4f9b306c9c70896d5, type: 3}
+    - target: {fileID: 3519030506249296501, guid: a76c2c13f883d164c9475f35448f2436, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f66de2ce025badf4f9b306c9c70896d5, type: 3}
     - target: {fileID: 4682881502099817836, guid: a76c2c13f883d164c9475f35448f2436, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.071428575
@@ -265,6 +273,10 @@ PrefabInstance:
     - target: {fileID: -8776918669724235050, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 1621416797
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536473826788803811, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2862788769
       objectReference: {fileID: 0}
     - target: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
       propertyPath: m_Name
@@ -2223,7 +2235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  musicClip: {fileID: 8300000, guid: f5555f738197f2d48af6b3a2ac7d99ab, type: 3}
+  musicClip: {fileID: 8300000, guid: a3be6e827f8214048a64dc2b9de2f158, type: 3}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 1
