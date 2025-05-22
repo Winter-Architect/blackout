@@ -154,6 +154,7 @@ public class Terminal : MonoBehaviour
         }
         else
         {
+            MapContainer.style.backgroundImage = new StyleBackground(mapSprite);
             MapContainer.style.display = DisplayStyle.Flex;
             ScrollContainer.style.display = DisplayStyle.None;
             isMapOpen = true;
