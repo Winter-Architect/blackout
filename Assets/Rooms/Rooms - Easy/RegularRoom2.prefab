@@ -3481,11 +3481,12 @@ MonoBehaviour:
   musicClip: {fileID: 0}
   RoomID: 0
   isTurningLeft: 0
-  isTurningRight: 0
+  isTurningRight: 1
   isStairs: 0
   Weight: 1
   Audio: {fileID: 0}
   lights: []
+  Map: {fileID: 0}
 --- !u!65 &5267124898287066349
 BoxCollider:
   m_ObjectHideFlags: 0
