@@ -17,6 +17,8 @@ public class RottenSlime : Enemy
     [SerializeField] private float jumpForce = 30f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance = 1f;
+    private float lastDamageTime = -Mathf.Infinity;
+    private float damageCooldown = 0.33f;
 
     void Awake()
     {
@@ -246,14 +248,18 @@ public class RottenSlime : Enemy
         return -1;
     }
     
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && isAttacking)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (Time.time - lastDamageTime >= damageCooldown)
             {
-                damageable.TakeDamage(20, 0);
+                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(5, 0);
+                    lastDamageTime = Time.time;
+                }
             }
         }
     }
