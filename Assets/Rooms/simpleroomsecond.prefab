@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2900349377
+  GlobalObjectIdHash: 2070695288
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1072,7 +1072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  musicClip: {fileID: 0}
+  musicClip: {fileID: 8300000, guid: f5555f738197f2d48af6b3a2ac7d99ab, type: 3}
   RoomID: 0
   isTurningLeft: 0
   isTurningRight: 0
@@ -1084,6 +1084,7 @@ MonoBehaviour:
   - {fileID: 2753066136619089631}
   - {fileID: 6786569536010151567}
   - {fileID: 6324337983550518225}
+  Map: {fileID: 0}
 --- !u!65 &8054796016409432823
 BoxCollider:
   m_ObjectHideFlags: 0
