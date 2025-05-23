@@ -10,7 +10,8 @@ public class DataController : MonoBehaviour
     private string USER_URL = "https://api.nocteln.fr/blackout/users";
     private string userId = null;
     void Start() {
-     userId = SystemInfo.deviceUniqueIdentifier;
+    DontDestroyOnLoad(gameObject); // <-- Ajout ici
+    userId = SystemInfo.deviceUniqueIdentifier;
         StartCoroutine(AddPlayerRequest(userId));
     }
     // void OnDisable() {
