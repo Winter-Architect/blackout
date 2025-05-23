@@ -259,13 +259,12 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.rootVisualElement.Q<Label>("Score").text += nbOfDocumentCollected + " Document(s) collected";
-            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Complete!";
             GameOverScreen.sortingOrder = 99999;
 
         }
 
         
-        // Only count down when not waiting to spawn the next entity
         if (!shouldSpawnEntity)
         {
             spawnTimer -= Time.deltaTime;
@@ -275,7 +274,6 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
                 shouldSpawnEntity = true;
             }
         }
-        // Once door clears the flag, restart the timer
         else if (shouldSpawnEntity == false && spawnTimer <= 0)
         {
             spawnTimer = 120f;
@@ -474,7 +472,6 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
 
         playerCameraPivotTransform.localRotation = verticalRotation;
 
-        // Synchroniser la rotation du corps avec la caméra (axe Y uniquement)
         playerBody.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
 

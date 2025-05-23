@@ -5,9 +5,6 @@ using Unity.VisualScripting;
 
 public class DocumentManager : MonoBehaviour
 {
-    // Liste de tous les documents disponibles dans le jeu
-   
-    // Liste des IDs des documents collectés
     private List<int> collectedDocumentIds = new List<int>();
 
     public static DocumentManager Instance { get; private set; }
@@ -26,7 +23,6 @@ public class DocumentManager : MonoBehaviour
 
     }
 
-    // Collecte un document par son ID
     public void CollectDocument(int documentId)
     {
         Debug.Log("collectdoc");

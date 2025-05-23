@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Document : MonoBehaviour
 {
-    // Liste de tous les documents disponibles dans le jeu
     public List<DocumentObject> AllDocuments;    
     [SerializeField] protected UIDocument UIDocument;
     private VisualElement ui;
@@ -16,8 +15,6 @@ public class Document : MonoBehaviour
     public Sprite TempImage;
     public Label ImageName;
     private Button MenuButton;
-
-    // Liste des IDs des documents collectés
     private List<int> collectedDocumentIds = new List<int>();
 
     public static Document Instance { get; private set; }
@@ -53,7 +50,6 @@ public class Document : MonoBehaviour
         UIDocument.sortingOrder = 0;
     }
 
-    // Collecte un document par son ID
     public void CollectDocument(int documentId)
     {
         Debug.Log("collectdoc");
@@ -82,7 +78,6 @@ public class Document : MonoBehaviour
     
     private void SaveCollectedDocuments()
     {
-        // Convertir la liste en string séparée par des virgules
         string idList = string.Join(",", collectedDocumentIds);
         PlayerPrefs.SetString("CollectedDocumentIds", idList);
         PlayerPrefs.Save();

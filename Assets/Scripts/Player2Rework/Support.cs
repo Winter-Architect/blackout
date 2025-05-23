@@ -158,7 +158,6 @@ public class Support : NetworkBehaviour
     private void Update()
     {
         
-        // Si le NetworkManager n'est plus actif, on ne fait rien
         if (!IsOwner || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
             return;
 
@@ -221,11 +220,10 @@ public class Support : NetworkBehaviour
             UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
            // GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
-            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
+            GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Complete!";
             GameOverScreen.sortingOrder = 99999;
         }
 
-        // Vérification de la validité de current et de son NetworkObject
         if (current != null && current.Value != null && current.Value.gameObject != null)
         {
             var netObj = current.Value.gameObject.GetComponent<NetworkObject>();
@@ -251,7 +249,6 @@ public class Support : NetworkBehaviour
             }
         }
 
-        // Gestion du curseur
         if (supportHUDscript != null && supportHUDscript.isTermOpen)
         {
             cursorState = CursorLockMode.None;
@@ -331,7 +328,6 @@ public class Support : NetworkBehaviour
 
     private void OnSceneUnloaded(Scene scene)
     {
-        // Désactive ce script pour éviter toute exécution après destruction des objets
         enabled = false;
     }
 }

@@ -16,7 +16,7 @@ public class Room : NetworkBehaviour
     public bool isTurningRight;
     public bool isStairs;
     public float Weight;
-    public AudioSource Audio; // Reference to AudioSource
+    public AudioSource Audio; 
     public List<Light> lights;
     public Sprite? Map;
 

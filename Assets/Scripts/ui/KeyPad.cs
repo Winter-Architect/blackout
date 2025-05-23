@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class KeyPad : MonoBehaviour
 {
     private static string CODE = "1234";
-    public bool Split; //Indicates whether the code should be written on a single piece of paper or not.
+    public bool Split; 
     public int Digits; //HAS TO BE EITHER 4 OR 5
     private int CODE_LENGHT_LIMIT { get => CODE.Length; }
 
@@ -122,7 +122,6 @@ public class KeyPad : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // On vérifie que c'est bien l'agent (joueur 1) qui entre
         if (other.CompareTag("Player") && other.GetComponent<Agent>() != null)
         {
             Debug.Log("player entrer");

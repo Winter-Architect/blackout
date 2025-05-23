@@ -43,7 +43,7 @@ public class DataController : MonoBehaviour
         {
             req.uploadHandler = new UploadHandlerRaw(bodyRaw);
             req.downloadHandler = new DownloadHandlerBuffer();
-            req.SetRequestHeader("Content-Type", "application/json"); // Indiquer que c'est du JSON
+            req.SetRequestHeader("Content-Type", "application/json");
 
             yield return req.SendWebRequest();
 
@@ -60,14 +60,14 @@ public class DataController : MonoBehaviour
 
     IEnumerator RemovePlayerRequest(string playerId)
     {
-        string jsonData = "{\"id\":\"" + playerId + "\"}"; // Création du JSON
+        string jsonData = "{\"id\":\"" + playerId + "\"}"; 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
 
         using (UnityWebRequest req = new UnityWebRequest(USER_URL, "DELETE"))
         {
             req.uploadHandler = new UploadHandlerRaw(bodyRaw);
             req.downloadHandler = new DownloadHandlerBuffer();
-            req.SetRequestHeader("Content-Type", "application/json"); // Indiquer que c'est du JSON
+            req.SetRequestHeader("Content-Type", "application/json"); 
 
             yield return req.SendWebRequest();
 
@@ -93,9 +93,8 @@ public class DataController : MonoBehaviour
             req.downloadHandler = new DownloadHandlerBuffer();
             req.SetRequestHeader("Content-Type", "application/json");
 
-            // Envoi synchrone (bloquant)
             req.SendWebRequest();
-            while (!req.isDone) { } // Attend la fin
+            while (!req.isDone) { } 
 
             if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
             {

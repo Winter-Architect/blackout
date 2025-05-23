@@ -28,7 +28,7 @@ public class GameOverScreen : MonoBehaviour
         LobbyButton.clicked += OpenLobby;
         DocumentsButton.clicked += OpenDocuments;
 
-        scoreText.text = PlayerPrefs.GetInt("CurrentRoomID") + " Room(s) cleared\n";
+        // scoreText.text = PlayerPrefs.GetInt("CurrentRoomID") + " Room(s) cleared\n";
 
     }
 
