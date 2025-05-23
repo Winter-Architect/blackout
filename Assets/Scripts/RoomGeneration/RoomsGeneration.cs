@@ -30,7 +30,7 @@ public class RoomsGeneration : NetworkBehaviour
 
      private List<NetworkObject> alreadyGeneratedRooms = new List<NetworkObject>();
      
-    private System.Random random = new System.Random(0);
+    private System.Random random = new System.Random(1);
 
      public override void OnNetworkSpawn() {
         if (!IsServer)
@@ -50,7 +50,7 @@ public class RoomsGeneration : NetworkBehaviour
             return;
         }
         
-        random = new System.Random((int)System.DateTime.Now.Ticks);
+        // random = new System.Random((int)System.DateTime.Now.Ticks);
         if (roomPrefabs.roomPrefabs.Length <= 1)
         {
             Debug.LogError("[Generation de salles] Probleme dans la liste : il n'y a pas assez de salles !!!!!");
@@ -221,8 +221,8 @@ public class RoomsGeneration : NetworkBehaviour
 
             GameObject zombObj = Instantiate(zombPrefab, path[0].position, Quaternion.identity);
             var zombNetworkObj = zombObj.GetComponent<NetworkObject>();
-            zombNetworkObj.transform.SetParent(room.transform);
             if (zombNetworkObj != null) zombNetworkObj.Spawn();
+            zombNetworkObj.transform.SetParent(room.transform);
             ZombZomb zomb = zombObj.GetComponent<ZombZomb>();
             NavMeshHit hitBis;
             if (NavMesh.SamplePosition(path[0].position, out hitBis, 2.0f, NavMesh.AllAreas)) path[0].position = hitBis.position;
