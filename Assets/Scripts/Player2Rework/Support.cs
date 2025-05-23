@@ -210,7 +210,6 @@ public class Support : NetworkBehaviour
             GameOverScreen.sortingOrder = 99999;
         }
 
-
         if (player1.isGameWon.Value && !isGameOverScreenActive)
         {
             PlayerPrefs.SetInt("CurrentRoomID", currentRoom.RoomID);
