@@ -116,6 +116,7 @@ public class Support : NetworkBehaviour
         {
             return;
         }
+
         // Debug.LogWarning("Rechecking for room");
 
         supportHUD.SetActive(IsOwner);
@@ -198,10 +199,14 @@ public class Support : NetworkBehaviour
         foundControllables = FindObjectsByType<Controllable>(FindObjectsSortMode.None);
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
+            PlayerPrefs.SetInt("CurrentRoomID", currentRoom.RoomID);
+            PlayerPrefs.Save();
             supportHUD?.SetActive(false);
             var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
         }
@@ -213,6 +218,8 @@ public class Support : NetworkBehaviour
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
             cursorState = CursorLockMode.None;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
            // GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";

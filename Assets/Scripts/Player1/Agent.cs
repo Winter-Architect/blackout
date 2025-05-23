@@ -242,7 +242,9 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             isDead.Value = true;
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
             cursorState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.sortingOrder = 99999;
             
@@ -252,7 +254,9 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
         {
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
             cursorState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
             GameOverScreen.rootVisualElement.Q<Label>("Score").text += nbOfDocumentCollected + " Document(s) collected";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Completed!";
@@ -277,7 +281,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             spawnTimer = 120f;
         }
         
-        if (!KeyPad.IsAnyKeyPadOpen)
+        if (!KeyPad.IsAnyKeyPadOpen && !isGameOverScreenActive)
         {
             UnityEngine.Cursor.lockState = cursorState;
         }
