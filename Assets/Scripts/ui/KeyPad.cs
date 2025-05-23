@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UIElements;
 public class KeyPad : MonoBehaviour
 {
-    private static string CODE = "1234";
+    private static string CODE = "12345";
     public bool Split; //Indicates whether the code should be written on a single piece of paper or not.
     public int Digits; //HAS TO BE EITHER 4 OR 5
     private int CODE_LENGHT_LIMIT { get => CODE.Length; }
