@@ -27,6 +27,8 @@ public class RoomsGeneration : NetworkBehaviour
      private string LastRoomDirection = null;
      private bool lastRoomIsStairs = false;
      private float totalWeight = 0;
+
+     private List<NetworkObject> alreadyGeneratedRooms = new List<NetworkObject>();
      
     private System.Random random = new System.Random(0);
 
@@ -299,6 +301,12 @@ public class RoomsGeneration : NetworkBehaviour
             return GetRandomRoom(PreviousRoom);
         }
 
+        if (alreadyGeneratedRooms.Contains(selectedRoomPrefab))
+        {
+            Debug.LogWarning("[Generation de salles] Retry: Salle déjà générée.");
+            return GetRandomRoom(PreviousRoom);
+        }
+
         string direction = roomScript.isTurningLeft ? "left" :
                         roomScript.isTurningRight ? "right" : null;
         bool isStairs = roomScript.isStairs;
@@ -338,6 +346,7 @@ public class RoomsGeneration : NetworkBehaviour
         // ✅ Only now — spawn the networked object
         roomInstance.Spawn();
 
+        alreadyGeneratedRooms.Add(selectedRoomPrefab);
         foreach (var door in roomInstance.GetComponentsInChildren<Door>(true))
         {
             var netObj = door.GetComponent<NetworkObject>();

@@ -680,6 +680,7 @@ MonoBehaviour:
   Weight: 15
   Audio: {fileID: 0}
   lights: []
+  Map: {fileID: 0}
 --- !u!114 &8351467607561298262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,8 +732,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 44.04258, y: 29.293169, z: 60.89682}
-  m_Center: {x: 4.0036244, y: 3.6792517, z: 4.67844}
+  m_Size: {x: 80.73, y: 29.293169, z: 60.89682}
+  m_Center: {x: 18.8, y: 3.6792517, z: 4.67844}
 --- !u!114 &6838115086675333716
 MonoBehaviour:
   m_ObjectHideFlags: 0

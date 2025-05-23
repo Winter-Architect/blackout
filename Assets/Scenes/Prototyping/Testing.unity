@@ -35541,13 +35541,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  roomPrefabs: {fileID: 11400000, guid: 5a755e30679d80147a6d75104b1397b5, type: 2}
+  roomPrefabs: {fileID: 11400000, guid: 5ec59b993e44a074a998396fa8eaa7b6, type: 2}
   endRoom: {fileID: -2568011686715992916, guid: 7397c4535d0b94446a82a941f5cddfd4, type: 3}
   zombPrefab: {fileID: 2277200124935229616, guid: c1177f10f5468f8438147069eeda115e, type: 3}
   turretPrefab: {fileID: 6702179412296539626, guid: 7995b635f3ca9b04ca21d5535884b1e9, type: 3}
   spikeyPrefab: {fileID: 3755375981868785136, guid: af42fb587f4a4ca45bffebd4f8dc6866, type: 3}
   slimePrefab: {fileID: 3407082170272607845, guid: fe84e1c96801e31409600bdecbe556fc, type: 3}
-  numberOfRooms: 15
+  numberOfRooms: 9
   DoorPrefab: {fileID: 7071289012348209735, guid: 437ca09473cb4764a991d8775aadc0eb, type: 3}
 --- !u!4 &1216017597 stripped
 Transform:
@@ -87534,6 +87534,10 @@ PrefabInstance:
       propertyPath: Audio
       value: 
       objectReference: {fileID: 1216017601}
+    - target: {fileID: -2568011686715992916, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
+      propertyPath: Weight
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: -2568011686715992916, guid: c6458a34377c90c43a6a7b5f3e27b964, type: 3}
       propertyPath: m_Enabled
       value: 1
