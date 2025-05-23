@@ -144,6 +144,7 @@ public class Menu : MonoBehaviour
         joinLanButton = ui.Q<Button>("PlayLan");
         exitLanPanel = ui.Q<Button>("ExitLanPanel");
         IpField = ui.Q<TextField>("IP");
+        IpField.style.display = DisplayStyle.None;
 
         lanPanel.style.display = DisplayStyle.None;
 
