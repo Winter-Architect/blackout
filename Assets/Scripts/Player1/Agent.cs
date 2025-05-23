@@ -246,6 +246,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             cursorState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.sortingOrder = 99999;
             
         }
@@ -258,7 +259,7 @@ public class Agent : NetworkBehaviour, IInteractor, IDamageable
             cursorState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
-            GameOverScreen.rootVisualElement.Q<Label>("Score").text += nbOfDocumentCollected + " Document(s) collected";
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Complete!";
             GameOverScreen.sortingOrder = 99999;
 

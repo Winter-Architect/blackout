@@ -190,7 +190,7 @@ public class TurretEnemy : Enemy
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.TakeDamage(0.07f, 0);
+                    damageable.TakeDamage(0.04f, 0);
                 }
             }
         }

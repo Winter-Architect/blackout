@@ -385,7 +385,7 @@ public class TutorialManager : MonoBehaviour
     public void StartTutorial(string player)
     {
         this.player = player;
-        if (PlayerPrefs.GetInt($"TutorialDone_{player}", 0) == 1) return;
+        // if (PlayerPrefs.GetInt($"TutorialDone_{player}", 0) == 1) return;
         if (player == "player1")
         {
             GameObject myDialogUI = Instantiate(dialogUI);

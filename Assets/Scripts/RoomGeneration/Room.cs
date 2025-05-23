@@ -72,14 +72,13 @@ public class Room : NetworkBehaviour
         
     }
 
-    void OnTriggerEnter(Collider col)
+     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
             var Player2 = FindFirstObjectByType<Support>();
-            if (Player2 is not null)
+            if(Player2 is not null)
             {
-                // Debug.LogWarning("Player2 is not null, rechecking for room");
                 Player2.RecheckForRoom();
             }
             foreach (Light lit in lights)
@@ -91,15 +90,27 @@ public class Room : NetworkBehaviour
             {
                 if (playerAudio.clip == musicClip && playerAudio.isPlaying)
                 {
-                    // Same music is already playing — do nothing.
                     return;
                 }
 
                 playerAudio.clip = musicClip;
-                foreach (Light lit in lights)
-                {
-                    lit.gameObject.SetActive(false);
-                }
+                playerAudio.Play();
+            }
+        }
+    }
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.tag == "Player")
+        {
+            
+            if (Audio != null && !Audio.isPlaying)
+            {
+                Audio.Stop();
+                
+            }
+            foreach (Light lit in lights)
+            {
+                lit.gameObject.SetActive(false);
             }
         }
     }

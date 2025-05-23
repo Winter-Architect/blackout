@@ -206,6 +206,7 @@ public class Support : NetworkBehaviour
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
             GameOverScreen = gameOverScreenInstance.GetComponent<UIDocument>();
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.sortingOrder = 99999;
         }
 
@@ -219,7 +220,7 @@ public class Support : NetworkBehaviour
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
             GameOverScreen = instantiatedGameOverScreen.GetComponent<UIDocument>();
-           // GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
+            GameOverScreen.rootVisualElement.Q<Label>("Score").text = "";
             GameOverScreen.rootVisualElement.Q<Label>("Text").text = "Mission Complete!";
             GameOverScreen.sortingOrder = 99999;
         }
