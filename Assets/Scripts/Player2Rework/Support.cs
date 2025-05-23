@@ -200,7 +200,6 @@ public class Support : NetworkBehaviour
         if ((player1.isDead.Value || player1.Health <= 0) && !isGameOverScreenActive)
         {
             PlayerPrefs.SetInt("CurrentRoomID", currentRoom.RoomID);
-            PlayerPrefs.Save();
             supportHUD?.SetActive(false);
             var gameOverScreenInstance = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;
@@ -214,6 +213,7 @@ public class Support : NetworkBehaviour
 
         if (player1.isGameWon.Value && !isGameOverScreenActive)
         {
+            PlayerPrefs.SetInt("CurrentRoomID", currentRoom.RoomID);
             supportHUD?.SetActive(false);
             var instantiatedGameOverScreen = Instantiate(GameOverScreenPrefab);
             isGameOverScreenActive = true;

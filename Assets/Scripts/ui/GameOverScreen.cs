@@ -43,7 +43,6 @@ public class GameOverScreen : MonoBehaviour
 
     private void OpenDocuments()
     {
-        // Lance le chargement de la scène et abonne-toi à l'événement sceneLoaded
         if (Unity.Netcode.NetworkManager.Singleton != null)
         {
             Unity.Netcode.NetworkManager.Singleton.Shutdown();
